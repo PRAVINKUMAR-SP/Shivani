@@ -18,10 +18,21 @@ public class JobController {
     private JobRepository jobRepository;
 
     @GetMapping
-    public List<Job> getAllJobs(@RequestParam(required = false) String search) {
-        if (search != null && !search.isEmpty()) {
+    public List<Job> getAllJobs(
+            @RequestParam(required = false) String search,
+            @RequestParam(required = false) String location) {
+        
+        boolean hasSearch = search != null && !search.isEmpty();
+        boolean hasLocation = location != null && !location.isEmpty();
+
+        if (hasSearch && hasLocation) {
+            return jobRepository.searchJobs(search, location);
+        } else if (hasSearch) {
             return jobRepository.findByTitleContainingIgnoreCaseOrCompanyContainingIgnoreCase(search, search);
+        } else if (hasLocation) {
+            return jobRepository.findByLocationContainingIgnoreCase(location);
         }
+        
         return jobRepository.findAll();
     }
 

@@ -1,18 +1,44 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import Sidebar from '../components/Sidebar';
 import JobCard from '../components/JobCard';
 
-const dummyJobs = [
-  { id: 1, title: 'Frontend Developer', company: 'TechCorp', location: 'Remote', salary: '$80k - $120k', type: 'Full-time', tags: ['React', 'JavaScript', 'Tailwind'], postedAt: '2 hours ago' },
-  { id: 2, title: 'Backend Engineer', company: 'DataSystems', location: 'New York, NY', salary: '$100k - $140k', type: 'Full-time', tags: ['Java', 'Spring Boot', 'SQL'], postedAt: '5 hours ago' },
-  { id: 3, title: 'UI/UX Designer', company: 'Creative Studio', location: 'San Francisco, CA', salary: '$90k - $130k', type: 'Contract', tags: ['Figma', 'Prototyping', 'User Research'], postedAt: '1 day ago' },
-  { id: 4, title: 'Data Scientist', company: 'AI Innovations', location: 'Remote', salary: '$120k - $160k', type: 'Full-time', tags: ['Python', 'Machine Learning', 'TensorFlow'], postedAt: '2 days ago' },
-  { id: 5, title: 'DevOps Engineer', company: 'CloudNet', location: 'Austin, TX', salary: '$110k - $150k', type: 'Full-time', tags: ['AWS', 'Docker', 'Kubernetes'], postedAt: '2 days ago' },
-  { id: 6, title: 'Product Manager', company: 'NextGen Apps', location: 'Remote', salary: '$100k - $140k', type: 'Full-time', tags: ['Agile', 'Jira', 'Strategy'], postedAt: '3 days ago' },
-];
-
 const Dashboard = () => {
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchParams, setSearchParams] = useState({ keyword: '', location: '' });
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      setLoading(true);
+      try {
+        let url = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/jobs`;
+        const params = new URLSearchParams();
+        if (searchParams.keyword) params.append('search', searchParams.keyword);
+        if (searchParams.location) params.append('location', searchParams.location);
+        
+        if (params.toString()) {
+          url += `?${params.toString()}`;
+        }
+
+        const response = await fetch(url);
+        if (response.ok) {
+          const data = await response.json();
+          setJobs(data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch jobs:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, [searchParams]);
+
+  const handleSearch = (keyword, location) => {
+    setSearchParams({ keyword, location });
+  };
   return (
     <div className="bg-gray-50/50 h-[calc(100vh-128px)] flex relative overflow-hidden">
       {/* Background decoration */}
@@ -26,7 +52,7 @@ const Dashboard = () => {
       {/* Main Content */}
       <div className="flex-1 w-full flex flex-col relative z-20 h-full">
         <div className="pt-8 flex-shrink-0">
-          <SearchBar />
+          <SearchBar onSearch={handleSearch} />
         </div>
         
         {/* Jobs Grid */}
@@ -40,9 +66,19 @@ const Dashboard = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {dummyJobs.map((job) => (
-              <JobCard key={job.id} job={job} />
-            ))}
+            {loading ? (
+              <div className="col-span-full py-12 flex justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+              </div>
+            ) : jobs.length > 0 ? (
+              jobs.map((job) => (
+                <JobCard key={job.id} job={job} />
+              ))
+            ) : (
+              <div className="col-span-full py-12 text-center text-gray-500">
+                No jobs found. Try adjusting your search.
+              </div>
+            )}
           </div>
         </div>
       </div>

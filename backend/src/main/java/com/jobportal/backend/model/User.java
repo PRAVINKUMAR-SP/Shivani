@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -17,6 +18,14 @@ public class User {
 
     private String name;
     private String email;
-    private String password; // In a real app, this should be hashed
+    private String password; // Nullable if using Google Login
     private String role; // SEEKER or EMPLOYER
+    
+    private String authProvider; // e.g., GOOGLE, LOCAL
+    private String providerId; // Google ID
+    private String profilePicUrl;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private UserProfile profile;
 }

@@ -7,32 +7,27 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "applications")
+@Table(name = "saved_jobs")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Application {
+public class SavedJob {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "job_id")
     private Job job;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User applicant;
-    
-    @Column(length = 2000)
-    private String coverLetter;
-    private String resumeUrl;
-
-    private String status; // APPLIED, REVIEWING, REJECTED, ACCEPTED
-    private LocalDateTime appliedAt;
+    private LocalDateTime savedAt;
 
     @PrePersist
     protected void onCreate() {
-        appliedAt = LocalDateTime.now();
+        savedAt = LocalDateTime.now();
     }
 }

@@ -1,9 +1,22 @@
 import React from 'react';
 import { MapPin, DollarSign, Clock, Bookmark } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+const formatTimeAgo = (dateString) => {
+  if (!dateString) return 'Recently';
+  const diffInDays = Math.floor((new Date() - new Date(dateString)) / (1000 * 60 * 60 * 24));
+  if (diffInDays === 0) return 'Today';
+  return `${diffInDays}d`;
+};
 
 const JobCard = ({ job }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative group cursor-pointer">
+    <div 
+      onClick={() => navigate(`/jobs/${job.id}`)}
+      className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative group cursor-pointer"
+    >
       <div className="absolute top-6 right-6 text-gray-300 hover:text-blue-500 transition-colors">
         <Bookmark className="w-6 h-6" />
       </div>
@@ -34,7 +47,7 @@ const JobCard = ({ job }) => {
       </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
-        {job.tags.map((tag, idx) => (
+        {(job.tags || []).map((tag, idx) => (
           <span key={idx} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-xs font-semibold">
             {tag}
           </span>
@@ -42,7 +55,7 @@ const JobCard = ({ job }) => {
       </div>
 
       <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-        <span className="text-xs font-bold text-gray-400">{job.postedAt || '2 days ago'}</span>
+        <span className="text-xs font-bold text-gray-400">{formatTimeAgo(job.postedAt)}</span>
         <button className="text-blue-600 hover:text-blue-700 font-bold text-sm bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg transition-colors">
           Apply Now
         </button>

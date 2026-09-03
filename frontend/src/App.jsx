@@ -7,6 +7,7 @@ import Companies from './pages/Companies';
 import Services from './pages/Services';
 import Financial from './pages/Financial';
 import Dashboard from './pages/Dashboard';
+import JobDetails from './pages/JobDetails';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
               <Route path="/services" element={<Services />} />
               <Route path="/financial" element={<Financial />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/jobs/:id" element={<JobDetails />} />
             </Routes>
           </div>
         </BrowserRouter>

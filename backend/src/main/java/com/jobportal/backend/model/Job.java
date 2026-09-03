@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "jobs")
@@ -25,6 +26,17 @@ public class Job {
     private String location;
     private String salary;
     private String type; // Full-time, Part-time, Contract
+    private String experience;
+    private Integer applicantCount = 0;
+
+    @ElementCollection
+    @CollectionTable(name = "job_tags", joinColumns = @JoinColumn(name = "job_id"))
+    @Column(name = "tag")
+    private List<String> tags;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employer_id")
+    private User employer;
     
     private LocalDateTime postedAt;
 
