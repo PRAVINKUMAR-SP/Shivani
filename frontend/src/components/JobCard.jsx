@@ -9,7 +9,7 @@ const formatTimeAgo = (dateString) => {
   return `${diffInDays}d`;
 };
 
-const JobCard = ({ job }) => {
+const JobCard = ({ job, applied }) => {
   const navigate = useNavigate();
 
   return (
@@ -56,8 +56,8 @@ const JobCard = ({ job }) => {
 
       <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
         <span className="text-xs font-bold text-gray-400">{formatTimeAgo(job.postedAt)}</span>
-        <button className="text-blue-600 hover:text-blue-700 font-bold text-sm bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg transition-colors">
-          Apply Now
+        <button className={`font-bold text-sm px-4 py-2 rounded-lg transition-colors ${applied ? 'bg-green-50 text-green-700' : 'text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100'}`}>
+          {applied ? 'Applied ✓' : 'Apply Now'}
         </button>
       </div>
     </div>

@@ -65,10 +65,7 @@ const AppliedJobs = () => {
             ) : applications.length > 0 ? (
               applications.map((application) => (
                 <div key={application.id} className="relative">
-                  <JobCard job={application.job} />
-                  <div className="absolute top-4 right-4 bg-green-100 text-green-700 text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                    {application.status}
-                  </div>
+                  <JobCard job={application.job} applied={true} />
                 </div>
               ))
             ) : (
