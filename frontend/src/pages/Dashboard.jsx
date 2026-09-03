@@ -2,11 +2,31 @@ import React, { useState, useEffect } from 'react';
 import SearchBar from '../components/SearchBar';
 import Sidebar from '../components/Sidebar';
 import JobCard from '../components/JobCard';
+import { useAuth } from '../context/AuthContext';
 
 const Dashboard = () => {
+  const { user } = useAuth();
   const [jobs, setJobs] = useState([]);
+  const [appliedJobs, setAppliedJobs] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useState({ keyword: '', location: '' });
+
+  useEffect(() => {
+    if (user?.email) {
+      const fetchAppliedJobs = async () => {
+        try {
+          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/applications/user/${user.email}`);
+          if (response.ok) {
+            const data = await response.json();
+            setAppliedJobs(new Set(data.map(app => app.job.id)));
+          }
+        } catch (error) {
+          console.error("Failed to fetch applied jobs", error);
+        }
+      };
+      fetchAppliedJobs();
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -72,7 +92,7 @@ const Dashboard = () => {
               </div>
             ) : jobs.length > 0 ? (
               jobs.map((job) => (
-                <JobCard key={job.id} job={job} />
+                <JobCard key={job.id} job={job} applied={appliedJobs.has(job.id)} />
               ))
             ) : (
               <div className="col-span-full py-12 text-center text-gray-500">
