@@ -5,6 +5,7 @@ import {
   Briefcase, Users, GraduationCap, ArrowLeft, 
   Share2, Heart, ExternalLink, Star, ShieldCheck, ChevronRight
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const formatTimeAgo = (dateString) => {
   if (!dateString) return 'Recently';
@@ -15,8 +16,11 @@ const formatTimeAgo = (dateString) => {
 
 const JobDetails = () => {
   const { id } = useParams();
+  const { user } = useAuth();
   const [job, setJob] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [hasApplied, setHasApplied] = useState(false);
+  const [isApplying, setIsApplying] = useState(false);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -33,8 +37,55 @@ const JobDetails = () => {
       }
     };
 
+    const checkApplyStatus = async () => {
+      if (!user) return;
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/applications/check?userId=${user.id}&jobId=${id}`);
+        if (response.ok) {
+          const applied = await response.json();
+          setHasApplied(applied);
+        }
+      } catch (error) {
+        console.error('Failed to check apply status:', error);
+      }
+    };
+
     fetchJob();
-  }, [id]);
+    checkApplyStatus();
+  }, [id, user]);
+
+  const handleApply = async () => {
+    if (!user) {
+      alert("Please login to apply for jobs!");
+      return;
+    }
+    
+    setIsApplying(true);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/applications`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: user.id,
+          jobId: job.id
+        }),
+      });
+      
+      if (response.ok) {
+        setHasApplied(true);
+      } else {
+        const errorText = await response.text();
+        alert(errorText || "Failed to apply. Please try again.");
+      }
+    } catch (error) {
+      console.error('Failed to apply:', error);
+      alert("Network error. Please try again.");
+    } finally {
+      setIsApplying(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -131,8 +182,16 @@ const JobDetails = () => {
                   <span className="flex items-center"><Calendar className="w-4 h-4 mr-1.5" /> Posted: {formatTimeAgo(job.postedAt)}</span>
                   <span className="flex items-center"><Users className="w-4 h-4 mr-1.5" /> Applicants: {job.applicantCount || 0}</span>
                 </div>
-                <button className="w-full sm:w-auto bg-[#0b5cff] hover:bg-blue-700 text-white font-bold py-3.5 px-10 rounded-xl transition-all shadow-sm hover:shadow-md">
-                  Apply
+                <button 
+                  onClick={handleApply}
+                  disabled={hasApplied || isApplying}
+                  className={`w-full sm:w-auto font-bold py-3.5 px-10 rounded-xl transition-all shadow-sm ${
+                    hasApplied 
+                      ? 'bg-green-500 text-white cursor-not-allowed hover:bg-green-500' 
+                      : 'bg-[#0b5cff] hover:bg-blue-700 text-white hover:shadow-md'
+                  }`}
+                >
+                  {isApplying ? 'Applying...' : hasApplied ? 'Applied Successfully ✓' : 'Apply'}
                 </button>
               </div>
             </div>

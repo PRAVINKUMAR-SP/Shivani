@@ -8,6 +8,7 @@ import Services from './pages/Services';
 import Financial from './pages/Financial';
 import Dashboard from './pages/Dashboard';
 import JobDetails from './pages/JobDetails';
+import AppliedJobs from './pages/AppliedJobs';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
               <Route path="/services" element={<Services />} />
               <Route path="/financial" element={<Financial />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/dashboard/applied" element={<AppliedJobs />} />
               <Route path="/jobs/:id" element={<JobDetails />} />
             </Routes>
           </div>
