@@ -10,6 +10,9 @@ import Dashboard from './pages/Dashboard';
 import JobDetails from './pages/JobDetails';
 import AppliedJobs from './pages/AppliedJobs';
 import SavedJobs from './pages/SavedJobs';
+import Profile from './pages/Profile';
+import Settings from './pages/Settings';
+import Notifications from './pages/Notifications';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -27,6 +30,9 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/applied" element={<AppliedJobs />} />
               <Route path="/dashboard/saved" element={<SavedJobs />} />
+              <Route path="/dashboard/profile" element={<Profile />} />
+              <Route path="/dashboard/settings" element={<Settings />} />
+              <Route path="/dashboard/notifications" element={<Notifications />} />
               <Route path="/jobs/:id" element={<JobDetails />} />
             </Routes>
           </div>

@@ -3,8 +3,10 @@ package com.jobportal.backend.controller;
 import com.jobportal.backend.model.Application;
 import com.jobportal.backend.model.Job;
 import com.jobportal.backend.model.User;
+import com.jobportal.backend.model.Notification;
 import com.jobportal.backend.repository.ApplicationRepository;
 import com.jobportal.backend.repository.JobRepository;
+import com.jobportal.backend.repository.NotificationRepository;
 import com.jobportal.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,9 @@ public class ApplicationController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @PostMapping
     public ResponseEntity<?> applyForJob(@RequestBody Map<String, Object> payload) {
@@ -63,6 +68,13 @@ public class ApplicationController {
         application.setStatus("APPLIED");
 
         Application savedApplication = applicationRepository.save(application);
+        
+        Notification notification = new Notification();
+        notification.setUser(user);
+        notification.setType("APPLICATION_SUCCESS");
+        notification.setMessage("You successfully applied for the position: " + job.getTitle() + " at " + job.getCompany() + ".");
+        notificationRepository.save(notification);
+        
         return ResponseEntity.ok(savedApplication);
     }
 
