@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
+import { UploadCloud } from 'lucide-react';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -14,6 +15,7 @@ const Profile = () => {
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [parsing, setParsing] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -77,6 +79,49 @@ const Profile = () => {
     }
   };
 
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    if (file.type !== 'application/pdf') {
+      setMessage('Please upload a PDF file.');
+      return;
+    }
+
+    setParsing(true);
+    setMessage('');
+    
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/profile/parse-resume`, {
+        method: 'POST',
+        body: formData
+      });
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        setProfile(prev => ({
+          ...prev,
+          phoneNumber: data.phoneNumber || prev.phoneNumber,
+          skills: data.skills ? data.skills.join(', ') : prev.skills,
+          experience: data.experience || prev.experience,
+          education: data.education || prev.education
+        }));
+        setMessage('Resume parsed successfully! Please review the auto-filled data.');
+      } else {
+        setMessage(data.error || 'Failed to parse resume.');
+      }
+    } catch (error) {
+      console.error('Error parsing resume:', error);
+      setMessage('An error occurred during parsing.');
+    } finally {
+      setParsing(false);
+    }
+  };
+
   return (
     <div className="bg-gray-50/50 h-[calc(100vh-128px)] flex relative overflow-hidden">
       <div className="bg-blue-50/50 h-24 absolute top-0 right-0 -z-10 w-full lg:w-[calc(100%-16rem)] lg:rounded-bl-[3rem] rounded-b-[3rem] lg:rounded-br-none"></div>
@@ -109,6 +154,34 @@ const Profile = () => {
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900">{user.name}</h3>
                   <p className="text-gray-500 font-medium">{user.email}</p>
+                </div>
+              </div>
+
+              {/* AI Resume Parser Banner */}
+              <div className="bg-blue-50 border-y border-blue-100 p-6 flex flex-col md:flex-row items-center justify-between gap-4">
+                <div>
+                  <h4 className="font-bold text-blue-900 text-lg">Auto-fill your profile</h4>
+                  <p className="text-blue-700 text-sm mt-1">Upload your resume (PDF) and our system will extract your skills, experience, and education automatically.</p>
+                </div>
+                <div className="relative">
+                  <input 
+                    type="file" 
+                    accept=".pdf" 
+                    onChange={handleFileUpload} 
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                    disabled={parsing}
+                  />
+                  <button 
+                    disabled={parsing}
+                    className="flex items-center gap-2 bg-white text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-sm border border-blue-200 hover:border-blue-600 disabled:opacity-50"
+                  >
+                    {parsing ? (
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
+                    ) : (
+                      <UploadCloud className="w-5 h-5" />
+                    )}
+                    {parsing ? 'Parsing...' : 'Upload PDF Resume'}
+                  </button>
                 </div>
               </div>
 

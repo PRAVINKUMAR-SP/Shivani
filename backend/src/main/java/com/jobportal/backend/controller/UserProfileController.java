@@ -4,10 +4,14 @@ import com.jobportal.backend.model.User;
 import com.jobportal.backend.model.UserProfile;
 import com.jobportal.backend.repository.UserProfileRepository;
 import com.jobportal.backend.repository.UserRepository;
+import com.jobportal.backend.service.ResumeParserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/profile")
@@ -19,6 +23,18 @@ public class UserProfileController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ResumeParserService resumeParserService;
+
+    @PostMapping("/parse-resume")
+    public ResponseEntity<?> parseResume(@RequestParam("file") MultipartFile file) {
+        Map<String, Object> parsedData = resumeParserService.parseResume(file);
+        if (parsedData.containsKey("error")) {
+            return ResponseEntity.badRequest().body(parsedData);
+        }
+        return ResponseEntity.ok(parsedData);
+    }
 
     @GetMapping("/{email}")
     public ResponseEntity<?> getProfile(@PathVariable String email) {
