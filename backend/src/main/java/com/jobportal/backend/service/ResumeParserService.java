@@ -52,17 +52,20 @@ public class ResumeParserService {
 
             // Extract Skills
             List<String> foundSkills = new ArrayList<>();
-            String lowerText = text.toLowerCase();
             for (String skill : COMMON_SKILLS) {
-                // word boundary to avoid partial matches
-                if (lowerText.matches(".*\\b" + skill.toLowerCase().replace("+", "\\+") + "\\b.*")) {
+                String regex;
+                if (skill.equals("C++") || skill.equals("C#") || skill.equals("Node.js") || skill.equals(".NET")) {
+                    regex = "(?i)" + Pattern.quote(skill);
+                } else {
+                    regex = "(?i)\\b" + Pattern.quote(skill) + "\\b";
+                }
+                if (Pattern.compile(regex).matcher(text).find()) {
                     foundSkills.add(skill);
                 }
             }
             extractedData.put("skills", foundSkills);
 
             // Basic extraction for Education and Experience
-            // We'll look for keywords "Education" and "Experience" and grab the text after them up to the next double newline
             String education = extractSection(text, "Education");
             if (education != null) extractedData.put("education", education.trim());
 
@@ -86,7 +89,9 @@ public class ResumeParserService {
 
         for (String line : lines) {
             String trimmed = line.trim();
-            if (trimmed.toLowerCase().equals(sectionHeader.toLowerCase())) {
+            
+            // Check if this line is a header (short length and contains the keyword)
+            if (!inSection && trimmed.length() < 40 && trimmed.toLowerCase().contains(sectionHeader.toLowerCase())) {
                 inSection = true;
                 continue;
             }
@@ -94,7 +99,6 @@ public class ResumeParserService {
             if (inSection) {
                 if (trimmed.isEmpty()) {
                     emptyLineCount++;
-                    // If we hit two empty lines, assume section is over
                     if (emptyLineCount >= 2 && sectionText.length() > 20) {
                         break;
                     }
@@ -104,7 +108,8 @@ public class ResumeParserService {
                 }
                 
                 // Stop if we hit another common header
-                if (trimmed.matches("(?i)^(Experience|Education|Skills|Projects|Summary|Objective|Certifications)$")) {
+                if (trimmed.length() < 40 && trimmed.matches("(?i).*(Experience|Education|Skills|Projects|Summary|Objective|Certifications).*")) {
+                    // We found a new section header, stop capturing
                     break;
                 }
             }
