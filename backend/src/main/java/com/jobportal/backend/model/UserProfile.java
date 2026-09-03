@@ -25,6 +25,7 @@ public class UserProfile {
     
     private String phoneNumber;
     private String resumeUrl;
+    private String resumeFileName;
 
     @ElementCollection
     @CollectionTable(name = "user_skills", joinColumns = @JoinColumn(name = "profile_id"))

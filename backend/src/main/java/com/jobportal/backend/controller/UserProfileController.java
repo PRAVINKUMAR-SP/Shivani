@@ -67,6 +67,7 @@ public class UserProfileController {
         existingProfile.setBio(updatedProfile.getBio());
         existingProfile.setPhoneNumber(updatedProfile.getPhoneNumber());
         existingProfile.setResumeUrl(updatedProfile.getResumeUrl());
+        existingProfile.setResumeFileName(updatedProfile.getResumeFileName());
         existingProfile.setSkills(updatedProfile.getSkills());
         existingProfile.setExperience(updatedProfile.getExperience());
         existingProfile.setEducation(updatedProfile.getEducation());

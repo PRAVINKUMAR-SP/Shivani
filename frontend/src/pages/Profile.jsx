@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import { useAuth } from '../context/AuthContext';
-import { UploadCloud } from 'lucide-react';
+import { UploadCloud, FileText } from 'lucide-react';
 
 const Profile = () => {
   const { user } = useAuth();
@@ -11,7 +11,8 @@ const Profile = () => {
     resumeUrl: '',
     skills: '',
     experience: '',
-    education: ''
+    education: '',
+    resumeFileName: ''
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -34,7 +35,8 @@ const Profile = () => {
             resumeUrl: data.resumeUrl || '',
             skills: data.skills ? data.skills.join(', ') : '',
             experience: data.experience || '',
-            education: data.education || ''
+            education: data.education || '',
+            resumeFileName: data.resumeFileName || ''
           });
         }
       } catch (error) {
@@ -106,9 +108,10 @@ const Profile = () => {
         setProfile(prev => ({
           ...prev,
           phoneNumber: data.phoneNumber || prev.phoneNumber,
-          skills: data.skills ? data.skills.join(', ') : prev.skills,
+          skills: data.skills && data.skills.length > 0 ? data.skills.join(', ') : prev.skills,
           experience: data.experience || prev.experience,
-          education: data.education || prev.education
+          education: data.education || prev.education,
+          resumeFileName: data.fileName || prev.resumeFileName
         }));
         setMessage('Resume parsed successfully! Please review the auto-filled data.');
       } else {
@@ -163,25 +166,33 @@ const Profile = () => {
                   <h4 className="font-bold text-blue-900 text-lg">Auto-fill your profile</h4>
                   <p className="text-blue-700 text-sm mt-1">Upload your resume (PDF) and our system will extract your skills, experience, and education automatically.</p>
                 </div>
-                <div className="relative">
-                  <input 
-                    type="file" 
-                    accept=".pdf" 
-                    onChange={handleFileUpload} 
-                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                    disabled={parsing}
-                  />
-                  <button 
-                    disabled={parsing}
-                    className="flex items-center gap-2 bg-white text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-sm border border-blue-200 hover:border-blue-600 disabled:opacity-50"
-                  >
-                    {parsing ? (
-                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
-                    ) : (
-                      <UploadCloud className="w-5 h-5" />
-                    )}
-                    {parsing ? 'Parsing...' : 'Upload PDF Resume'}
-                  </button>
+                <div className="flex flex-col items-end gap-2">
+                  <div className="relative">
+                    <input 
+                      type="file" 
+                      accept=".pdf" 
+                      onChange={handleFileUpload} 
+                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      disabled={parsing}
+                    />
+                    <button 
+                      disabled={parsing}
+                      className="flex items-center gap-2 bg-white text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-sm border border-blue-200 hover:border-blue-600 disabled:opacity-50"
+                    >
+                      {parsing ? (
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
+                      ) : (
+                        <UploadCloud className="w-5 h-5" />
+                      )}
+                      {parsing ? 'Parsing...' : 'Upload PDF Resume'}
+                    </button>
+                  </div>
+                  {profile.resumeFileName && (
+                    <div className="flex items-center gap-1.5 text-sm font-medium text-blue-800 bg-blue-100 px-3 py-1 rounded-full">
+                      <FileText className="w-4 h-4" />
+                      <span className="truncate max-w-[150px]">{profile.resumeFileName}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 

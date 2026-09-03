@@ -3,26 +3,31 @@ package com.jobportal.backend.service;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.Arrays;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 @Service
 public class ResumeParserService {
 
-    private static final List<String> COMMON_SKILLS = Arrays.asList(
-            "Java", "Python", "JavaScript", "React", "Node.js", "Spring Boot", "SQL", "HTML", "CSS", 
-            "AWS", "Docker", "Kubernetes", "Git", "C++", "C#", "Angular", "Vue", "MongoDB", "PostgreSQL",
-            "Machine Learning", "Data Science", "TypeScript", "Linux", "REST API", "GraphQL"
-    );
+    @Value("${groq.api.key}")
+    private String groqApiKey;
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     public Map<String, Object> parseResume(MultipartFile file) {
         Map<String, Object> extractedData = new HashMap<>();
@@ -32,45 +37,24 @@ public class ResumeParserService {
             return extractedData;
         }
 
+        extractedData.put("fileName", file.getOriginalFilename());
+
         try (PDDocument document = Loader.loadPDF(file.getBytes())) {
             PDFTextStripper stripper = new PDFTextStripper();
             String text = stripper.getText(document);
 
-            // Extract Email
-            Pattern emailPattern = Pattern.compile("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}");
-            Matcher emailMatcher = emailPattern.matcher(text);
-            if (emailMatcher.find()) {
-                extractedData.put("email", emailMatcher.group());
+            if (text == null || text.trim().isEmpty()) {
+                extractedData.put("error", "Could not extract text from PDF.");
+                return extractedData;
             }
 
-            // Extract Phone (Basic heuristic)
-            Pattern phonePattern = Pattern.compile("(\\(?\\d{3}\\)?[\\s.-]?)?\\d{3}[\\s.-]?\\d{4}");
-            Matcher phoneMatcher = phonePattern.matcher(text);
-            if (phoneMatcher.find()) {
-                extractedData.put("phoneNumber", phoneMatcher.group());
+            // Call Groq API
+            Map<String, Object> aiParsedData = callGroqApi(text);
+            if (aiParsedData != null) {
+                extractedData.putAll(aiParsedData);
+            } else {
+                extractedData.put("error", "AI parsing failed. Please try again.");
             }
-
-            // Extract Skills
-            List<String> foundSkills = new ArrayList<>();
-            for (String skill : COMMON_SKILLS) {
-                String regex;
-                if (skill.equals("C++") || skill.equals("C#") || skill.equals("Node.js") || skill.equals(".NET")) {
-                    regex = "(?i)" + Pattern.quote(skill);
-                } else {
-                    regex = "(?i)\\b" + Pattern.quote(skill) + "\\b";
-                }
-                if (Pattern.compile(regex).matcher(text).find()) {
-                    foundSkills.add(skill);
-                }
-            }
-            extractedData.put("skills", foundSkills);
-
-            // Basic extraction for Education and Experience
-            String education = extractSection(text, "Education");
-            if (education != null) extractedData.put("education", education.trim());
-
-            String experience = extractSection(text, "Experience");
-            if (experience != null) extractedData.put("experience", experience.trim());
 
         } catch (IOException e) {
             extractedData.put("error", "Failed to parse PDF file.");
@@ -80,40 +64,58 @@ public class ResumeParserService {
         return extractedData;
     }
 
-    private String extractSection(String fullText, String sectionHeader) {
-        // Split by lines
-        String[] lines = fullText.split("\\r?\\n");
-        boolean inSection = false;
-        StringBuilder sectionText = new StringBuilder();
-        int emptyLineCount = 0;
-
-        for (String line : lines) {
-            String trimmed = line.trim();
-            
-            // Check if this line is a header (short length and contains the keyword)
-            if (!inSection && trimmed.length() < 40 && trimmed.toLowerCase().contains(sectionHeader.toLowerCase())) {
-                inSection = true;
-                continue;
+    private Map<String, Object> callGroqApi(String resumeText) {
+        try {
+            // Trim text to avoid token limits just in case
+            if (resumeText.length() > 15000) {
+                resumeText = resumeText.substring(0, 15000);
             }
 
-            if (inSection) {
-                if (trimmed.isEmpty()) {
-                    emptyLineCount++;
-                    if (emptyLineCount >= 2 && sectionText.length() > 20) {
-                        break;
-                    }
-                } else {
-                    emptyLineCount = 0;
-                    sectionText.append(trimmed).append("\n");
-                }
+            String prompt = "You are an expert resume parser. Extract the following information from the provided resume text and return it strictly as a JSON object (no markdown formatting, no code blocks, just raw JSON). " +
+                            "Fields required: 'email' (string), 'phoneNumber' (string), 'skills' (array of strings), 'education' (string summary of education), 'experience' (string summary of work experience). " +
+                            "If a field is not found, leave it as an empty string or empty array.\n\n" +
+                            "Resume Text:\n" + resumeText;
+
+            Map<String, Object> message = new HashMap<>();
+            message.put("role", "user");
+            message.put("content", prompt);
+
+            Map<String, Object> requestBodyMap = new HashMap<>();
+            requestBodyMap.put("model", "llama3-8b-8192");
+            requestBodyMap.put("messages", List.of(message));
+            requestBodyMap.put("temperature", 0.0);
+
+            String requestBody = objectMapper.writeValueAsString(requestBodyMap);
+
+            HttpClient client = HttpClient.newBuilder()
+                    .connectTimeout(Duration.ofSeconds(10))
+                    .build();
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://api.groq.com/openai/v1/chat/completions"))
+                    .header("Authorization", "Bearer " + groqApiKey)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                JsonNode rootNode = objectMapper.readTree(response.body());
+                String content = rootNode.path("choices").get(0).path("message").path("content").asText();
                 
-                // Stop if we hit another common header
-                if (trimmed.length() < 40 && trimmed.matches("(?i).*(Experience|Education|Skills|Projects|Summary|Objective|Certifications).*")) {
-                    // We found a new section header, stop capturing
-                    break;
-                }
+                // Sometimes LLM returns JSON enclosed in ```json ... ``` despite instructions. Strip it if necessary.
+                content = content.replaceAll("^```json\\s*", "").replaceAll("^```\\s*", "").replaceAll("\\s*```$", "").trim();
+                
+                return objectMapper.readValue(content, new TypeReference<Map<String, Object>>() {});
+            } else {
+                System.err.println("Groq API error: " + response.statusCode() + " " + response.body());
             }
+
+        } catch (Exception e) {
+            System.err.println("Exception calling Groq API: " + e.getMessage());
+            e.printStackTrace();
         }
-        return sectionText.length() > 0 ? sectionText.toString() : null;
+        return null;
     }
 }
