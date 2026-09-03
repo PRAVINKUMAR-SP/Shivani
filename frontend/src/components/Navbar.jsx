@@ -6,8 +6,7 @@ import { useAuth } from '../context/AuthContext';
 
 const Navbar = () => {
   const location = useLocation();
-  const { user, logout } = useAuth();
-  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+  const { user, logout, isLoginModalOpen, openLoginModal, closeLoginModal } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isActive = (path) => location.pathname === path;
   
@@ -46,7 +45,7 @@ const Navbar = () => {
                 </button>
               </div>
             ) : (
-              <button onClick={() => setIsLoginModalOpen(true)} className="text-blue-600 font-bold text-lg hover:underline px-4 py-2 hover:bg-blue-50 rounded-lg transition-colors">Sign in</button>
+              <button onClick={openLoginModal} className="text-blue-600 font-bold text-lg hover:underline px-4 py-2 hover:bg-blue-50 rounded-lg transition-colors">Sign in</button>
             )}
           </div>
           <div className="flex items-center sm:hidden">
@@ -78,7 +77,7 @@ const Navbar = () => {
                     <button onClick={() => { logout(); setIsMobileMenuOpen(false); }} className="text-red-500 font-medium">Log out</button>
                   </div>
                 ) : (
-                  <button onClick={() => { setIsLoginModalOpen(true); setIsMobileMenuOpen(false); }} className="w-full text-center text-blue-600 font-bold bg-blue-50 px-4 py-2 rounded-lg">Sign in</button>
+                  <button onClick={() => { openLoginModal(); setIsMobileMenuOpen(false); }} className="w-full text-center text-blue-600 font-bold bg-blue-50 px-4 py-2 rounded-lg">Sign in</button>
                 )}
               </div>
             </div>
@@ -87,7 +86,7 @@ const Navbar = () => {
         </div>
       </nav>
 
-      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
+      <LoginModal isOpen={isLoginModalOpen} onClose={closeLoginModal} />
     </div>
   );
 };

@@ -32,7 +32,7 @@ const categories = [
 ];
 
 const Home = () => {
-  const { user } = useAuth();
+  const { user, openLoginModal } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -59,7 +59,7 @@ const Home = () => {
         </p>
         
         {/* CTA Button */}
-        <button className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-8 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-lg shadow-sm">
+        <button onClick={openLoginModal} className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-8 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto text-lg shadow-sm">
           Get Started
           <ArrowRight className="h-6 w-6 stroke-[3]" />
         </button>
