@@ -14,8 +14,9 @@ public class DataSeeder {
     @Bean
     public CommandLineRunner loadData(JobRepository jobRepository) {
         return args -> {
-            jobRepository.deleteAll(); // Clear old data to re-seed with new fields
-            
+            if (jobRepository.count() > 0) {
+                return;
+            }
             Job job1 = new Job();
             job1.setTitle("Senior React Developer");
             job1.setCompany("TechCorp");

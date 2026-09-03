@@ -8,23 +8,32 @@ const Dashboard = () => {
   const { user } = useAuth();
   const [jobs, setJobs] = useState([]);
   const [appliedJobs, setAppliedJobs] = useState(new Set());
+  const [savedJobs, setSavedJobs] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useState({ keyword: '', location: '' });
 
   useEffect(() => {
     if (user?.email) {
-      const fetchAppliedJobs = async () => {
+      const fetchUserJobs = async () => {
         try {
-          const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/applications/user/${user.email}`);
-          if (response.ok) {
-            const data = await response.json();
+          const [appliedRes, savedRes] = await Promise.all([
+            fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/applications/user/${user.email}`),
+            fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/saved-jobs/user/${user.email}`)
+          ]);
+          
+          if (appliedRes.ok) {
+            const data = await appliedRes.json();
             setAppliedJobs(new Set(data.map(app => app.job.id)));
           }
+          if (savedRes.ok) {
+            const data = await savedRes.json();
+            setSavedJobs(new Set(data.map(sj => sj.job.id)));
+          }
         } catch (error) {
-          console.error("Failed to fetch applied jobs", error);
+          console.error("Failed to fetch user job states", error);
         }
       };
-      fetchAppliedJobs();
+      fetchUserJobs();
     }
   }, [user]);
 
@@ -92,7 +101,7 @@ const Dashboard = () => {
               </div>
             ) : jobs.length > 0 ? (
               jobs.map((job) => (
-                <JobCard key={job.id} job={job} applied={appliedJobs.has(job.id)} />
+                <JobCard key={job.id} job={job} applied={appliedJobs.has(job.id)} saved={savedJobs.has(job.id)} />
               ))
             ) : (
               <div className="col-span-full py-12 text-center text-gray-500">

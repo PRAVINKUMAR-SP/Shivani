@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { MapPin, DollarSign, Clock, Bookmark } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 const formatTimeAgo = (dateString) => {
   if (!dateString) return 'Recently';
@@ -9,16 +10,61 @@ const formatTimeAgo = (dateString) => {
   return `${diffInDays}d`;
 };
 
-const JobCard = ({ job, applied }) => {
+const JobCard = ({ job, applied, saved: initialSaved }) => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [isSaved, setIsSaved] = useState(initialSaved || false);
+
+  useEffect(() => {
+    if (initialSaved !== undefined) {
+      setIsSaved(initialSaved);
+    }
+  }, [initialSaved]);
+
+  const handleToggleSave = async (e) => {
+    e.stopPropagation();
+    if (!user) {
+      alert("Please log in to save jobs");
+      return;
+    }
+    
+    // Optimistic UI update
+    setIsSaved(!isSaved);
+    
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/saved-jobs/toggle`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: user.email,
+          name: user.name,
+          jobId: job.id
+        })
+      });
+      
+      if (!response.ok) {
+        // Revert on failure
+        setIsSaved(isSaved);
+        console.error('Failed to toggle save status');
+      }
+    } catch (error) {
+      setIsSaved(isSaved);
+      console.error('Error toggling save status:', error);
+    }
+  };
 
   return (
     <div 
       onClick={() => navigate(`/jobs/${job.id}`)}
       className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative group cursor-pointer"
     >
-      <div className="absolute top-6 right-6 text-gray-300 hover:text-blue-500 transition-colors">
-        <Bookmark className="w-6 h-6" />
+      <div 
+        onClick={handleToggleSave}
+        className={`absolute top-6 right-6 transition-colors ${isSaved ? 'text-blue-500' : 'text-gray-300 hover:text-blue-500'}`}
+      >
+        <Bookmark className="w-6 h-6" fill={isSaved ? "currentColor" : "none"} />
       </div>
       
       <div className="flex items-center gap-4 mb-4">
