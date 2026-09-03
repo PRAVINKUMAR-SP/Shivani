@@ -38,9 +38,8 @@ public class AuthController {
             // Update mutable details
             if (name != null) user.setName(name);
             if (picture != null) user.setProfilePicUrl(picture);
-            // We generally don't change role if they are already registered,
-            // but if they had no role, we can set it.
-            if (user.getRole() == null && role != null) {
+            // Update role based on login selection
+            if (role != null) {
                 user.setRole(role.toUpperCase());
             }
         } else {
