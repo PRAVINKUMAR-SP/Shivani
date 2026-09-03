@@ -18,10 +18,34 @@ const LoginModal = ({ isOpen, onClose }) => {
           headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
         }).then(res => res.json());
         
-        setAuthUser(userInfo);
+        // Call backend to sync user and assign role
+        const backendRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: userInfo.email,
+            name: userInfo.name,
+            picture: userInfo.picture,
+            role: selected === 'employer' ? 'EMPLOYER' : 'SEEKER'
+          })
+        });
+
+        if (!backendRes.ok) {
+          throw new Error('Backend login failed');
+        }
+
+        const backendUser = await backendRes.json();
+        
+        // Save to context
+        setAuthUser(backendUser);
         setIsLoading(false);
         handleClose();
-        navigate('/dashboard');
+        
+        if (backendUser.role === 'EMPLOYER') {
+          navigate('/employer/dashboard');
+        } else {
+          navigate('/dashboard');
+        }
       } catch (err) {
         console.error("Failed to fetch user info", err);
         setIsLoading(false);

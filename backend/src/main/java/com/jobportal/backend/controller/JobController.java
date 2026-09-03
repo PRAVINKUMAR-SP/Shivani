@@ -2,12 +2,15 @@ package com.jobportal.backend.controller;
 
 import com.jobportal.backend.model.Job;
 import com.jobportal.backend.repository.JobRepository;
+import com.jobportal.backend.repository.UserRepository;
+import com.jobportal.backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/jobs")
@@ -16,6 +19,9 @@ public class JobController {
 
     @Autowired
     private JobRepository jobRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping
     public List<Job> getAllJobs(
@@ -43,8 +49,38 @@ public class JobController {
     }
 
     @PostMapping
-    public Job createJob(@RequestBody Job job) {
-        return jobRepository.save(job);
+    public ResponseEntity<?> createJob(@RequestBody Map<String, Object> payload) {
+        String employerEmail = (String) payload.get("employerEmail");
+        if (employerEmail == null) {
+            return ResponseEntity.badRequest().body("employerEmail is required");
+        }
+
+        User employer = userRepository.findByEmail(employerEmail).orElse(null);
+        if (employer == null || !"EMPLOYER".equalsIgnoreCase(employer.getRole())) {
+            return ResponseEntity.badRequest().body("User is not an employer");
+        }
+
+        Job job = new Job();
+        job.setTitle((String) payload.get("title"));
+        job.setCompany((String) payload.get("company"));
+        job.setDescription((String) payload.get("description"));
+        job.setLocation((String) payload.get("location"));
+        job.setSalary((String) payload.get("salary"));
+        job.setType((String) payload.get("type"));
+        job.setExperience((String) payload.get("experience"));
+        job.setTags((List<String>) payload.get("tags"));
+        job.setEmployer(employer);
+
+        return ResponseEntity.ok(jobRepository.save(job));
+    }
+
+    @GetMapping("/employer/{email}")
+    public ResponseEntity<List<Job>> getJobsByEmployer(@PathVariable String email) {
+        User employer = userRepository.findByEmail(email).orElse(null);
+        if (employer == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(jobRepository.findByEmployer(employer));
     }
 
     @DeleteMapping("/{id}")

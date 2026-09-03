@@ -13,6 +13,9 @@ import SavedJobs from './pages/SavedJobs';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Notifications from './pages/Notifications';
+import EmployerDashboard from './pages/EmployerDashboard';
+import PostJob from './pages/PostJob';
+import EmployerJobs from './pages/EmployerJobs';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -34,6 +37,11 @@ function App() {
               <Route path="/dashboard/settings" element={<Settings />} />
               <Route path="/dashboard/notifications" element={<Notifications />} />
               <Route path="/jobs/:id" element={<JobDetails />} />
+              
+              {/* Employer Routes */}
+              <Route path="/employer/dashboard" element={<EmployerDashboard />} />
+              <Route path="/employer/post-job" element={<PostJob />} />
+              <Route path="/employer/jobs" element={<EmployerJobs />} />
             </Routes>
           </div>
         </BrowserRouter>
