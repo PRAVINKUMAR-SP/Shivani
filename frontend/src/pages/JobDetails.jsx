@@ -40,7 +40,7 @@ const JobDetails = () => {
     const checkApplyStatus = async () => {
       if (!user) return;
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/applications/check?userId=${user.id}&jobId=${id}`);
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/applications/check?email=${user.email}&jobId=${id}`);
         if (response.ok) {
           const applied = await response.json();
           setHasApplied(applied);
@@ -68,7 +68,8 @@ const JobDetails = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          userId: user.id,
+          email: user.email,
+          name: user.name,
           jobId: job.id
         }),
       });

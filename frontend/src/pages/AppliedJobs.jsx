@@ -17,7 +17,7 @@ const AppliedJobs = () => {
       }
       
       try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/applications/user/${user.id}`);
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/applications/user/${user.email}`);
         if (response.ok) {
           const data = await response.json();
           setApplications(data);

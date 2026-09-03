@@ -28,23 +28,33 @@ public class ApplicationController {
     private UserRepository userRepository;
 
     @PostMapping
-    public ResponseEntity<?> applyForJob(@RequestBody Map<String, Long> payload) {
-        Long userId = payload.get("userId");
-        Long jobId = payload.get("jobId");
-
-        if (userId == null || jobId == null) {
-            return ResponseEntity.badRequest().body("userId and jobId are required.");
+    public ResponseEntity<?> applyForJob(@RequestBody Map<String, Object> payload) {
+        String email = (String) payload.get("email");
+        String name = (String) payload.get("name");
+        
+        if (email == null || payload.get("jobId") == null) {
+            return ResponseEntity.badRequest().body("email and jobId are required.");
         }
+        
+        Long jobId = Long.valueOf(payload.get("jobId").toString());
 
-        if (applicationRepository.existsByApplicantIdAndJobId(userId, jobId)) {
+        if (applicationRepository.existsByApplicantEmailAndJobId(email, jobId)) {
             return ResponseEntity.badRequest().body("User has already applied for this job.");
         }
 
-        User user = userRepository.findById(userId).orElse(null);
+        User user = userRepository.findByEmail(email).orElse(null);
+        if (user == null) {
+            user = new User();
+            user.setEmail(email);
+            user.setName(name != null ? name : "Unknown User");
+            user.setRole("SEEKER");
+            user = userRepository.save(user);
+        }
+
         Job job = jobRepository.findById(jobId).orElse(null);
 
-        if (user == null || job == null) {
-            return ResponseEntity.badRequest().body("User or Job not found.");
+        if (job == null) {
+            return ResponseEntity.badRequest().body("Job not found.");
         }
 
         Application application = new Application();
@@ -56,15 +66,15 @@ public class ApplicationController {
         return ResponseEntity.ok(savedApplication);
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Application>> getApplicationsByUser(@PathVariable Long userId) {
-        List<Application> applications = applicationRepository.findByApplicantId(userId);
+    @GetMapping("/user/{email}")
+    public ResponseEntity<List<Application>> getApplicationsByUser(@PathVariable String email) {
+        List<Application> applications = applicationRepository.findByApplicantEmail(email);
         return ResponseEntity.ok(applications);
     }
 
     @GetMapping("/check")
-    public ResponseEntity<Boolean> checkApplicationStatus(@RequestParam Long userId, @RequestParam Long jobId) {
-        boolean hasApplied = applicationRepository.existsByApplicantIdAndJobId(userId, jobId);
+    public ResponseEntity<Boolean> checkApplicationStatus(@RequestParam String email, @RequestParam Long jobId) {
+        boolean hasApplied = applicationRepository.existsByApplicantEmailAndJobId(email, jobId);
         return ResponseEntity.ok(hasApplied);
     }
 }
