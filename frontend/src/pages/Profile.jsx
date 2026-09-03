@@ -204,20 +204,12 @@ const Profile = () => {
                 )}
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
+                  <div className="md:col-span-2">
                     <label className="block text-sm font-bold text-gray-700 mb-2">Phone Number</label>
                     <input 
                       type="text" name="phoneNumber" value={profile.phoneNumber} onChange={handleChange}
                       className="w-full border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors p-3 border"
                       placeholder="+1 (555) 000-0000"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-bold text-gray-700 mb-2">Resume URL</label>
-                    <input 
-                      type="url" name="resumeUrl" value={profile.resumeUrl} onChange={handleChange}
-                      className="w-full border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors p-3 border"
-                      placeholder="https://linkedin.com/in/yourprofile"
                     />
                   </div>
                 </div>
