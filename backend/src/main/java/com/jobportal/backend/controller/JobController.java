@@ -3,6 +3,8 @@ package com.jobportal.backend.controller;
 import com.jobportal.backend.model.Job;
 import com.jobportal.backend.repository.JobRepository;
 import com.jobportal.backend.repository.UserRepository;
+import com.jobportal.backend.repository.ApplicationRepository;
+import com.jobportal.backend.dto.EmployerStatsDTO;
 import com.jobportal.backend.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,9 @@ public class JobController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ApplicationRepository applicationRepository;
 
     @GetMapping
     public List<Job> getAllJobs(
@@ -90,5 +95,16 @@ public class JobController {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/employer/{email}/stats")
+    public ResponseEntity<EmployerStatsDTO> getEmployerStats(@PathVariable String email) {
+        long activeListings = jobRepository.countByEmployerEmail(email);
+        long totalApplicants = applicationRepository.countByJobEmployerEmail(email);
+        long shortlisted = applicationRepository.countByJobEmployerEmailAndStatusIn(
+                email, List.of("REVIEWING", "ACCEPTED")
+        );
+
+        return ResponseEntity.ok(new EmployerStatsDTO(activeListings, totalApplicants, shortlisted));
     }
 }

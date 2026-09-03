@@ -22,4 +22,6 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     List<Job> findByLocationContainingIgnoreCase(String location);
 
     List<Job> findByEmployer(User employer);
+    
+    long countByEmployerEmail(String email);
 }

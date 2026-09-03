@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import EmployerSidebar from '../components/EmployerSidebar';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
@@ -6,6 +6,27 @@ import { Briefcase, Users, Star, PlusCircle } from 'lucide-react';
 
 const EmployerDashboard = () => {
   const { user } = useAuth();
+  const [stats, setStats] = useState({ activeListings: 0, totalApplicants: 0, shortlisted: 0 });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      if (!user?.email) return;
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/jobs/employer/${user.email}/stats`);
+        if (response.ok) {
+          const data = await response.json();
+          setStats(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch employer stats", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, [user]);
 
   return (
     <div className="bg-gray-50/50 h-[calc(100vh-128px)] flex relative overflow-hidden">
@@ -36,7 +57,9 @@ const EmployerDashboard = () => {
               </div>
               <div>
                 <p className="text-sm font-semibold text-gray-500 mb-1">Active Listings</p>
-                <p className="text-2xl font-bold text-gray-900">0</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {loading ? <span className="animate-pulse inline-block w-8 h-6 bg-gray-200 rounded"></span> : stats.activeListings}
+                </p>
               </div>
             </div>
             
@@ -46,7 +69,9 @@ const EmployerDashboard = () => {
               </div>
               <div>
                 <p className="text-sm font-semibold text-gray-500 mb-1">Total Applicants</p>
-                <p className="text-2xl font-bold text-gray-900">0</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {loading ? <span className="animate-pulse inline-block w-8 h-6 bg-gray-200 rounded"></span> : stats.totalApplicants}
+                </p>
               </div>
             </div>
 
@@ -56,7 +81,9 @@ const EmployerDashboard = () => {
               </div>
               <div>
                 <p className="text-sm font-semibold text-gray-500 mb-1">Shortlisted</p>
-                <p className="text-2xl font-bold text-gray-900">0</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {loading ? <span className="animate-pulse inline-block w-8 h-6 bg-gray-200 rounded"></span> : stats.shortlisted}
+                </p>
               </div>
             </div>
           </div>
