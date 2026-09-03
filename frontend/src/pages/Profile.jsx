@@ -111,6 +111,7 @@ const Profile = () => {
           skills: data.skills && data.skills.length > 0 ? data.skills.join(', ') : prev.skills,
           experience: data.experience || prev.experience,
           education: data.education || prev.education,
+          bio: data.bio || prev.bio,
           resumeFileName: data.fileName || prev.resumeFileName
         }));
         setMessage('Resume parsed successfully! Please review the auto-filled data.');

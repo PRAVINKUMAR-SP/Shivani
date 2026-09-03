@@ -72,7 +72,7 @@ public class ResumeParserService {
             }
 
             String prompt = "You are an expert resume parser. Extract the following information from the provided resume text and return it strictly as a JSON object (no markdown formatting, no code blocks, just raw JSON). " +
-                            "Fields required: 'email' (string), 'phoneNumber' (string), 'skills' (array of strings), 'education' (string summary of education), 'experience' (string summary of work experience). " +
+                            "Fields required: 'email' (string), 'phoneNumber' (string), 'skills' (array of strings), 'education' (string summary of education), 'experience' (string summary of work experience), 'bio' (string summary of professional summary or objective). " +
                             "If a field is not found, leave it as an empty string or empty array.\n\n" +
                             "Resume Text:\n" + resumeText;
 
