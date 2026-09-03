@@ -37,7 +37,11 @@ const Home = () => {
 
   useEffect(() => {
     if (user) {
-      navigate('/dashboard');
+      if (user.role === 'EMPLOYER') {
+        navigate('/employer/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     }
   }, [user, navigate]);
 
