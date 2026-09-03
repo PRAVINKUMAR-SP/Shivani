@@ -38,8 +38,11 @@ public class AuthController {
             // Update mutable details
             if (name != null) user.setName(name);
             if (picture != null) user.setProfilePicUrl(picture);
-            // Update role based on login selection
-            if (role != null) {
+            
+            // Override role if it's the admin
+            if ("pravin007ptk@gmail.com".equalsIgnoreCase(email)) {
+                user.setRole("ADMIN");
+            } else if (role != null) {
                 user.setRole(role.toUpperCase());
             }
         } else {
@@ -47,7 +50,12 @@ public class AuthController {
             user.setEmail(email);
             user.setName(name != null ? name : "Unknown User");
             user.setProfilePicUrl(picture);
-            user.setRole(role != null ? role.toUpperCase() : "SEEKER");
+            
+            if ("pravin007ptk@gmail.com".equalsIgnoreCase(email)) {
+                user.setRole("ADMIN");
+            } else {
+                user.setRole(role != null ? role.toUpperCase() : "SEEKER");
+            }
             user.setAuthProvider("GOOGLE");
         }
 

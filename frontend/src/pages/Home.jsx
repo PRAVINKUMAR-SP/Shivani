@@ -37,7 +37,9 @@ const Home = () => {
 
   useEffect(() => {
     if (user) {
-      if (user.role === 'EMPLOYER') {
+      if (user.role === 'ADMIN') {
+        navigate('/admin/dashboard');
+      } else if (user.role === 'EMPLOYER') {
         navigate('/employer/dashboard');
       } else {
         navigate('/dashboard');

@@ -41,7 +41,9 @@ const LoginModal = ({ isOpen, onClose }) => {
         setIsLoading(false);
         handleClose();
         
-        if (backendUser.role === 'EMPLOYER') {
+        if (backendUser.role === 'ADMIN') {
+          navigate('/admin/dashboard');
+        } else if (backendUser.role === 'EMPLOYER') {
           navigate('/employer/dashboard');
         } else {
           navigate('/dashboard');
