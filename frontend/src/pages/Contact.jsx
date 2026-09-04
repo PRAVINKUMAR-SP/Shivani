@@ -44,15 +44,13 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-[#f8f9fc] flex flex-col items-center py-12 px-4 sm:px-6">
       
-      <div className="max-w-md w-full mb-6">
-        <div className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100 max-w-xs mb-8">
-          <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
-            <Phone className="w-6 h-6 text-indigo-600" />
-          </div>
-          <div>
-            <h3 className="font-bold text-gray-900 text-lg">Call Support</h3>
-            <p className="text-gray-500 font-medium">+91 97907 04999</p>
-          </div>
+      <div className="max-w-md w-full mb-6 flex items-center gap-4 px-2">
+        <div className="w-14 h-14 bg-indigo-50/80 rounded-2xl flex items-center justify-center flex-shrink-0">
+          <Phone className="w-6 h-6 text-indigo-600 fill-indigo-600/20" />
+        </div>
+        <div>
+          <h3 className="font-extrabold text-gray-900 text-[20px] mb-0.5">Call Support</h3>
+          <p className="text-gray-500 font-medium text-[15px] tracking-wide">+91 97907 04999</p>
         </div>
       </div>
 
