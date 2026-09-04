@@ -17,6 +17,9 @@ import EmployerDashboard from './pages/EmployerDashboard';
 import PostJob from './pages/PostJob';
 import EmployerJobs from './pages/EmployerJobs';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminUsers from './pages/AdminUsers';
+import AdminJobs from './pages/AdminJobs';
+import AdminSettings from './pages/AdminSettings';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -44,6 +47,9 @@ function App() {
               <Route path="/employer/post-job" element={<PostJob />} />
               <Route path="/employer/jobs" element={<EmployerJobs />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
+              <Route path="/admin/users" element={<AdminUsers />} />
+              <Route path="/admin/jobs" element={<AdminJobs />} />
+              <Route path="/admin/settings" element={<AdminSettings />} />
             </Routes>
           </div>
         </BrowserRouter>
