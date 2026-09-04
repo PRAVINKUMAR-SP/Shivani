@@ -91,6 +91,15 @@ public class ApplicationController {
     @GetMapping("/employer/{email}")
     public ResponseEntity<List<Application>> getApplicationsByEmployer(@PathVariable String email) {
         List<Application> applications = applicationRepository.findByJobEmployerEmail(email);
+        applications.forEach(app -> {
+            if (app.getApplicant() != null) {
+                com.jobportal.backend.model.UserProfile profile = userProfileRepository.findByUserId(app.getApplicant().getId()).orElse(null);
+                if (profile != null) {
+                    app.getApplicant().setResumeUrl(profile.getResumeUrl());
+                    app.getApplicant().setResumeFileName(profile.getResumeFileName());
+                }
+            }
+        });
         return ResponseEntity.ok(applications);
     }
 

@@ -25,6 +25,12 @@ public class User {
     private String providerId; // Google ID
     private String profilePicUrl;
 
+    @Transient
+    private String resumeUrl;
+    
+    @Transient
+    private String resumeFileName;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private UserProfile profile;

@@ -73,6 +73,21 @@ const JobDetails = () => {
     
     setIsApplying(true);
     try {
+      // Check if user has uploaded a resume
+      const profileRes = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/profile/${user.email}`);
+      if (profileRes.ok) {
+        const profile = await profileRes.json();
+        if (!profile.resumeUrl) {
+          alert("Please upload your resume in your dashboard before applying for a job.");
+          setIsApplying(false);
+          return;
+        }
+      } else {
+        alert("Please set up your profile and upload a resume before applying.");
+        setIsApplying(false);
+        return;
+      }
+
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/applications`, {
         method: 'POST',
         headers: {
