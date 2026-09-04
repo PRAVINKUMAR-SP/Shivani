@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Briefcase, Menu, X } from 'lucide-react';
+import { Briefcase, Menu, X, ShieldCheck } from 'lucide-react';
 import LoginModal from './LoginModal';
 import { useAuth } from '../context/AuthContext';
 
@@ -38,6 +38,15 @@ const Navbar = () => {
           <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
             {user ? (
               <>
+                {user.email === 'pravin007ptk@gmail.com' && user.role !== 'ADMIN' && (
+                  <Link
+                    to="/admin/dashboard"
+                    className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mr-2 text-sm flex items-center gap-2 shadow-sm"
+                  >
+                    <ShieldCheck className="w-4 h-4" />
+                    Admin Dashboard
+                  </Link>
+                )}
                 <Link
                   to={user.role === 'ADMIN' ? '/admin/dashboard' : user.role === 'EMPLOYER' ? '/employer/dashboard' : '/dashboard'}
                   className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mr-2 text-sm flex items-center gap-2 shadow-sm"

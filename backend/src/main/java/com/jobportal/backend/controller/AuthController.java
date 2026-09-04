@@ -39,10 +39,8 @@ public class AuthController {
             if (name != null) user.setName(name);
             if (picture != null) user.setProfilePicUrl(picture);
             
-            // Override role if it's the admin
-            if ("pravin007ptk@gmail.com".equalsIgnoreCase(email)) {
-                user.setRole("ADMIN");
-            } else if (role != null) {
+            // Override role if provided
+            if (role != null) {
                 user.setRole(role.toUpperCase());
             }
         } else {
@@ -51,11 +49,7 @@ public class AuthController {
             user.setName(name != null ? name : "Unknown User");
             user.setProfilePicUrl(picture);
             
-            if ("pravin007ptk@gmail.com".equalsIgnoreCase(email)) {
-                user.setRole("ADMIN");
-            } else {
-                user.setRole(role != null ? role.toUpperCase() : "SEEKER");
-            }
+            user.setRole(role != null ? role.toUpperCase() : "SEEKER");
             user.setAuthProvider("GOOGLE");
         }
 
