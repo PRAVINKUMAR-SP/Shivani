@@ -52,20 +52,19 @@ public class UserProfileController {
         }
 
         try {
-            // Generate a unique filename to avoid collisions
             String originalName = file.getOriginalFilename();
-            String extension = "";
-            if (originalName != null && originalName.contains(".")) {
-                extension = originalName.substring(originalName.lastIndexOf("."));
+            if (originalName == null || originalName.isBlank()) {
+                originalName = "resume.pdf";
             }
-            String storedName = UUID.randomUUID().toString() + extension;
+            // Sanitize filename: replace spaces with underscores
+            String safeName = originalName.replaceAll("\\s+", "_");
 
-            // Save file to disk
-            Path targetPath = UPLOAD_DIR.resolve(storedName);
+            // Save file to disk with original name
+            Path targetPath = UPLOAD_DIR.resolve(safeName);
             Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
 
-            // Build the download URL that the frontend/employer can use
-            String resumeUrl = "/api/profile/resume/" + storedName;
+            // Build the download URL
+            String resumeUrl = "/uploads/" + safeName;
 
             Map<String, Object> data = new java.util.HashMap<>();
             data.put("fileName", originalName);
@@ -80,6 +79,10 @@ public class UserProfileController {
 
     @GetMapping("/resume/{filename}")
     public ResponseEntity<Resource> downloadResume(@PathVariable String filename) {
+        return serveFile(filename);
+    }
+
+    private ResponseEntity<Resource> serveFile(String filename) {
         try {
             Path filePath = UPLOAD_DIR.resolve(filename).normalize();
             Resource resource = new UrlResource(filePath.toUri());
