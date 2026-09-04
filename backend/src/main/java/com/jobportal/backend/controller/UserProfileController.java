@@ -27,13 +27,14 @@ public class UserProfileController {
     @Autowired
     private ResumeParserService resumeParserService;
 
-    @PostMapping("/parse-resume")
-    public ResponseEntity<?> parseResume(@RequestParam("file") MultipartFile file) {
-        Map<String, Object> parsedData = resumeParserService.parseResume(file);
-        if (parsedData.containsKey("error")) {
-            return ResponseEntity.badRequest().body(parsedData);
-        }
-        return ResponseEntity.ok(parsedData);
+    @PostMapping("/upload-resume")
+    public ResponseEntity<?> uploadResume(@RequestParam("file") MultipartFile file) {
+        Map<String, Object> data = new java.util.HashMap<>();
+        data.put("fileName", file.getOriginalFilename());
+        // For simplicity in this mock, we just generate a dummy URL. 
+        // In a real app, you would save the file to AWS S3 / Cloudinary.
+        data.put("resumeUrl", "/uploads/" + file.getOriginalFilename());
+        return ResponseEntity.ok(data);
     }
 
     @GetMapping("/{email}")

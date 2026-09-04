@@ -16,7 +16,7 @@ const Profile = () => {
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [parsing, setParsing] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -90,14 +90,14 @@ const Profile = () => {
       return;
     }
 
-    setParsing(true);
+    setUploading(true);
     setMessage('');
     
     const formData = new FormData();
     formData.append('file', file);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/profile/parse-resume`, {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/profile/upload-resume`, {
         method: 'POST',
         body: formData
       });
@@ -107,22 +107,18 @@ const Profile = () => {
       if (response.ok) {
         setProfile(prev => ({
           ...prev,
-          phoneNumber: data.phoneNumber || prev.phoneNumber,
-          skills: data.skills && data.skills.length > 0 ? data.skills.join(', ') : prev.skills,
-          experience: data.experience || prev.experience,
-          education: data.education || prev.education,
-          bio: data.bio || prev.bio,
-          resumeFileName: data.fileName || prev.resumeFileName
+          resumeFileName: data.fileName || prev.resumeFileName,
+          resumeUrl: data.resumeUrl || prev.resumeUrl
         }));
-        setMessage('Resume parsed successfully! Please review the auto-filled data.');
+        setMessage('Resume uploaded successfully!');
       } else {
-        setMessage(data.error || 'Failed to parse resume.');
+        setMessage(data.error || 'Failed to upload resume.');
       }
     } catch (error) {
-      console.error('Error parsing resume:', error);
-      setMessage('An error occurred during parsing.');
+      console.error('Error uploading resume:', error);
+      setMessage('An error occurred during upload.');
     } finally {
-      setParsing(false);
+      setUploading(false);
     }
   };
 
@@ -161,11 +157,11 @@ const Profile = () => {
                 </div>
               </div>
 
-              {/* AI Resume Parser Banner */}
+              {/* Resume Upload Banner */}
               <div className="bg-blue-50 border-y border-blue-100 p-6 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
-                  <h4 className="font-bold text-blue-900 text-lg">Auto-fill your profile</h4>
-                  <p className="text-blue-700 text-sm mt-1">Upload your resume (PDF) and our system will extract your skills, experience, and education automatically.</p>
+                  <h4 className="font-bold text-blue-900 text-lg">Resume</h4>
+                  <p className="text-blue-700 text-sm mt-1">Upload your resume (PDF) to attach it to your profile.</p>
                 </div>
                 <div className="flex flex-col items-end gap-2">
                   <div className="relative">
@@ -174,18 +170,18 @@ const Profile = () => {
                       accept=".pdf" 
                       onChange={handleFileUpload} 
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      disabled={parsing}
+                      disabled={uploading}
                     />
                     <button 
-                      disabled={parsing}
+                      disabled={uploading}
                       className="flex items-center gap-2 bg-white text-blue-600 hover:bg-blue-600 hover:text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-sm border border-blue-200 hover:border-blue-600 disabled:opacity-50"
                     >
-                      {parsing ? (
+                      {uploading ? (
                         <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-current"></div>
                       ) : (
                         <UploadCloud className="w-5 h-5" />
                       )}
-                      {parsing ? 'Parsing...' : 'Upload PDF Resume'}
+                      {uploading ? 'Uploading...' : 'Upload Resume'}
                     </button>
                   </div>
                   {profile.resumeFileName && (
