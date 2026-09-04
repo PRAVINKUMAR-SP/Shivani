@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, Activity, Rocket, Lock, Shield, 
-  ChevronRight, CheckCircle2, Bot, SlidersHorizontal, Share2 
+  ChevronRight, CheckCircle2, Bot, SlidersHorizontal, Share2, ArrowRight
 } from 'lucide-react';
 
 const Financial = () => {
