@@ -42,9 +42,9 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-100px)] bg-[#f8f9fc] flex flex-col items-center justify-center py-12 px-4 sm:px-6">
+    <div className="min-h-screen bg-[#f8f9fc] flex flex-col items-center py-12 px-4 sm:px-6">
       
-      <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+      <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-sm border border-gray-100 mt-8">
         
         {status.success && (
           <div className="mb-6 bg-green-50 text-green-700 p-4 rounded-xl text-sm font-medium border border-green-100">
