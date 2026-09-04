@@ -43,7 +43,7 @@ const Navbar = () => {
                   className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mr-2 text-sm flex items-center gap-2 shadow-sm"
                 >
                   <Briefcase className="w-4 h-4" />
-                  Dashboard
+                  {user.role === 'ADMIN' ? 'Admin Dashboard' : user.role === 'EMPLOYER' ? 'Employer Dashboard' : 'Dashboard'}
                 </Link>
                 <div className="flex items-center gap-3 bg-gray-50 py-1.5 px-2 rounded-full border border-gray-100 shadow-sm">
                   <img src={user.picture || `https://ui-avatars.com/api/?name=${user.name}&background=random`} alt={user.name} className="w-9 h-9 rounded-full border-2 border-white shadow-sm" />
@@ -85,7 +85,7 @@ const Navbar = () => {
                       className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mb-4 flex items-center justify-center gap-2"
                     >
                       <Briefcase className="w-4 h-4" />
-                      Dashboard
+                      {user.role === 'ADMIN' ? 'Admin Dashboard' : user.role === 'EMPLOYER' ? 'Employer Dashboard' : 'Dashboard'}
                     </Link>
                     <div className="flex items-center justify-between px-3">
                       <div className="flex items-center gap-3">
