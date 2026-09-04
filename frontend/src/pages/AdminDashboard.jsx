@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../components/AdminSidebar';
 import { useAuth } from '../context/AuthContext';
-import { ShieldCheck, Users, Briefcase } from 'lucide-react';
+import { ShieldCheck, Users, Briefcase, FileText, Loader2, UserCheck, UserPlus } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
+  const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/admin/stats`);
+        if (response.ok) {
+          const data = await response.json();
+          setStats(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch admin stats", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="bg-gray-50/50 h-[calc(100vh-128px)] flex relative overflow-hidden">
@@ -27,24 +47,44 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4 cursor-pointer hover:shadow-md transition-all">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
               <div className="bg-blue-50 p-4 rounded-xl text-blue-600">
                 <Users className="w-8 h-8" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-500 mb-1">Platform Users</p>
-                <p className="text-2xl font-bold text-gray-900">Manage Users</p>
+                <p className="text-sm font-semibold text-gray-500 mb-1">Total Users</p>
+                {loading ? <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div> : <p className="text-2xl font-bold text-gray-900">{stats?.totalUsers || 0}</p>}
               </div>
             </div>
             
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4 cursor-pointer hover:shadow-md transition-all">
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+              <div className="bg-green-50 p-4 rounded-xl text-green-600">
+                <UserCheck className="w-8 h-8" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-500 mb-1">Employers</p>
+                {loading ? <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div> : <p className="text-2xl font-bold text-gray-900">{stats?.totalEmployers || 0}</p>}
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
               <div className="bg-indigo-50 p-4 rounded-xl text-indigo-600">
                 <Briefcase className="w-8 h-8" />
               </div>
               <div>
                 <p className="text-sm font-semibold text-gray-500 mb-1">Job Listings</p>
-                <p className="text-2xl font-bold text-gray-900">Manage Jobs</p>
+                {loading ? <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div> : <p className="text-2xl font-bold text-gray-900">{stats?.totalJobs || 0}</p>}
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+              <div className="bg-purple-50 p-4 rounded-xl text-purple-600">
+                <FileText className="w-8 h-8" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-500 mb-1">Applications</p>
+                {loading ? <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div> : <p className="text-2xl font-bold text-gray-900">{stats?.totalApplications || 0}</p>}
               </div>
             </div>
           </div>
