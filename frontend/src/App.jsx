@@ -16,6 +16,7 @@ import Notifications from './pages/Notifications';
 import EmployerDashboard from './pages/EmployerDashboard';
 import PostJob from './pages/PostJob';
 import EmployerJobs from './pages/EmployerJobs';
+import EmployerApplicants from './pages/EmployerApplicants';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers';
 import AdminJobs from './pages/AdminJobs';
@@ -46,6 +47,7 @@ function App() {
               <Route path="/employer/dashboard" element={<EmployerDashboard />} />
               <Route path="/employer/post-job" element={<PostJob />} />
               <Route path="/employer/jobs" element={<EmployerJobs />} />
+              <Route path="/employer/applicants" element={<EmployerApplicants />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/jobs" element={<AdminJobs />} />

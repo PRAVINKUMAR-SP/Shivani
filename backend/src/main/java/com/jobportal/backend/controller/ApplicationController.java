@@ -8,6 +8,7 @@ import com.jobportal.backend.repository.ApplicationRepository;
 import com.jobportal.backend.repository.JobRepository;
 import com.jobportal.backend.repository.NotificationRepository;
 import com.jobportal.backend.repository.UserRepository;
+import com.jobportal.backend.repository.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,9 @@ public class ApplicationController {
 
     @Autowired
     private NotificationRepository notificationRepository;
+
+    @Autowired
+    private UserProfileRepository userProfileRepository;
 
     @PostMapping
     public ResponseEntity<?> applyForJob(@RequestBody Map<String, Object> payload) {
@@ -82,6 +86,45 @@ public class ApplicationController {
     public ResponseEntity<List<Application>> getApplicationsByUser(@PathVariable String email) {
         List<Application> applications = applicationRepository.findByApplicantEmail(email);
         return ResponseEntity.ok(applications);
+    }
+
+    @GetMapping("/employer/{email}")
+    public ResponseEntity<List<Application>> getApplicationsByEmployer(@PathVariable String email) {
+        List<Application> applications = applicationRepository.findByJobEmployerEmail(email);
+        return ResponseEntity.ok(applications);
+    }
+
+    @PostMapping("/invite")
+    public ResponseEntity<?> sendInvite(@RequestBody Map<String, Object> payload) {
+        String applicantEmail = (String) payload.get("applicantEmail");
+        String employerName = (String) payload.get("employerName");
+        String jobTitle = (String) payload.get("jobTitle");
+        String message = (String) payload.get("message");
+
+        User applicant = userRepository.findByEmail(applicantEmail).orElse(null);
+        if (applicant == null) {
+            return ResponseEntity.badRequest().body("Applicant not found");
+        }
+
+        Notification notification = new Notification();
+        notification.setUser(applicant);
+        notification.setType("INTERVIEW_INVITE");
+        String notifMsg = message != null && !message.isEmpty()
+            ? message
+            : "You have been invited for an interview for the role of " + jobTitle + " by " + employerName + ". Please check your email for details.";
+        notification.setMessage(notifMsg);
+        notificationRepository.save(notification);
+
+        return ResponseEntity.ok(Map.of("status", "Invite sent successfully"));
+    }
+
+    @PutMapping("/{id}/status")
+    public ResponseEntity<?> updateStatus(@PathVariable Long id, @RequestBody Map<String, String> payload) {
+        Application app = applicationRepository.findById(id).orElse(null);
+        if (app == null) return ResponseEntity.notFound().build();
+        app.setStatus(payload.get("status"));
+        applicationRepository.save(app);
+        return ResponseEntity.ok(app);
     }
 
     @GetMapping("/check")

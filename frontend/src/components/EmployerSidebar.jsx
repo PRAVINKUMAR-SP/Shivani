@@ -14,6 +14,7 @@ const EmployerSidebar = () => {
     { name: 'Dashboard', icon: Home, path: '/employer/dashboard' },
     { name: 'Post a Job', icon: PlusCircle, path: '/employer/post-job' },
     { name: 'My Listings', icon: Briefcase, path: '/employer/jobs' },
+    { name: 'Applicants', icon: Users, path: '/employer/applicants' },
     { name: 'Profile Settings', icon: Settings, path: '/employer/settings' },
   ];
 
