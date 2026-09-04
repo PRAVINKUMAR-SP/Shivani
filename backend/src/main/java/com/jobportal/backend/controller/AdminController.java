@@ -61,7 +61,11 @@ public class AdminController {
     @GetMapping("/jobs")
     public ResponseEntity<List<Job>> getAllJobs() {
         try {
-            return ResponseEntity.ok(jobRepository.findAll());
+            List<Job> jobs = jobRepository.findAll();
+            jobs.forEach(job -> {
+                job.setApplicantCount((int) applicationRepository.countByJobId(job.getId()));
+            });
+            return ResponseEntity.ok(jobs);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }

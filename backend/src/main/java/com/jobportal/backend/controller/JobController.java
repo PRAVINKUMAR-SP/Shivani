@@ -122,13 +122,19 @@ public class JobController {
             }
         }
 
+        jobs.forEach(job -> {
+            job.setApplicantCount((int) applicationRepository.countByJobId(job.getId()));
+        });
+
         return jobs;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Job> getJobById(@PathVariable Long id) {
-        Optional<Job> job = jobRepository.findById(id);
-        return job.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        return jobRepository.findById(id).map(job -> {
+            job.setApplicantCount((int) applicationRepository.countByJobId(job.getId()));
+            return ResponseEntity.ok(job);
+        }).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -167,7 +173,11 @@ public class JobController {
         if (employer == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(jobRepository.findByEmployer(employer));
+        List<Job> jobs = jobRepository.findByEmployer(employer);
+        jobs.forEach(job -> {
+            job.setApplicantCount((int) applicationRepository.countByJobId(job.getId()));
+        });
+        return ResponseEntity.ok(jobs);
     }
 
     @DeleteMapping("/{id}")
