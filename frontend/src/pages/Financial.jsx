@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   TrendingUp, Activity, Rocket, Lock, Shield, 
-  ChevronRight, CheckCircle2, Bot, SlidersHorizontal, Share2, ArrowRight
+  ChevronRight, CheckCircle2, Bot, SlidersHorizontal, Share2, ArrowRight, X
 } from 'lucide-react';
 
 const Financial = () => {
@@ -12,6 +12,9 @@ const Financial = () => {
   // Calculated state
   const [maturity, setMaturity] = useState(41015625);
   const [roi, setRoi] = useState(95.3);
+
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Growth curve standard calculation for demo (matches screenshot numbers roughly: 21m -> 41m in 3 years is about ~25% CAGR)
   useEffect(() => {
@@ -215,7 +218,12 @@ const Financial = () => {
                 <span className="flex items-center gap-1">
                   <Activity className="w-3 h-3" /> Built on Series B metrics.
                 </span>
-                <a href="#" className="text-blue-400 hover:text-blue-300 font-bold transition-colors">Audit Sheet &gt;</a>
+                <button 
+                  onClick={() => setIsModalOpen(true)}
+                  className="text-blue-400 hover:text-blue-300 font-bold transition-colors cursor-pointer"
+                >
+                  Audit Sheet &gt;
+                </button>
               </div>
             </div>
           </div>
@@ -430,6 +438,82 @@ const Financial = () => {
         </div>
 
       </div>
+
+      {/* Unlock Investor Deck Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm overflow-y-auto">
+          <div className="bg-white rounded-3xl w-full max-w-2xl border border-gray-200 shadow-2xl relative my-8">
+            <button 
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-6 right-6 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            
+            <div className="p-8 lg:p-12">
+              <div className="text-center mb-8">
+                <div className="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-xs font-bold tracking-wider mb-4 border border-blue-100">
+                  CONFIDENTIAL ACCESS
+                </div>
+                <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Unlock Investor Deck</h2>
+                <p className="text-gray-500 leading-relaxed max-w-lg mx-auto">
+                  Submit your credentials below to gain direct access to our audited sheets, compliance logs, and the complete Series B pitch slide-deck.
+                </p>
+              </div>
+
+              <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); setIsModalOpen(false); }}>
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Investor Name</label>
+                  <input type="text" placeholder="eg., Dr. Anand Rajan" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Business Email Address</label>
+                  <input type="email" placeholder="eg., anand@ventures.in" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Mobile / Contact Number</label>
+                  <input type="tel" placeholder="eg., +91 98765 43210" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Investment Fund / Firm</label>
+                  <input type="text" placeholder="eg., Apex Capital India (Optional)" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Planned Ticket (INR)</label>
+                    <input 
+                      type="text" 
+                      value={`₹${capital.toLocaleString('en-IN')}`}
+                      readOnly
+                      className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-xl text-gray-900 font-semibold cursor-not-allowed" 
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Your Location</label>
+                    <input type="text" placeholder="e.g., Chennai, India" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-3 mt-6">
+                  <input type="checkbox" id="terms" className="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" required />
+                  <label htmlFor="terms" className="text-sm text-gray-500 leading-relaxed">
+                    I agree to standard digital confidentiality terms and confirm this credential request constitutes a professional inquiry.
+                  </label>
+                </div>
+
+                <button type="submit" className="w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl transition-all shadow-sm">
+                  Request Confidential Access
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };
