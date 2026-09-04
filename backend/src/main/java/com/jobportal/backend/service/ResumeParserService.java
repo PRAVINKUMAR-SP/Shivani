@@ -81,7 +81,7 @@ public class ResumeParserService {
             message.put("content", prompt);
 
             Map<String, Object> requestBodyMap = new HashMap<>();
-            requestBodyMap.put("model", "mixtral-8x7b-32768");
+            requestBodyMap.put("model", "llama-3.3-70b-versatile");
             requestBodyMap.put("messages", List.of(message));
             requestBodyMap.put("temperature", 0.0);
 
