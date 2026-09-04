@@ -70,15 +70,15 @@ const Footer = () => {
           <ul className="space-y-4 text-sm">
             <li className="flex items-start gap-3">
               <MapPin className="w-5 h-5 text-blue-500 flex-shrink-0" />
-              <span>123 Tech Park, Innovation Hub<br />Silicon Valley, CA 94025</span>
+              <span>Shivani Technologies, old No.36, New No.109, Third Floor, No.3C MTH Road, DL Complex, Villivakkam, Chennai-600 049</span>
             </li>
             <li className="flex items-center gap-3">
               <Phone className="w-5 h-5 text-blue-500 flex-shrink-0" />
-              <span>+1 (555) 123-4567</span>
+              <span>+91 97907 04999</span>
             </li>
             <li className="flex items-center gap-3">
               <Mail className="w-5 h-5 text-blue-500 flex-shrink-0" />
-              <a href="mailto:support@shivanitech.com" className="hover:text-blue-400 transition-colors">support@shivanitech.com</a>
+              <a href="mailto:Hr@shivanitech.in" className="hover:text-blue-400 transition-colors">Hr@shivanitech.in</a>
             </li>
           </ul>
         </div>
