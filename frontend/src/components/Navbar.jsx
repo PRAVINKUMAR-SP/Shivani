@@ -45,7 +45,7 @@ const Navbar = () => {
                       className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mr-4 text-sm flex items-center gap-2 shadow-sm"
                     >
                       <Briefcase className="w-4 h-4" />
-                      Job Seeker Dashboard
+                      Job Seeker
                     </Link>
                   ) : (
                     <Link
@@ -53,7 +53,7 @@ const Navbar = () => {
                       className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mr-4 text-sm flex items-center gap-2 shadow-sm"
                     >
                       <ShieldCheck className="w-4 h-4" />
-                      Admin Dashboard
+                      Admin
                     </Link>
                   )
                 ) : user.role === 'EMPLOYER' ? (
@@ -62,7 +62,7 @@ const Navbar = () => {
                     className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mr-4 text-sm flex items-center gap-2 shadow-sm"
                   >
                     <Briefcase className="w-4 h-4" />
-                    Employer Dashboard
+                    Employer
                   </Link>
                 ) : null}
                 <Link to="/dashboard" className="block w-10 h-10 rounded-full border-2 border-white shadow-sm hover:ring-2 hover:ring-blue-500 hover:ring-offset-2 transition-all">
@@ -103,7 +103,7 @@ const Navbar = () => {
                           className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mb-4 flex items-center justify-center gap-2"
                         >
                           <Briefcase className="w-4 h-4" />
-                          Job Seeker Dashboard
+                          Job Seeker
                         </Link>
                       ) : (
                         <Link
@@ -112,7 +112,7 @@ const Navbar = () => {
                           className="block w-full text-center bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mb-4 flex items-center justify-center gap-2"
                         >
                           <ShieldCheck className="w-4 h-4" />
-                          Admin Dashboard
+                          Admin
                         </Link>
                       )
                     ) : user.role === 'EMPLOYER' ? (
@@ -122,7 +122,7 @@ const Navbar = () => {
                         className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mb-4 flex items-center justify-center gap-2"
                       >
                         <Briefcase className="w-4 h-4" />
-                        Employer Dashboard
+                        Employer
                       </Link>
                     ) : null}
                     <div className="flex items-center justify-between px-3">
