@@ -42,11 +42,11 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fc] py-16 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+    <div className="min-h-[calc(100vh-100px)] bg-[#f8f9fc] py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
       <div className="max-w-7xl w-full flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
-        
+
         {/* Left Side: Text and Info */}
-        <div className="w-full lg:w-1/2 flex flex-col items-start text-left space-y-8">
+        <div className="w-full lg:w-1/2 flex flex-col items-start text-left space-y-6">
           <div>
             <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
               Get in <span className="text-indigo-600">Touch</span>
@@ -69,99 +69,99 @@ const Contact = () => {
 
         {/* Right Side: Form */}
         <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
-          <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+          <div className="max-w-md w-full bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
 
-        {status.success && (
-          <div className="mb-6 bg-green-50 text-green-700 p-4 rounded-xl text-sm font-medium border border-green-100">
-            Message sent successfully! We will get back to you soon.
+            {status.success && (
+              <div className="mb-6 bg-green-50 text-green-700 p-4 rounded-xl text-sm font-medium border border-green-100">
+                Message sent successfully! We will get back to you soon.
+              </div>
+            )}
+
+            {status.error && (
+              <div className="mb-6 bg-red-50 text-red-700 p-4 rounded-xl text-sm font-medium border border-red-100">
+                {status.error}
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-3">
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Your Name *</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="John Doe"
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Email Address *</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="john@example.com"
+                  value={formData.email}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Phone Number *</label>
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  placeholder="9876543210"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Subject</label>
+                <input
+                  type="text"
+                  name="subject"
+                  placeholder="Business Inquiry"
+                  value={formData.subject}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-1">Message *</label>
+                <textarea
+                  name="message"
+                  required
+                  rows="3"
+                  placeholder="Tell us about your project requirements..."
+                  value={formData.message}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium resize-none text-sm"
+                ></textarea>
+              </div>
+
+              <button
+                type="submit"
+                disabled={status.loading}
+                className="w-full flex items-center justify-center gap-2 bg-[#5c5cd6] hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-xl transition-all mt-3 disabled:opacity-70 disabled:cursor-not-allowed"
+              >
+                {status.loading ? 'Sending...' : 'Send Message'}
+                {!status.loading && <Send className="w-4 h-4" />}
+              </button>
+            </form>
           </div>
-        )}
-
-        {status.error && (
-          <div className="mb-6 bg-red-50 text-red-700 p-4 rounded-xl text-sm font-medium border border-red-100">
-            {status.error}
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Your Name *</label>
-            <input
-              type="text"
-              name="name"
-              required
-              placeholder="John Doe"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Email Address *</label>
-            <input
-              type="email"
-              name="email"
-              required
-              placeholder="john@example.com"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Phone Number *</label>
-            <input
-              type="tel"
-              name="phone"
-              required
-              placeholder="9876543210"
-              value={formData.phone}
-              onChange={handleChange}
-              className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Subject</label>
-            <input
-              type="text"
-              name="subject"
-              placeholder="Business Inquiry"
-              value={formData.subject}
-              onChange={handleChange}
-              className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium"
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Message *</label>
-            <textarea
-              name="message"
-              required
-              rows="4"
-              placeholder="Tell us about your project requirements..."
-              value={formData.message}
-              onChange={handleChange}
-              className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium resize-none"
-            ></textarea>
-          </div>
-
-          <button
-            type="submit"
-            disabled={status.loading}
-            className="w-full flex items-center justify-center gap-2 bg-[#5c5cd6] hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all mt-4 disabled:opacity-70 disabled:cursor-not-allowed"
-          >
-            {status.loading ? 'Sending...' : 'Send Message'}
-            {!status.loading && <Send className="w-4 h-4" />}
-          </button>
-        </form>
+        </div>
       </div>
     </div>
-    </div>
-  </div>
   );
 };
 
