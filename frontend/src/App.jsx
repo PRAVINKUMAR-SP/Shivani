@@ -25,6 +25,7 @@ import AdminUsers from './pages/AdminUsers';
 import AdminJobs from './pages/AdminJobs';
 import AdminSettings from './pages/AdminSettings';
 import { AuthProvider } from './context/AuthContext';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <div className="min-h-screen bg-white">
+            <Toaster position="top-right" />
             <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />

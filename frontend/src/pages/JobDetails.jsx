@@ -6,6 +6,7 @@ import {
   Share2, Heart, ExternalLink, Star, ShieldCheck, ChevronRight
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 
 const formatTimeAgo = (dateString) => {
   if (!dateString) return 'New';
@@ -67,7 +68,7 @@ const JobDetails = () => {
 
   const handleApply = async () => {
     if (!user) {
-      alert("Please login to apply for jobs!");
+      toast.error("Please login to apply for jobs!");
       return;
     }
     
@@ -78,12 +79,12 @@ const JobDetails = () => {
       if (profileRes.ok) {
         const profile = await profileRes.json();
         if (!profile.resumeUrl) {
-          alert("Please upload your resume in your dashboard before applying for a job.");
+          toast.error("Please upload your resume in your dashboard before applying for a job.");
           setIsApplying(false);
           return;
         }
       } else {
-        alert("Please set up your profile and upload a resume before applying.");
+        toast.error("Please set up your profile and upload a resume before applying.");
         setIsApplying(false);
         return;
       }
@@ -102,13 +103,14 @@ const JobDetails = () => {
       
       if (response.ok) {
         setHasApplied(true);
+        toast.success("Successfully applied for the job!");
       } else {
         const errorText = await response.text();
-        alert(errorText || "Failed to apply. Please try again.");
+        toast.error(errorText || "Failed to apply. Please try again.");
       }
     } catch (error) {
       console.error('Failed to apply:', error);
-      alert("Network error. Please try again.");
+      toast.error("Network error. Please try again.");
     } finally {
       setIsApplying(false);
     }

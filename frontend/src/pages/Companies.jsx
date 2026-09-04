@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, Search, Filter } from 'lucide-react';
+import { Star } from 'lucide-react';
 
 const companiesData = [
   { name: 'Google', domain: 'google.com', rating: 4.8, reviews: '12K+', activeJobs: 154, industry: 'Internet', location: 'Mountain View, CA' },
@@ -23,22 +23,7 @@ const Companies = () => {
             <p className="mt-2 text-lg text-gray-600">Get access to millions of company reviews</p>
           </div>
           
-          <div className="flex items-center gap-3 w-full md:w-auto">
-            <div className="relative flex-grow md:w-80">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Search className="h-5 w-5 text-gray-400" />
-              </div>
-              <input
-                type="text"
-                className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 text-gray-900 bg-white"
-                placeholder="Company name or keyword"
-              />
-            </div>
-            <button className="bg-white border border-gray-300 text-gray-700 p-3 rounded-lg hover:bg-gray-50 flex-shrink-0 flex items-center gap-2 font-medium transition-colors">
-              <Filter className="w-5 h-5" />
-              <span className="hidden sm:block">Filter</span>
-            </button>
-          </div>
+
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
