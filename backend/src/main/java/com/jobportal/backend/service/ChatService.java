@@ -30,6 +30,14 @@ public class ChatService {
             String userMessage = (String) payload.get("message");
             List<Map<String, String>> history = (List<Map<String, String>>) payload.get("history");
 
+            if ("dummy".equals(groqApiKey)) {
+                // Simulate network delay
+                Thread.sleep(1000);
+                String prefix = isSearchGrounded ? "[Live Web] Based on recent Q3 SEC filings... " : "";
+                return prefix + "This is a simulated AI response from the backend. Since the backend was started with a 'dummy' API key, I am bypassing the Groq API. " +
+                       "When you provide a real key, I will analyze your query: '" + userMessage + "' properly.";
+            }
+
             List<Map<String, String>> messages = new ArrayList<>();
             
             // System Prompt
