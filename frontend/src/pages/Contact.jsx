@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Send } from 'lucide-react';
+import { Phone, Send, MapPin, Mail } from 'lucide-react';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -56,14 +56,40 @@ const Contact = () => {
             </p>
           </div>
 
-          <div className="flex items-center gap-4 px-2">
-            <div className="w-14 h-14 bg-indigo-50/80 rounded-2xl flex items-center justify-center flex-shrink-0">
-              <Phone className="w-6 h-6 text-indigo-600 fill-indigo-600/20" />
+          <div className="flex flex-col gap-8 mt-4">
+            
+            <div className="flex items-start gap-5 px-2">
+              <div className="w-14 h-14 bg-indigo-50/80 rounded-2xl flex items-center justify-center flex-shrink-0 mt-1">
+                <MapPin className="w-6 h-6 text-indigo-600 fill-indigo-600/20" />
+              </div>
+              <div>
+                <h3 className="font-extrabold text-gray-900 text-[18px] mb-1.5">Our Location</h3>
+                <p className="text-gray-500 font-medium text-[15px] leading-relaxed max-w-[320px]">
+                  Shivani Technologies, old No.36, New No.109, Third Floor, No.3C MTH Road, DL Complex, Villivakkam, Chennai-600 049
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="font-extrabold text-gray-900 text-[20px] mb-0.5">Call Support</h3>
-              <p className="text-gray-500 font-medium text-[15px] tracking-wide">+91 97907 04999</p>
+
+            <div className="flex items-center gap-5 px-2">
+              <div className="w-14 h-14 bg-indigo-50/80 rounded-2xl flex items-center justify-center flex-shrink-0">
+                <Mail className="w-6 h-6 text-indigo-600 fill-indigo-600/20" />
+              </div>
+              <div>
+                <h3 className="font-extrabold text-gray-900 text-[18px] mb-1">Email Us</h3>
+                <p className="text-gray-500 font-medium text-[15px]">Hr@shivanitech.in</p>
+              </div>
             </div>
+
+            <div className="flex items-center gap-5 px-2">
+              <div className="w-14 h-14 bg-indigo-50/80 rounded-2xl flex items-center justify-center flex-shrink-0">
+                <Phone className="w-6 h-6 text-indigo-600 fill-indigo-600/20" />
+              </div>
+              <div>
+                <h3 className="font-extrabold text-gray-900 text-[18px] mb-1">Call Support</h3>
+                <p className="text-gray-500 font-medium text-[15px] tracking-wide">+91 97907 04999</p>
+              </div>
+            </div>
+
           </div>
         </div>
 
