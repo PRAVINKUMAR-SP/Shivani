@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [appliedJobs, setAppliedJobs] = useState(new Set());
   const [savedJobs, setSavedJobs] = useState(new Set());
   const [loading, setLoading] = useState(true);
-  const [searchParams, setSearchParams] = useState({ keyword: '', location: '' });
+  const [searchParams, setSearchParams] = useState({ keyword: '', location: '', workModes: [] });
 
   useEffect(() => {
     if (user?.email) {
@@ -45,6 +45,9 @@ const Dashboard = () => {
         const params = new URLSearchParams();
         if (searchParams.keyword) params.append('search', searchParams.keyword);
         if (searchParams.location) params.append('location', searchParams.location);
+        if (searchParams.workModes && searchParams.workModes.length > 0) {
+          params.append('workModes', searchParams.workModes.join(','));
+        }
         
         if (params.toString()) {
           url += `?${params.toString()}`;
@@ -65,8 +68,8 @@ const Dashboard = () => {
     fetchJobs();
   }, [searchParams]);
 
-  const handleSearch = (keyword, location) => {
-    setSearchParams({ keyword, location });
+  const handleSearch = (keyword, location, filters = {}) => {
+    setSearchParams(prev => ({ ...prev, keyword, location, ...filters }));
   };
   return (
     <div className="bg-gray-50/50 h-[calc(100vh-128px)] flex relative overflow-hidden">

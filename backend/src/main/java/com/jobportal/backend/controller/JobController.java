@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/jobs")
@@ -31,20 +32,42 @@ public class JobController {
     @GetMapping
     public List<Job> getAllJobs(
             @RequestParam(required = false) String search,
-            @RequestParam(required = false) String location) {
+            @RequestParam(required = false) String location,
+            @RequestParam(required = false) List<String> workModes) {
         
         boolean hasSearch = search != null && !search.isEmpty();
         boolean hasLocation = location != null && !location.isEmpty();
 
+        List<Job> jobs;
+
         if (hasSearch && hasLocation) {
-            return jobRepository.searchJobs(search, location);
+            jobs = jobRepository.searchJobs(search, location);
         } else if (hasSearch) {
-            return jobRepository.findByTitleContainingIgnoreCaseOrCompanyContainingIgnoreCase(search, search);
+            jobs = jobRepository.findByTitleContainingIgnoreCaseOrCompanyContainingIgnoreCase(search, search);
         } else if (hasLocation) {
-            return jobRepository.findByLocationContainingIgnoreCase(location);
+            jobs = jobRepository.findByLocationContainingIgnoreCase(location);
+        } else {
+            jobs = jobRepository.findAll();
         }
-        
-        return jobRepository.findAll();
+
+        // Apply work mode filtering
+        if (workModes != null && !workModes.isEmpty()) {
+            jobs = jobs.stream().filter(job -> {
+                String loc = job.getLocation() != null ? job.getLocation().toLowerCase() : "";
+                boolean isRemote = loc.contains("remote");
+                boolean isHybrid = loc.contains("hybrid");
+                boolean isOffice = !isRemote && !isHybrid;
+                
+                for (String mode : workModes) {
+                    if (mode.equalsIgnoreCase("Remote") && isRemote) return true;
+                    if (mode.equalsIgnoreCase("Hybrid") && isHybrid) return true;
+                    if (mode.equalsIgnoreCase("Work from office") && isOffice) return true;
+                }
+                return false;
+            }).collect(Collectors.toList());
+        }
+
+        return jobs;
     }
 
     @GetMapping("/{id}")
