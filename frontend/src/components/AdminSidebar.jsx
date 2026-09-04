@@ -1,8 +1,10 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Users, Briefcase, Settings } from 'lucide-react';
+import { Home, Users, Briefcase, Settings, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const AdminSidebar = () => {
+  const { logout } = useAuth();
   const navItems = [
     { name: 'Dashboard', icon: Home, path: '/admin/dashboard' },
     { name: 'Users', icon: Users, path: '/admin/users' },
@@ -38,6 +40,15 @@ const AdminSidebar = () => {
             )}
           </NavLink>
         ))}
+      </div>
+      <div className="mt-auto">
+        <button
+          onClick={logout}
+          className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group font-medium w-full text-red-600 hover:bg-red-50 mt-4 border border-transparent hover:border-red-100"
+        >
+          <LogOut className="w-5 h-5 text-red-500 group-hover:text-red-600" />
+          Logout
+        </button>
       </div>
     </div>
   );

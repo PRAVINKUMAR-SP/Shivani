@@ -6,10 +6,14 @@ import {
   PlusCircle, 
   Settings, 
   User,
-  Users
+  Users,
+  LogOut
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 const EmployerSidebar = () => {
+  const { logout } = useAuth();
+  
   const navItems = [
     { name: 'Dashboard', icon: Home, path: '/employer/dashboard' },
     { name: 'Post a Job', icon: PlusCircle, path: '/employer/post-job' },
@@ -38,6 +42,16 @@ const EmployerSidebar = () => {
             {item.name}
           </NavLink>
         ))}
+      </div>
+
+      <div className="px-4 mt-auto">
+        <button
+          onClick={logout}
+          className="flex items-center gap-3 px-4 py-3 rounded-xl transition-all w-full text-red-600 hover:bg-red-50 font-semibold mt-4 border border-transparent hover:border-red-100"
+        >
+          <LogOut className="w-5 h-5" strokeWidth={2.5} />
+          Logout
+        </button>
       </div>
     </div>
   );
