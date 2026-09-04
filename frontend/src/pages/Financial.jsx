@@ -1,340 +1,434 @@
-import React, { useState } from 'react';
-import { Calculator, DollarSign, PieChart, ArrowRight, X } from 'lucide-react';
-
-const SalaryCalculatorModal = ({ onClose }) => {
-  const [gross, setGross] = useState('');
-  const [frequency, setFrequency] = useState('monthly');
-  
-  const calculate = () => {
-    const grossNum = parseFloat(gross) || 0;
-    const tax = grossNum * 0.10; // 10% standard tax estimate
-    const pf = grossNum * 0.05;  // 5% standard PF/deduction
-    const net = grossNum - tax - pf;
-    return { gross: grossNum, tax, pf, net };
-  };
-
-  const results = calculate();
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-green-50/50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-green-100 rounded-xl flex items-center justify-center text-green-600">
-              <Calculator className="w-5 h-5" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900">Salary Calculator</h3>
-          </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-            <X className="w-6 h-6" />
-          </button>
-        </div>
-        
-        <div className="p-6">
-          <div className="mb-6 grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Gross Salary</label>
-              <div className="relative">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">₹</span>
-                <input
-                  type="number"
-                  value={gross}
-                  onChange={(e) => setGross(e.target.value)}
-                  placeholder="e.g. 50000"
-                  className="w-full pl-8 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-colors"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Frequency</label>
-              <select
-                value={frequency}
-                onChange={(e) => setFrequency(e.target.value)}
-                className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-green-500/20 focus:border-green-500 outline-none transition-colors"
-              >
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
-              </select>
-            </div>
-          </div>
-
-          <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100">
-            <h4 className="text-sm font-bold text-gray-500 mb-4 uppercase tracking-wider">Estimated Breakdown</h4>
-            <div className="space-y-3">
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-600">Gross {frequency === 'monthly' ? 'Monthly' : 'Yearly'}</span>
-                <span className="font-semibold text-gray-900">₹{results.gross.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between items-center text-sm">
-                <span className="text-gray-600">Est. Taxes (10%)</span>
-                <span className="font-semibold text-red-500">- ₹{results.tax.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between items-center text-sm pb-3 border-b border-gray-200">
-                <span className="text-gray-600">PF/Deductions (5%)</span>
-                <span className="font-semibold text-orange-500">- ₹{results.pf.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between items-center pt-1">
-                <span className="font-bold text-gray-900">Net Take Home</span>
-                <span className="font-extrabold text-xl text-green-600">₹{results.net.toFixed(2)}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const TaxEstimatorModal = ({ onClose }) => {
-  const [income, setIncome] = useState('');
-
-  const calculateTax = () => {
-    const amount = parseFloat(income) || 0;
-    let tax = 0;
-    
-    // Simplified Indian New Tax Regime (FY 2023-24)
-    if (amount <= 300000) tax = 0;
-    else if (amount <= 600000) tax = (amount - 300000) * 0.05;
-    else if (amount <= 900000) tax = 15000 + (amount - 600000) * 0.10;
-    else if (amount <= 1200000) tax = 45000 + (amount - 900000) * 0.15;
-    else if (amount <= 1500000) tax = 90000 + (amount - 1200000) * 0.20;
-    else tax = 150000 + (amount - 1500000) * 0.30;
-
-    // Rebate u/s 87A (income <= 7L is tax free)
-    if (amount <= 700000) tax = 0;
-
-    return tax;
-  };
-
-  const estimatedTax = calculateTax();
-  const effectiveRate = income ? ((estimatedTax / parseFloat(income)) * 100).toFixed(1) : 0;
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-blue-50/50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600">
-              <PieChart className="w-5 h-5" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900">Tax Estimator (New Regime)</h3>
-          </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-            <X className="w-6 h-6" />
-          </button>
-        </div>
-        
-        <div className="p-6">
-          <div className="mb-6">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Annual Income</label>
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-bold">₹</span>
-              <input
-                type="number"
-                value={income}
-                onChange={(e) => setIncome(e.target.value)}
-                placeholder="e.g. 800000"
-                className="w-full pl-8 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none transition-colors"
-              />
-            </div>
-          </div>
-
-          <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 text-center">
-            <p className="text-sm font-bold text-gray-500 mb-2 uppercase tracking-wider">Estimated Tax Liability</p>
-            <div className="text-4xl font-extrabold text-blue-600 mb-2">
-              ₹{estimatedTax.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
-            </div>
-            {income && (
-              <p className="text-sm font-medium text-gray-500">
-                Effective Tax Rate: <span className="font-bold text-gray-800">{effectiveRate}%</span>
-              </p>
-            )}
-            
-            {income && estimatedTax === 0 && (
-              <div className="mt-4 inline-flex items-center gap-2 bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold">
-                No tax applicable under New Regime (Rebate u/s 87A)
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const LoanCalculatorModal = ({ onClose }) => {
-  const [amount, setAmount] = useState(500000);
-  const [rate, setRate] = useState(10.5);
-  const [years, setYears] = useState(5);
-
-  const calculateLoan = () => {
-    const p = parseFloat(amount) || 0;
-    const r = (parseFloat(rate) || 0) / 12 / 100;
-    const n = (parseFloat(years) || 0) * 12;
-
-    if (p === 0 || r === 0 || n === 0) return { emi: 0, totalInterest: 0, totalPayment: 0 };
-
-    const emi = (p * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-    const totalPayment = emi * n;
-    const totalInterest = totalPayment - p;
-
-    return { emi, totalInterest, totalPayment };
-  };
-
-  const results = calculateLoan();
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} />
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-lg relative z-10 overflow-hidden">
-        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-purple-50/50">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600">
-              <DollarSign className="w-5 h-5" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900">EMI Calculator</h3>
-          </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-            <X className="w-6 h-6" />
-          </button>
-        </div>
-        
-        <div className="p-6 space-y-4">
-          <div>
-            <div className="flex justify-between mb-1 text-sm font-semibold text-gray-700">
-              <label>Loan Amount (₹)</label>
-              <span className="text-purple-600">₹{amount.toLocaleString('en-IN')}</span>
-            </div>
-            <input
-              type="range"
-              min="10000"
-              max="5000000"
-              step="10000"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
-            />
-          </div>
-
-          <div>
-            <div className="flex justify-between mb-1 text-sm font-semibold text-gray-700">
-              <label>Interest Rate (% p.a.)</label>
-              <span className="text-purple-600">{rate}%</span>
-            </div>
-            <input
-              type="range"
-              min="5"
-              max="25"
-              step="0.1"
-              value={rate}
-              onChange={(e) => setRate(e.target.value)}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
-            />
-          </div>
-
-          <div>
-            <div className="flex justify-between mb-1 text-sm font-semibold text-gray-700">
-              <label>Loan Tenure (Years)</label>
-              <span className="text-purple-600">{years} Years</span>
-            </div>
-            <input
-              type="range"
-              min="1"
-              max="30"
-              step="1"
-              value={years}
-              onChange={(e) => setYears(e.target.value)}
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
-            />
-          </div>
-
-          <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 mt-6 text-center">
-            <p className="text-sm font-bold text-gray-500 mb-1 uppercase tracking-wider">Monthly EMI</p>
-            <div className="text-3xl font-extrabold text-purple-600 mb-4">
-              ₹{Math.round(results.emi).toLocaleString('en-IN')}
-            </div>
-            
-            <div className="flex justify-between text-sm border-t border-gray-200 pt-3">
-              <span className="text-gray-500 font-medium">Total Interest</span>
-              <span className="font-bold text-gray-900">₹{Math.round(results.totalInterest).toLocaleString('en-IN')}</span>
-            </div>
-            <div className="flex justify-between text-sm mt-2">
-              <span className="text-gray-500 font-medium">Total Amount Payable</span>
-              <span className="font-bold text-gray-900">₹{Math.round(results.totalPayment).toLocaleString('en-IN')}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
+import React, { useState, useEffect } from 'react';
+import { 
+  TrendingUp, Activity, Rocket, Lock, Shield, 
+  ChevronRight, CheckCircle2, Bot, SlidersHorizontal, Share2 
+} from 'lucide-react';
 
 const Financial = () => {
-  const [activeModal, setActiveModal] = useState(null);
+  // Sliders state
+  const [capital, setCapital] = useState(21000000);
+  const [horizon, setHorizon] = useState(3);
+  
+  // Calculated state
+  const [maturity, setMaturity] = useState(41015625);
+  const [roi, setRoi] = useState(95.3);
 
-  const financialServices = [
-    {
-      id: 'salary',
-      title: 'Salary Calculator',
-      description: 'Estimate your take-home pay after taxes and deductions.',
-      icon: Calculator,
-      color: 'bg-green-100 text-green-700'
-    },
-    {
-      id: 'tax',
-      title: 'Tax Estimator',
-      description: 'Understand your tax bracket and optimize your deductions.',
-      icon: PieChart,
-      color: 'bg-blue-100 text-blue-700'
-    },
-    {
-      id: 'loan',
-      title: 'Personal Loans',
-      description: 'Explore low-interest loan options for relocation or education.',
-      icon: DollarSign,
-      color: 'bg-purple-100 text-purple-700'
-    }
-  ];
+  // Growth curve standard calculation for demo (matches screenshot numbers roughly: 21m -> 41m in 3 years is about ~25% CAGR)
+  useEffect(() => {
+    // 25% CAGR for calculation
+    const rate = 0.25;
+    const calculatedMaturity = capital * Math.pow((1 + rate), horizon);
+    const calculatedRoi = ((calculatedMaturity - capital) / capital) * 100;
+    
+    setMaturity(Math.round(calculatedMaturity));
+    setRoi(calculatedRoi.toFixed(1));
+  }, [capital, horizon]);
 
   return (
-    <div className="bg-gray-50 min-h-[calc(100vh-96px)] py-12 px-4 sm:px-6 lg:px-8">
-      {activeModal === 'salary' && <SalaryCalculatorModal onClose={() => setActiveModal(null)} />}
-      {activeModal === 'tax' && <TaxEstimatorModal onClose={() => setActiveModal(null)} />}
-      {activeModal === 'loan' && <LoanCalculatorModal onClose={() => setActiveModal(null)} />}
-
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Financial Tools</h1>
-          <p className="text-lg text-gray-600">
-            Manage your finances better with our suite of free tools and resources.
+    <div className="bg-gray-50 min-h-screen py-16 px-4 sm:px-6 lg:px-8 font-sans">
+      <div className="max-w-7xl mx-auto space-y-16">
+        
+        {/* 1. Hero Section */}
+        <div className="text-center max-w-4xl mx-auto space-y-6">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-sm mb-4 border border-gray-100">
+            <img src="/logo.png" alt="Shivani Technologies" className="h-10 w-auto object-contain" />
+          </div>
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
+            Accelerating <span className="text-blue-600">Digital Health Tech</span> & Enterprise Architectures
+          </h1>
+          <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
+            Shivani Technologies builds scalable cloud infrastructure, custom telehealth products, Traditional Ayurveda networks, and automated hospital record ecosystems targeting an exponential global landscape.
           </p>
+          
+          <div className="flex flex-wrap justify-center gap-4 pt-6">
+            <div className="bg-white border border-gray-200 rounded-2xl p-4 min-w-[200px] shadow-sm">
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Floor Valuation</p>
+              <p className="text-xl font-extrabold text-gray-900">₹4.5 Billion</p>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-2xl p-4 min-w-[200px] shadow-sm">
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Headquarters</p>
+              <p className="text-xl font-extrabold text-gray-900">Chennai / Blr</p>
+            </div>
+            <div className="bg-white border border-gray-200 rounded-2xl p-4 min-w-[200px] shadow-sm">
+              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Target Cap Pool</p>
+              <p className="text-xl font-extrabold text-gray-900">₹750 Million</p>
+            </div>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {financialServices.map((service) => (
-            <div 
-              key={service.id} 
-              onClick={() => setActiveModal(service.id)}
-              className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg transition-all flex flex-col h-full group cursor-pointer hover:-translate-y-1"
-            >
-              <div className={`w-14 h-14 rounded-xl flex items-center justify-center mb-6 ${service.color}`}>
-                <service.icon className="w-7 h-7" />
+        {/* 2. Financial Projection Engine */}
+        <div className="bg-white border border-gray-200 rounded-3xl p-6 lg:p-10 shadow-sm">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10 gap-4">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+                <TrendingUp className="w-7 h-7 text-blue-600" />
+                Financial Projection Engine
+              </h2>
+              <p className="text-gray-500 mt-1">Map your strategic capital against our scaled business trajectories.</p>
+            </div>
+            <div className="flex flex-wrap gap-2 bg-gray-100 p-1 rounded-xl">
+              <button className="px-4 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-white hover:shadow-sm transition-all">15% Conservative</button>
+              <button className="px-4 py-2 text-sm font-bold text-blue-700 bg-white shadow-sm rounded-lg transition-all border border-blue-100">25% Core Target</button>
+              <button className="px-4 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-white hover:shadow-sm transition-all">35% High Velocity</button>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Sliders */}
+            <div className="space-y-8">
+              <div>
+                <div className="flex justify-between mb-4">
+                  <span className="text-sm font-bold text-gray-500 uppercase tracking-wider">Investment Capital (INR)</span>
+                  <span className="text-xl font-bold text-blue-600">₹{capital.toLocaleString('en-IN')}</span>
+                </div>
+                <input
+                  type="range"
+                  min="500000"
+                  max="50000000"
+                  step="500000"
+                  value={capital}
+                  onChange={(e) => setCapital(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                />
+                <div className="flex justify-between mt-2 text-xs text-gray-400 font-medium">
+                  <span>₹5 Lakhs</span>
+                  <span>₹5 Crores</span>
+                </div>
+                
+                <div className="mt-4 flex gap-2">
+                  <div className="relative flex-1">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 font-bold">₹</span>
+                    <input 
+                      type="number" 
+                      value={capital}
+                      onChange={(e) => setCapital(Number(e.target.value))}
+                      className="w-full pl-8 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    />
+                  </div>
+                  <button className="bg-blue-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-700 transition-colors">Apply</button>
+                </div>
               </div>
-              
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{service.title}</h3>
-              <p className="text-gray-600 mb-6 flex-grow">{service.description}</p>
-              
-              <div className="mt-auto pt-4 border-t border-gray-100">
-                <button className="flex items-center gap-1 text-blue-600 font-bold group-hover:text-blue-700 transition-colors">
-                  Try Now
-                  <ArrowRight className="w-4 h-4" />
+
+              <div>
+                <div className="flex justify-between mb-4">
+                  <span className="text-sm font-bold text-gray-500 uppercase tracking-wider">Horizon Duration</span>
+                  <span className="text-xl font-bold text-blue-600">{horizon} Years</span>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  step="1"
+                  value={horizon}
+                  onChange={(e) => setHorizon(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                />
+                <div className="flex justify-between mt-2 text-xs text-gray-400 font-medium">
+                  <span>1 Year</span>
+                  <span>5 Years</span>
+                </div>
+
+                <div className="mt-4 flex gap-2">
+                  <input 
+                    type="number" 
+                    value={horizon}
+                    onChange={(e) => setHorizon(Number(e.target.value))}
+                    className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  />
+                  <button className="bg-blue-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-700 transition-colors">Apply</button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5">
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Maturity Value</p>
+                  <p className="text-2xl lg:text-3xl font-extrabold text-gray-900 mb-1">₹{maturity.toLocaleString('en-IN')}</p>
+                  <p className="text-sm font-bold text-emerald-600 flex items-center gap-1">
+                    <TrendingUp className="w-4 h-4" /> Compounded Return
+                  </p>
+                </div>
+                <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5">
+                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Estimated Yield (ROI)</p>
+                  <p className="text-2xl lg:text-3xl font-extrabold text-gray-900 mb-1">{roi}%</p>
+                  <p className="text-sm font-medium text-gray-500">Total Growth</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Graph Visualization */}
+            <div className="bg-gray-900 rounded-3xl p-6 relative overflow-hidden flex flex-col">
+              <div className="flex justify-between items-start z-10 mb-8">
+                <div>
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Growth Curve Model</p>
+                  <p className="text-white font-medium">Capital appreciation path</p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs font-medium text-gray-400 mb-1">Trajectory Selected</p>
+                  <span className="inline-block bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-lg text-sm font-bold">
+                    25% CAGR
+                  </span>
+                </div>
+              </div>
+
+              {/* Decorative Graph SVG */}
+              <div className="flex-1 relative min-h-[200px] flex items-end mb-8 z-10">
+                <svg viewBox="0 0 500 200" className="w-full h-full preserve-3d overflow-visible" preserveAspectRatio="none">
+                  {/* Grid lines */}
+                  <line x1="0" y1="180" x2="500" y2="180" stroke="#334155" strokeWidth="1" strokeDasharray="4 4" />
+                  
+                  {/* Main curve (simulate exponential growth) */}
+                  <path 
+                    d="M 10,180 Q 150,160 250,110 T 490,20" 
+                    fill="none" 
+                    stroke="url(#blueGradient)" 
+                    strokeWidth="6" 
+                    strokeLinecap="round"
+                  />
+                  
+                  {/* Current point (glow) */}
+                  <ellipse cx="250" cy="110" rx="12" ry="6" fill="#10b981" />
+                  <ellipse cx="250" cy="110" rx="20" ry="10" fill="#10b981" opacity="0.3" />
+
+                  {/* Start point */}
+                  <ellipse cx="10" cy="180" rx="8" ry="4" fill="#3b82f6" />
+                  
+                  <defs>
+                    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#3b82f6" />
+                      <stop offset="100%" stopColor="#60a5fa" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+              </div>
+
+              {/* X Axis Labels */}
+              <div className="flex justify-between text-[10px] sm:text-xs font-bold text-gray-500 z-10 mb-6">
+                <span>YEAR 0</span>
+                <span>YEAR 1</span>
+                <span>YEAR 2</span>
+                <span className="text-blue-400 text-sm">YEAR 3</span>
+                <span>YEAR 4</span>
+                <span>YEAR 5</span>
+              </div>
+
+              <div className="flex justify-between items-center z-10 text-xs text-gray-400 pt-4 border-t border-gray-800">
+                <span className="flex items-center gap-1">
+                  <Activity className="w-3 h-3" /> Built on Series B metrics.
+                </span>
+                <a href="#" className="text-blue-400 hover:text-blue-300 font-bold transition-colors">Audit Sheet &gt;</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. AI Investment Liaison */}
+        <div className="bg-white border border-gray-200 rounded-3xl p-6 lg:p-10 shadow-sm">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 pb-6 border-b border-gray-100 gap-4">
+            <div className="flex items-center gap-3">
+              <div className="w-3 h-3 bg-blue-600 rounded-full animate-pulse"></div>
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Shivani AI™ Investment Liaison</h2>
+                <p className="text-gray-500 text-sm mt-1">Ask the co-pilot about our telemetry pipelines, data encryption standards, or query live market intelligence.</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xl border border-gray-200 w-full lg:w-auto justify-between lg:justify-start">
+              <span className="text-sm font-semibold text-gray-700">Live Google Search Grounding</span>
+              <div className="w-10 h-6 bg-blue-600 rounded-full relative cursor-pointer flex-shrink-0">
+                <div className="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2 flex flex-col justify-between min-h-[300px]">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 bg-indigo-100 text-indigo-700 font-bold rounded-xl flex items-center justify-center flex-shrink-0">
+                  AI
+                </div>
+                <div className="bg-gray-50 border border-gray-200 text-gray-800 p-5 rounded-2xl rounded-tl-none max-w-xl text-sm leading-relaxed font-medium">
+                  Welcome! I am your AI Investment Advisor. Ask me anything about our software engineering pipelines, global operations hubs, or security compliance logs. Toggle on "Live Google Search Grounding" to fetch modern market reports.
+                </div>
+              </div>
+
+              <div className="relative mt-8">
+                <input 
+                  type="text" 
+                  placeholder="Query our scaling models or regional digital transformation timelines..."
+                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 px-6 py-4 rounded-2xl pr-16 focus:outline-none focus:ring-2 focus:ring-blue-500/20 font-medium"
+                />
+                <button className="absolute right-2 top-2 bottom-2 w-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center transition-colors shadow-sm">
+                  <ArrowRight className="w-5 h-5" />
                 </button>
               </div>
             </div>
-          ))}
+
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Suggested Intelligence Queries</h3>
+                <div className="space-y-3">
+                  <button className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                    <Rocket className="w-4 h-4 text-red-500 flex-shrink-0" /> Series B Roadmap & Scaling Model
+                  </button>
+                  <button className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                    <Lock className="w-4 h-4 text-amber-500 flex-shrink-0" /> Telehealth Security & Encrypted EHRs
+                  </button>
+                  <button className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                    <Activity className="w-4 h-4 text-emerald-500 flex-shrink-0" /> Traditional Wellness Logistics Network
+                  </button>
+                  <button className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                    <Share2 className="w-4 h-4 text-blue-500 flex-shrink-0" /> Live Indian Health-Tech Forecasts
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5">
+                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Real-Time API Specifications</h3>
+                <p className="text-sm text-gray-600 leading-relaxed font-medium">
+                  Our platform handles asynchronous communication loops with the Gemini API to retrieve context-optimized answers without client blockades.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* 4. Strategic Capital Deployment */}
+        <div className="space-y-8">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">How We Deploy Your Strategic Capital</h2>
+            <p className="text-gray-600 mt-2 max-w-3xl">
+              Every rupee secured is directly routed into high-impact pipelines designed to maximize ecosystem value and tech architecture scalability.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+              <div className="text-3xl font-extrabold text-blue-600 mb-3">45%</div>
+              <h3 className="font-bold text-gray-900 mb-2">Healthcare AI & Core R&D</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-6">Scaling HIPAA-compliant telehealth portals, secure EHR vaults, and machine-learning diagnostics frameworks.</p>
+              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mt-auto">
+                <div className="w-[45%] h-full bg-blue-600 rounded-full"></div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+              <div className="text-3xl font-extrabold text-emerald-600 mb-3">30%</div>
+              <h3 className="font-bold text-gray-900 mb-2">Ayurvedic Store Logistics</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-6">Modernizing wellness logistics chains, traditional organic inventories, and holistic consultation dashboards.</p>
+              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mt-auto">
+                <div className="w-[30%] h-full bg-emerald-600 rounded-full"></div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+              <div className="text-3xl font-extrabold text-indigo-600 mb-3">15%</div>
+              <h3 className="font-bold text-gray-900 mb-2">Global Operations (APAC)</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-6">Broadening operational reach, expanding engineering teams in major hubs, and solidifying legal structures.</p>
+              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mt-auto">
+                <div className="w-[15%] h-full bg-indigo-600 rounded-full"></div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+              <div className="text-3xl font-extrabold text-teal-600 mb-3">10%</div>
+              <h3 className="font-bold text-gray-900 mb-2">Security Auditing & Scale</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-6">Third-party infrastructure penetration tests, absolute end-to-end medical databank encryption checks, and robust DB compliance.</p>
+              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mt-auto">
+                <div className="w-[10%] h-full bg-teal-600 rounded-full"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 5. Advanced Systems Architecture */}
+        <div className="bg-white border border-gray-200 rounded-3xl p-6 lg:p-10 shadow-sm flex flex-col lg:flex-row gap-12">
+          <div className="w-full lg:w-1/2 space-y-6">
+            <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">Engineered For Scale</p>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Advanced Systems Built on Cutting-Edge Technology</h2>
+            <p className="text-gray-600 mb-8 leading-relaxed">
+              At Shivani Technologies, we focus on highly scalable, non-bloated codebases to ensure high performance and seamless digital health ecosystem migrations.
+            </p>
+
+            <div className="space-y-6">
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 mt-1">
+                  <CheckCircle2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900">Full-Stack Cloud Architectures</h4>
+                  <p className="text-sm text-gray-500 mt-1">AWS/GCP microservices using Node.js, Go, and high-performance WebRTC modules for secure virtual care video.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center flex-shrink-0 mt-1">
+                  <CheckCircle2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900">Encrypted EHR Databases</h4>
+                  <p className="text-sm text-gray-500 mt-1">Robust clinical data systems running secure schema structures, automated e-prescribing queues, and compliance logs.</p>
+                </div>
+              </div>
+
+              <div className="flex gap-4">
+                <div className="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 mt-1">
+                  <CheckCircle2 className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="font-bold text-gray-900">Traditional Wellness Warehouses</h4>
+                  <p className="text-sm text-gray-500 mt-1">Proprietary logistics routing traditional Ayurveda and Siddha wellness inventory dynamically linked to patient profiles.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full lg:w-1/2">
+            <div className="bg-gray-50 border border-gray-200 rounded-3xl p-6 lg:p-8 h-full">
+              <div className="flex justify-between items-center mb-8 pb-4 border-b border-gray-200">
+                <h3 className="font-bold text-gray-500 text-sm uppercase tracking-wider">System Architecture Status</h3>
+                <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-lg text-xs font-bold">Operational</span>
+              </div>
+
+              <div className="space-y-6">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600 font-medium">Service Gateway</span>
+                  <span className="font-bold text-gray-900">Nginx / Cloudflare WAF</span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600 font-medium">Core Telehealth API</span>
+                  <span className="font-bold text-gray-900">Go / WebRTC Signalling</span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600 font-medium">Record Data Vaults</span>
+                  <span className="font-bold text-gray-900">Postgres / AES-256 Encrypted</span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-600 font-medium">Ayurveda E-Store</span>
+                  <span className="font-bold text-gray-900">GraphQL / Redis Caching</span>
+                </div>
+                <div className="flex justify-between items-center text-sm pb-8 border-b border-gray-200">
+                  <span className="text-gray-600 font-medium">Compliance Audit logs</span>
+                  <span className="font-bold text-gray-900">Write-Once Ledger</span>
+                </div>
+
+                <div className="pt-2">
+                  <div className="flex justify-between text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                    <span>Database Efficiency</span>
+                    <span className="text-blue-600">94% Core Rating</span>
+                  </div>
+                  <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                    <div className="w-[94%] h-full bg-blue-600 rounded-full"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="text-center pt-8 pb-4">
+          <h3 className="text-xl font-bold text-gray-900 mb-2">Investment FAQ Desk</h3>
+          <p className="text-gray-500">Providing precise operational and systemic transparency to prospective partners.</p>
+        </div>
+
       </div>
     </div>
   );
