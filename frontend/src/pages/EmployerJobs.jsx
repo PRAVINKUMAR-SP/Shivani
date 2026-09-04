@@ -4,6 +4,24 @@ import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import { PlusCircle, Search, MapPin, DollarSign, Users, Trash2, Eye, Calendar } from 'lucide-react';
 
+const formatTimeAgo = (dateString) => {
+  if (!dateString) return 'New';
+  const now = new Date();
+  const posted = new Date(dateString);
+  const diffMs = now - posted;
+  const diffMins = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return diffHours === 1 ? '1h ago' : `${diffHours}h ago`;
+  if (diffDays === 0) return 'Today';
+  if (diffDays === 1) return '1d ago';
+  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+  return `${Math.floor(diffDays / 30)}mo ago`;
+};
+
 const EmployerJobCard = ({ job, onDelete }) => {
   const [deleting, setDeleting] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
@@ -23,9 +41,7 @@ const EmployerJobCard = ({ job, onDelete }) => {
     }
   };
 
-  const postedDate = job.postedAt
-    ? new Date(job.postedAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })
-    : 'Today';
+  const postedDate = formatTimeAgo(job.postedAt);
 
   return (
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 p-5 flex flex-col gap-4">

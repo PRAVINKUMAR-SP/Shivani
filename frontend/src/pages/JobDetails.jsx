@@ -8,10 +8,21 @@ import {
 import { useAuth } from '../context/AuthContext';
 
 const formatTimeAgo = (dateString) => {
-  if (!dateString) return 'Recently';
-  const diffInDays = Math.floor((new Date() - new Date(dateString)) / (1000 * 60 * 60 * 24));
-  if (diffInDays === 0) return 'Today';
-  return `${diffInDays}d`;
+  if (!dateString) return 'New';
+  const now = new Date();
+  const posted = new Date(dateString);
+  const diffMs = now - posted;
+  const diffMins = Math.floor(diffMs / (1000 * 60));
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return diffHours === 1 ? '1h ago' : `${diffHours}h ago`;
+  if (diffDays === 0) return 'Today';
+  if (diffDays === 1) return '1d ago';
+  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 30) return `${Math.floor(diffDays / 7)}w ago`;
+  return `${Math.floor(diffDays / 30)}mo ago`;
 };
 
 const JobDetails = () => {
