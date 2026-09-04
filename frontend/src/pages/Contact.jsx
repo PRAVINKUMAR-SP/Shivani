@@ -42,10 +42,35 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fc] flex flex-col items-center py-12 px-4 sm:px-6">
-      
-      <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-sm border border-gray-100 mt-8">
+    <div className="min-h-screen bg-[#f8f9fc] py-16 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="max-w-7xl w-full flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
         
+        {/* Left Side: Text and Info */}
+        <div className="w-full lg:w-1/2 flex flex-col items-start text-left space-y-8">
+          <div>
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
+              Get in <span className="text-indigo-600">Touch</span>
+            </h1>
+            <p className="text-lg text-gray-600 font-medium leading-relaxed max-w-lg">
+              Have a question about our platform, pricing, or looking to partner with us? Our dedicated support team is here to help you every step of the way. Fill out the form or give us a call.
+            </p>
+          </div>
+
+          <div className="flex items-center gap-4 px-2">
+            <div className="w-14 h-14 bg-indigo-50/80 rounded-2xl flex items-center justify-center flex-shrink-0">
+              <Phone className="w-6 h-6 text-indigo-600 fill-indigo-600/20" />
+            </div>
+            <div>
+              <h3 className="font-extrabold text-gray-900 text-[20px] mb-0.5">Call Support</h3>
+              <p className="text-gray-500 font-medium text-[15px] tracking-wide">+91 97907 04999</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Side: Form */}
+        <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
+          <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+
         {status.success && (
           <div className="mb-6 bg-green-50 text-green-700 p-4 rounded-xl text-sm font-medium border border-green-100">
             Message sent successfully! We will get back to you soon.
@@ -58,8 +83,8 @@ const Contact = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
-          
+        <form onSubmit={handleSubmit} className="space-y-4">
+
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-1.5">Your Name *</label>
             <input
@@ -135,6 +160,8 @@ const Contact = () => {
         </form>
       </div>
     </div>
+    </div>
+  </div>
   );
 };
 
