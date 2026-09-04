@@ -28,25 +28,42 @@ const Financial = () => {
   ]);
   const [isTyping, setIsTyping] = useState(false);
 
-  const handleChatSubmit = (e) => {
+  const handleChatSubmit = async (e) => {
     e?.preventDefault();
     if (!chatInput.trim()) return;
 
+    const userInput = chatInput;
     // Add user message
-    const newUserMessage = { role: 'user', text: chatInput };
+    const newUserMessage = { role: 'user', text: userInput };
     setChatHistory(prev => [...prev, newUserMessage]);
     setChatInput('');
     setIsTyping(true);
 
-    // Mock AI response
-    setTimeout(() => {
-      let responseText = "Our proprietary models indicate strong exponential growth for digital health architectures in the APAC region over the next 3-5 years.";
-      if (isSearchGrounded) {
-        responseText = "[Live Web] According to recent Q3 market reports, telehealth infrastructure investments have surged by 42%. " + responseText;
+    try {
+      const response = await fetch('http://localhost:8080/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: userInput,
+          history: chatHistory,
+          isSearchGrounded: isSearchGrounded
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-      setChatHistory(prev => [...prev, { role: 'ai', text: responseText }]);
+
+      const data = await response.json();
+      setChatHistory(prev => [...prev, { role: 'ai', text: data.response }]);
+    } catch (error) {
+      console.error('Error fetching AI response:', error);
+      setChatHistory(prev => [...prev, { role: 'ai', text: 'Sorry, I am currently experiencing technical difficulties. Please try again later.' }]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const handleSuggestedQuery = (query) => {
