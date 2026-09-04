@@ -81,7 +81,7 @@ public class ResumeParserService {
             message.put("content", prompt);
 
             Map<String, Object> requestBodyMap = new HashMap<>();
-            requestBodyMap.put("model", "qwen/qwen3.8-27b");
+            requestBodyMap.put("model", "llama3-8b-8192");
             requestBodyMap.put("messages", List.of(message));
             requestBodyMap.put("temperature", 0.0);
 
