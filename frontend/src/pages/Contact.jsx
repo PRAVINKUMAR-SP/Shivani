@@ -1,38 +1,150 @@
-import React from 'react';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import React, { useState } from 'react';
+import { Phone, Send } from 'lucide-react';
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: ''
+  });
+  const [status, setStatus] = useState({ loading: false, success: false, error: null });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setStatus({ loading: true, success: false, error: null });
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/contact/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setStatus({ loading: false, success: true, error: null });
+        setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+      } else {
+        const data = await response.json();
+        setStatus({ loading: false, success: false, error: data.error || 'Failed to send message' });
+      }
+    } catch (error) {
+      console.error('Failed to send contact message:', error);
+      setStatus({ loading: false, success: false, error: 'Network error. Please try again.' });
+    }
+  };
+
   return (
-    <div className="min-h-[60vh] bg-gray-50 flex flex-col items-center justify-center p-6">
-      <div className="max-w-3xl w-full bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-100 text-center">
-        <h1 className="text-4xl font-extrabold text-blue-900 mb-4 tracking-tight">Contact Us</h1>
-        <p className="text-gray-500 mb-10 text-lg">We'd love to hear from you. Please reach out with any questions or feedback.</p>
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="flex flex-col items-center p-6 bg-blue-50/50 rounded-2xl border border-blue-100">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
-              <Mail className="w-6 h-6" />
-            </div>
-            <h3 className="font-bold text-gray-900 mb-2">Email</h3>
-            <p className="text-sm text-gray-600">support@shivanitech.com</p>
+    <div className="min-h-screen bg-[#f8f9fc] flex flex-col items-center py-12 px-4 sm:px-6">
+      
+      <div className="max-w-md w-full mb-6">
+        <div className="flex items-center gap-4 bg-white p-4 rounded-2xl shadow-sm border border-gray-100 max-w-xs mb-8">
+          <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center">
+            <Phone className="w-6 h-6 text-indigo-600" />
           </div>
-          
-          <div className="flex flex-col items-center p-6 bg-blue-50/50 rounded-2xl border border-blue-100">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
-              <Phone className="w-6 h-6" />
-            </div>
-            <h3 className="font-bold text-gray-900 mb-2">Phone</h3>
-            <p className="text-sm text-gray-600">+1 (555) 123-4567</p>
-          </div>
-          
-          <div className="flex flex-col items-center p-6 bg-blue-50/50 rounded-2xl border border-blue-100">
-            <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mb-4">
-              <MapPin className="w-6 h-6" />
-            </div>
-            <h3 className="font-bold text-gray-900 mb-2">Office</h3>
-            <p className="text-sm text-gray-600">123 Tech Blvd, Silicon Valley, CA</p>
+          <div>
+            <h3 className="font-bold text-gray-900 text-lg">Call Support</h3>
+            <p className="text-gray-500 font-medium">+91 97907 04999</p>
           </div>
         </div>
+      </div>
+
+      <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+        
+        {status.success && (
+          <div className="mb-6 bg-green-50 text-green-700 p-4 rounded-xl text-sm font-medium border border-green-100">
+            Message sent successfully! We will get back to you soon.
+          </div>
+        )}
+
+        {status.error && (
+          <div className="mb-6 bg-red-50 text-red-700 p-4 rounded-xl text-sm font-medium border border-red-100">
+            {status.error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-5">
+          
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Your Name *</label>
+            <input
+              type="text"
+              name="name"
+              required
+              placeholder="John Doe"
+              value={formData.name}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Email Address *</label>
+            <input
+              type="email"
+              name="email"
+              required
+              placeholder="john@example.com"
+              value={formData.email}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Phone Number *</label>
+            <input
+              type="tel"
+              name="phone"
+              required
+              placeholder="9876543210"
+              value={formData.phone}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Subject</label>
+            <input
+              type="text"
+              name="subject"
+              placeholder="Business Inquiry"
+              value={formData.subject}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-1.5">Message *</label>
+            <textarea
+              name="message"
+              required
+              rows="4"
+              placeholder="Tell us about your project requirements..."
+              value={formData.message}
+              onChange={handleChange}
+              className="w-full px-4 py-3 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium resize-none"
+            ></textarea>
+          </div>
+
+          <button
+            type="submit"
+            disabled={status.loading}
+            className="w-full flex items-center justify-center gap-2 bg-[#5c5cd6] hover:bg-indigo-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all mt-4 disabled:opacity-70 disabled:cursor-not-allowed"
+          >
+            {status.loading ? 'Sending...' : 'Send Message'}
+            {!status.loading && <Send className="w-4 h-4" />}
+          </button>
+        </form>
       </div>
     </div>
   );
