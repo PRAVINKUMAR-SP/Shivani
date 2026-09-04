@@ -33,6 +33,12 @@ const Navbar = () => {
               <Link to="/financial" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/financial') ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>
                 Financial
               </Link>
+              <Link to="/about" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/about') ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>
+                About Us
+              </Link>
+              <Link to="/contact" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/contact') ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>
+                Contact Us
+              </Link>
             </div>
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
@@ -91,6 +97,8 @@ const Navbar = () => {
               <Link to="/companies" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/companies') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}>Companies</Link>
               <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/services') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}>Services</Link>
               <Link to="/financial" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/financial') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}>Financial</Link>
+              <Link to="/about" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/about') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}>About Us</Link>
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/contact') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}>Contact Us</Link>
               
               <div className="border-t border-gray-100 pt-4 mt-2">
                 {user ? (
