@@ -17,6 +17,42 @@ const Financial = () => {
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // Chat state
+  const [isSearchGrounded, setIsSearchGrounded] = useState(false);
+  const [chatInput, setChatInput] = useState('');
+  const [chatHistory, setChatHistory] = useState([
+    {
+      role: 'ai',
+      text: 'Welcome! I am your AI Investment Advisor. Ask me anything about our software engineering pipelines, global operations hubs, or security compliance logs. Toggle on "Live Google Search Grounding" to fetch modern market reports.'
+    }
+  ]);
+  const [isTyping, setIsTyping] = useState(false);
+
+  const handleChatSubmit = (e) => {
+    e?.preventDefault();
+    if (!chatInput.trim()) return;
+
+    // Add user message
+    const newUserMessage = { role: 'user', text: chatInput };
+    setChatHistory(prev => [...prev, newUserMessage]);
+    setChatInput('');
+    setIsTyping(true);
+
+    // Mock AI response
+    setTimeout(() => {
+      let responseText = "Our proprietary models indicate strong exponential growth for digital health architectures in the APAC region over the next 3-5 years.";
+      if (isSearchGrounded) {
+        responseText = "[Live Web] According to recent Q3 market reports, telehealth infrastructure investments have surged by 42%. " + responseText;
+      }
+      setChatHistory(prev => [...prev, { role: 'ai', text: responseText }]);
+      setIsTyping(false);
+    }, 1500);
+  };
+
+  const handleSuggestedQuery = (query) => {
+    setChatInput(query);
+  };
+
   // Growth curve standard calculation for demo
   useEffect(() => {
     const calculatedMaturity = capital * Math.pow((1 + cagr), horizon);
@@ -288,49 +324,79 @@ const Financial = () => {
             </div>
             <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xl border border-gray-200 w-full lg:w-auto justify-between lg:justify-start">
               <span className="text-sm font-semibold text-gray-700">Live Google Search Grounding</span>
-              <div className="w-10 h-6 bg-blue-600 rounded-full relative cursor-pointer flex-shrink-0">
-                <div className="w-4 h-4 bg-white rounded-full absolute right-1 top-1"></div>
+              <div 
+                onClick={() => setIsSearchGrounded(!isSearchGrounded)}
+                className={`w-10 h-6 rounded-full relative cursor-pointer flex-shrink-0 transition-colors ${isSearchGrounded ? 'bg-blue-600' : 'bg-gray-300'}`}
+              >
+                <div className={`w-4 h-4 bg-white rounded-full absolute top-1 transition-all ${isSearchGrounded ? 'right-1' : 'left-1'}`}></div>
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2 flex flex-col justify-between min-h-[300px]">
-              <div className="flex items-start gap-4">
-                <div className="w-10 h-10 bg-indigo-100 text-indigo-700 font-bold rounded-xl flex items-center justify-center flex-shrink-0">
-                  AI
-                </div>
-                <div className="bg-gray-50 border border-gray-200 text-gray-800 p-5 rounded-2xl rounded-tl-none max-w-xl text-sm leading-relaxed font-medium">
-                  Welcome! I am your AI Investment Advisor. Ask me anything about our software engineering pipelines, global operations hubs, or security compliance logs. Toggle on "Live Google Search Grounding" to fetch modern market reports.
-                </div>
+              
+              <div className="space-y-6 mb-8 max-h-[300px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-gray-200">
+                {chatHistory.map((msg, idx) => (
+                  <div key={idx} className={`flex items-start gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
+                    <div className={`w-10 h-10 font-bold rounded-xl flex items-center justify-center flex-shrink-0 ${msg.role === 'ai' ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-600'}`}>
+                      {msg.role === 'ai' ? 'AI' : 'You'}
+                    </div>
+                    <div className={`border p-5 rounded-2xl max-w-xl text-sm leading-relaxed font-medium ${
+                      msg.role === 'ai' 
+                        ? 'bg-gray-50 border-gray-200 text-gray-800 rounded-tl-none' 
+                        : 'bg-blue-50 border-blue-100 text-blue-900 rounded-tr-none'
+                    }`}>
+                      {msg.text}
+                    </div>
+                  </div>
+                ))}
+                {isTyping && (
+                  <div className="flex items-start gap-4">
+                    <div className="w-10 h-10 bg-indigo-100 text-indigo-700 font-bold rounded-xl flex items-center justify-center flex-shrink-0">
+                      AI
+                    </div>
+                    <div className="bg-gray-50 border border-gray-200 p-5 rounded-2xl rounded-tl-none flex items-center gap-2">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
+                    </div>
+                  </div>
+                )}
               </div>
 
-              <div className="relative mt-8">
+              <form onSubmit={handleChatSubmit} className="relative mt-auto">
                 <input 
                   type="text" 
+                  value={chatInput}
+                  onChange={(e) => setChatInput(e.target.value)}
                   placeholder="Query our scaling models or regional digital transformation timelines..."
                   className="w-full bg-gray-50 border border-gray-200 text-gray-900 px-6 py-4 rounded-2xl pr-16 focus:outline-none focus:ring-2 focus:ring-blue-500/20 font-medium"
                 />
-                <button className="absolute right-2 top-2 bottom-2 w-12 bg-blue-600 hover:bg-blue-700 text-white rounded-xl flex items-center justify-center transition-colors shadow-sm">
+                <button 
+                  type="submit"
+                  disabled={!chatInput.trim() || isTyping}
+                  className="absolute right-2 top-2 bottom-2 w-12 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-xl flex items-center justify-center transition-colors shadow-sm"
+                >
                   <ArrowRight className="w-5 h-5" />
                 </button>
-              </div>
+              </form>
             </div>
 
             <div className="space-y-6">
               <div>
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Suggested Intelligence Queries</h3>
                 <div className="space-y-3">
-                  <button className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                  <button onClick={() => handleSuggestedQuery("Series B Roadmap & Scaling Model")} className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
                     <Rocket className="w-4 h-4 text-red-500 flex-shrink-0" /> Series B Roadmap & Scaling Model
                   </button>
-                  <button className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                  <button onClick={() => handleSuggestedQuery("Telehealth Security & Encrypted EHRs")} className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
                     <Lock className="w-4 h-4 text-amber-500 flex-shrink-0" /> Telehealth Security & Encrypted EHRs
                   </button>
-                  <button className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                  <button onClick={() => handleSuggestedQuery("Traditional Wellness Logistics Network")} className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
                     <Activity className="w-4 h-4 text-emerald-500 flex-shrink-0" /> Traditional Wellness Logistics Network
                   </button>
-                  <button className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                  <button onClick={() => handleSuggestedQuery("Live Indian Health-Tech Forecasts")} className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
                     <Share2 className="w-4 h-4 text-blue-500 flex-shrink-0" /> Live Indian Health-Tech Forecasts
                   </button>
                 </div>
