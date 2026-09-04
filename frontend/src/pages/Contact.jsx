@@ -42,18 +42,8 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fc] flex flex-col items-center py-12 px-4 sm:px-6">
+    <div className="min-h-[calc(100vh-100px)] bg-[#f8f9fc] flex flex-col items-center justify-center py-12 px-4 sm:px-6">
       
-      <div className="max-w-md w-full mb-6 flex items-center gap-4 px-2">
-        <div className="w-14 h-14 bg-indigo-50/80 rounded-2xl flex items-center justify-center flex-shrink-0">
-          <Phone className="w-6 h-6 text-indigo-600 fill-indigo-600/20" />
-        </div>
-        <div>
-          <h3 className="font-extrabold text-gray-900 text-[20px] mb-0.5">Call Support</h3>
-          <p className="text-gray-500 font-medium text-[15px] tracking-wide">+91 97907 04999</p>
-        </div>
-      </div>
-
       <div className="max-w-md w-full bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
         
         {status.success && (
