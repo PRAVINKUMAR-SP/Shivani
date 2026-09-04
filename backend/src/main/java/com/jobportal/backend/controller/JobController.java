@@ -33,8 +33,14 @@ public class JobController {
     public List<Job> getAllJobs(
             @RequestParam(required = false) String search,
             @RequestParam(required = false) String location,
-            @RequestParam(required = false) List<String> workModes) {
-        
+            @RequestParam(required = false) List<String> workModes,
+            @RequestParam(required = false) List<String> jobTypes,
+            @RequestParam(required = false) List<String> companies,
+            @RequestParam(required = false) List<String> industries,
+            @RequestParam(required = false) List<String> experience,
+            @RequestParam(required = false) List<String> salaryRanges,
+            @RequestParam(required = false) String freshness) {
+
         boolean hasSearch = search != null && !search.isEmpty();
         boolean hasLocation = location != null && !location.isEmpty();
 
@@ -50,14 +56,13 @@ public class JobController {
             jobs = jobRepository.findAll();
         }
 
-        // Apply work mode filtering
+        // Work mode filter
         if (workModes != null && !workModes.isEmpty()) {
             jobs = jobs.stream().filter(job -> {
                 String loc = job.getLocation() != null ? job.getLocation().toLowerCase() : "";
                 boolean isRemote = loc.contains("remote");
                 boolean isHybrid = loc.contains("hybrid");
                 boolean isOffice = !isRemote && !isHybrid;
-                
                 for (String mode : workModes) {
                     if (mode.equalsIgnoreCase("Remote") && isRemote) return true;
                     if (mode.equalsIgnoreCase("Hybrid") && isHybrid) return true;
@@ -65,6 +70,56 @@ public class JobController {
                 }
                 return false;
             }).collect(Collectors.toList());
+        }
+
+        // Job type filter (Full-time, Part-time, Contract)
+        if (jobTypes != null && !jobTypes.isEmpty()) {
+            jobs = jobs.stream().filter(job -> {
+                String type = job.getType() != null ? job.getType() : "Full-time";
+                return jobTypes.stream().anyMatch(t -> t.equalsIgnoreCase(type));
+            }).collect(Collectors.toList());
+        }
+
+        // Companies filter
+        if (companies != null && !companies.isEmpty()) {
+            jobs = jobs.stream().filter(job ->
+                job.getCompany() != null && companies.stream().anyMatch(c -> c.equalsIgnoreCase(job.getCompany()))
+            ).collect(Collectors.toList());
+        }
+
+        // Industries filter (via tags)
+        if (industries != null && !industries.isEmpty()) {
+            jobs = jobs.stream().filter(job -> {
+                List<String> tags = job.getTags();
+                if (tags == null || tags.isEmpty()) return false;
+                return industries.stream().anyMatch(ind -> tags.stream().anyMatch(tag -> tag.equalsIgnoreCase(ind)));
+            }).collect(Collectors.toList());
+        }
+
+        // Experience filter
+        if (experience != null && !experience.isEmpty()) {
+            jobs = jobs.stream().filter(job -> {
+                String exp = job.getExperience() != null ? job.getExperience() : "Not specified";
+                return experience.stream().anyMatch(e -> e.equalsIgnoreCase(exp));
+            }).collect(Collectors.toList());
+        }
+
+        // Freshness filter
+        if (freshness != null && !freshness.isEmpty()) {
+            java.time.LocalDateTime cutoff;
+            switch (freshness) {
+                case "Last 24 hours": cutoff = java.time.LocalDateTime.now().minusDays(1); break;
+                case "Last 3 days":   cutoff = java.time.LocalDateTime.now().minusDays(3); break;
+                case "Last 7 days":   cutoff = java.time.LocalDateTime.now().minusDays(7); break;
+                case "Last 30 days":  cutoff = java.time.LocalDateTime.now().minusDays(30); break;
+                default:              cutoff = null;
+            }
+            if (cutoff != null) {
+                final java.time.LocalDateTime finalCutoff = cutoff;
+                jobs = jobs.stream().filter(job ->
+                    job.getPostedAt() != null && job.getPostedAt().isAfter(finalCutoff)
+                ).collect(Collectors.toList());
+            }
         }
 
         return jobs;

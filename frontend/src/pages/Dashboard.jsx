@@ -10,7 +10,7 @@ const Dashboard = () => {
   const [appliedJobs, setAppliedJobs] = useState(new Set());
   const [savedJobs, setSavedJobs] = useState(new Set());
   const [loading, setLoading] = useState(true);
-  const [searchParams, setSearchParams] = useState({ keyword: '', location: '', workModes: [] });
+  const [searchParams, setSearchParams] = useState({ keyword: '', location: '', workModes: [], jobTypes: [], companies: [], industries: [], experience: [], salary: [], freshness: [] });
 
   useEffect(() => {
     if (user?.email) {
@@ -45,9 +45,13 @@ const Dashboard = () => {
         const params = new URLSearchParams();
         if (searchParams.keyword) params.append('search', searchParams.keyword);
         if (searchParams.location) params.append('location', searchParams.location);
-        if (searchParams.workModes && searchParams.workModes.length > 0) {
-          params.append('workModes', searchParams.workModes.join(','));
-        }
+        if (searchParams.workModes?.length > 0) params.append('workModes', searchParams.workModes.join(','));
+        if (searchParams.jobTypes?.length > 0) params.append('jobTypes', searchParams.jobTypes.join(','));
+        if (searchParams.companies?.length > 0) params.append('companies', searchParams.companies.join(','));
+        if (searchParams.industries?.length > 0) params.append('industries', searchParams.industries.join(','));
+        if (searchParams.experience?.length > 0) params.append('experience', searchParams.experience.join(','));
+        if (searchParams.salary?.length > 0) params.append('salaryRanges', searchParams.salary.join(','));
+        if (searchParams.freshness?.length > 0) params.append('freshness', searchParams.freshness[0]);
         
         if (params.toString()) {
           url += `?${params.toString()}`;
