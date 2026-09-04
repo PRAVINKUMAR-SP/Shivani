@@ -13,6 +13,7 @@ import SavedJobs from './pages/SavedJobs';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import Notifications from './pages/Notifications';
+import Invites from './pages/Invites';
 import EmployerDashboard from './pages/EmployerDashboard';
 import PostJob from './pages/PostJob';
 import EmployerJobs from './pages/EmployerJobs';
@@ -41,6 +42,7 @@ function App() {
               <Route path="/dashboard/profile" element={<Profile />} />
               <Route path="/dashboard/settings" element={<Settings />} />
               <Route path="/dashboard/notifications" element={<Notifications />} />
+              <Route path="/dashboard/invites" element={<Invites />} />
               <Route path="/jobs/:id" element={<JobDetails />} />
               
               {/* Employer Routes */}
