@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import Home from './pages/Home';
 import Companies from './pages/Companies';
 import Services from './pages/Services';
@@ -55,6 +56,7 @@ function App() {
               <Route path="/admin/jobs" element={<AdminJobs />} />
               <Route path="/admin/settings" element={<AdminSettings />} />
             </Routes>
+            <Footer />
           </div>
         </BrowserRouter>
       </AuthProvider>
