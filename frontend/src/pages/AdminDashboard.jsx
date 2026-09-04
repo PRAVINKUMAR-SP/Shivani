@@ -24,6 +24,11 @@ const AdminDashboard = () => {
     };
 
     fetchStats();
+    
+    // Auto-reload stats every 5 seconds
+    const intervalId = setInterval(fetchStats, 5000);
+    
+    return () => clearInterval(intervalId);
   }, []);
 
   return (

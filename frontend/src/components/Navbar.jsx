@@ -38,7 +38,7 @@ const Navbar = () => {
           <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
             {user ? (
               <>
-                {user.email === 'pravin007ptk@gmail.com' && user.role !== 'ADMIN' && (
+                {user.email === 'pravin007ptk@gmail.com' || user.role === 'ADMIN' ? (
                   <Link
                     to="/admin/dashboard"
                     className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mr-2 text-sm flex items-center gap-2 shadow-sm"
@@ -46,14 +46,15 @@ const Navbar = () => {
                     <ShieldCheck className="w-4 h-4" />
                     Admin Dashboard
                   </Link>
+                ) : (
+                  <Link
+                    to={user.role === 'EMPLOYER' ? '/employer/dashboard' : '/dashboard'}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mr-2 text-sm flex items-center gap-2 shadow-sm"
+                  >
+                    <Briefcase className="w-4 h-4" />
+                    {user.role === 'EMPLOYER' ? 'Employer Dashboard' : 'Dashboard'}
+                  </Link>
                 )}
-                <Link
-                  to={user.role === 'ADMIN' ? '/admin/dashboard' : user.role === 'EMPLOYER' ? '/employer/dashboard' : '/dashboard'}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mr-2 text-sm flex items-center gap-2 shadow-sm"
-                >
-                  <Briefcase className="w-4 h-4" />
-                  {user.role === 'ADMIN' ? 'Admin Dashboard' : user.role === 'EMPLOYER' ? 'Employer Dashboard' : 'Dashboard'}
-                </Link>
                 <div className="flex items-center gap-3 bg-gray-50 py-1.5 px-2 rounded-full border border-gray-100 shadow-sm">
                   <img src={user.picture || `https://ui-avatars.com/api/?name=${user.name}&background=random`} alt={user.name} className="w-9 h-9 rounded-full border-2 border-white shadow-sm" />
                   <span className="font-bold text-slate-700 text-[15px] pr-2">{user.given_name || user.name}</span>
@@ -88,14 +89,25 @@ const Navbar = () => {
               <div className="border-t border-gray-100 pt-4 mt-2">
                 {user ? (
                   <>
-                    <Link
-                      to={user.role === 'ADMIN' ? '/admin/dashboard' : user.role === 'EMPLOYER' ? '/employer/dashboard' : '/dashboard'}
-                      onClick={() => setIsMobileMenuOpen(false)}
-                      className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mb-4 flex items-center justify-center gap-2"
-                    >
-                      <Briefcase className="w-4 h-4" />
-                      {user.role === 'ADMIN' ? 'Admin Dashboard' : user.role === 'EMPLOYER' ? 'Employer Dashboard' : 'Dashboard'}
-                    </Link>
+                    {user.email === 'pravin007ptk@gmail.com' || user.role === 'ADMIN' ? (
+                      <Link
+                        to="/admin/dashboard"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="block w-full text-center bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mb-4 flex items-center justify-center gap-2"
+                      >
+                        <ShieldCheck className="w-4 h-4" />
+                        Admin Dashboard
+                      </Link>
+                    ) : (
+                      <Link
+                        to={user.role === 'EMPLOYER' ? '/employer/dashboard' : '/dashboard'}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mb-4 flex items-center justify-center gap-2"
+                      >
+                        <Briefcase className="w-4 h-4" />
+                        {user.role === 'EMPLOYER' ? 'Employer Dashboard' : 'Dashboard'}
+                      </Link>
+                    )}
                     <div className="flex items-center justify-between px-3">
                       <div className="flex items-center gap-3">
                         <img src={user.picture || `https://ui-avatars.com/api/?name=${user.name}&background=random`} alt={user.name} className="w-9 h-9 rounded-full border-2 border-white shadow-sm" />
