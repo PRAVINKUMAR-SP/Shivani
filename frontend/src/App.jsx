@@ -25,6 +25,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers';
 import AdminJobs from './pages/AdminJobs';
 import AdminSettings from './pages/AdminSettings';
+import BackgroundBubbles from './components/BackgroundBubbles';
 import { AuthProvider } from './context/AuthContext';
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <div className="min-h-screen bg-white">
+            <BackgroundBubbles />
             <Navbar />
             <Routes>
               <Route path="/" element={<Home />} />
