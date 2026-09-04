@@ -72,7 +72,7 @@ public class ChatService {
             messages.add(currentMessage);
 
             Map<String, Object> requestBodyMap = new HashMap<>();
-            requestBodyMap.put("model", "llama3-8b-8192");
+            requestBodyMap.put("model", "llama-3.1-8b-instant");
             requestBodyMap.put("messages", messages);
             requestBodyMap.put("temperature", 0.7);
 
