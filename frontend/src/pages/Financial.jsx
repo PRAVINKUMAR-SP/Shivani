@@ -8,6 +8,7 @@ const Financial = () => {
   // Sliders state
   const [capital, setCapital] = useState(21000000);
   const [horizon, setHorizon] = useState(3);
+  const [cagr, setCagr] = useState(0.25);
   
   // Calculated state
   const [maturity, setMaturity] = useState(41015625);
@@ -16,16 +17,47 @@ const Financial = () => {
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Growth curve standard calculation for demo (matches screenshot numbers roughly: 21m -> 41m in 3 years is about ~25% CAGR)
+  // Growth curve standard calculation for demo
   useEffect(() => {
-    // 25% CAGR for calculation
-    const rate = 0.25;
-    const calculatedMaturity = capital * Math.pow((1 + rate), horizon);
+    const calculatedMaturity = capital * Math.pow((1 + cagr), horizon);
     const calculatedRoi = ((calculatedMaturity - capital) / capital) * 100;
     
     setMaturity(Math.round(calculatedMaturity));
     setRoi(calculatedRoi.toFixed(1));
-  }, [capital, horizon]);
+  }, [capital, horizon, cagr]);
+
+  // Graph point calculations
+  const maxYears = 5;
+  const graphWidth = 480; // 500 - 20 (padding)
+  const graphHeight = 160; // 200 - 40 (padding)
+  const paddingX = 10;
+  const paddingYBottom = 180;
+
+  const graphPoints = Array.from({ length: maxYears + 1 }).map((_, i) => {
+    const x = paddingX + (i / maxYears) * graphWidth;
+    // For visual plotting, if cagr is 0, it's a flat line. Otherwise exponential.
+    const ratio = cagr === 0 ? 0 : (Math.pow(1 + cagr, i) - 1) / (Math.pow(1 + cagr, maxYears) - 1);
+    const y = paddingYBottom - (ratio * graphHeight);
+    return { x, y };
+  });
+
+  const generatePath = (points) => {
+    if (points.length === 0) return '';
+    let d = `M ${points[0].x},${points[0].y}`;
+    for (let i = 1; i < points.length; i++) {
+      const pPrev = points[i - 1];
+      const pCurr = points[i];
+      const cp1x = pPrev.x + (pCurr.x - pPrev.x) / 2;
+      const cp1y = pPrev.y;
+      const cp2x = pPrev.x + (pCurr.x - pPrev.x) / 2;
+      const cp2y = pCurr.y;
+      d += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${pCurr.x},${pCurr.y}`;
+    }
+    return d;
+  };
+
+  const pathD = generatePath(graphPoints);
+  const activePoint = graphPoints[horizon];
 
   return (
     <div className="bg-gray-50 min-h-screen py-16 px-4 sm:px-6 lg:px-8 font-sans">
@@ -70,9 +102,24 @@ const Financial = () => {
               <p className="text-gray-500 mt-1">Map your strategic capital against our scaled business trajectories.</p>
             </div>
             <div className="flex flex-wrap gap-2 bg-gray-100 p-1 rounded-xl">
-              <button className="px-4 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-white hover:shadow-sm transition-all">15% Conservative</button>
-              <button className="px-4 py-2 text-sm font-bold text-blue-700 bg-white shadow-sm rounded-lg transition-all border border-blue-100">25% Core Target</button>
-              <button className="px-4 py-2 text-sm font-medium text-gray-600 rounded-lg hover:bg-white hover:shadow-sm transition-all">35% High Velocity</button>
+              <button 
+                onClick={() => setCagr(0.15)}
+                className={`px-4 py-2 text-sm rounded-lg transition-all ${cagr === 0.15 ? 'font-bold text-blue-700 bg-white shadow-sm border border-blue-100' : 'font-medium text-gray-600 hover:bg-white hover:shadow-sm'}`}
+              >
+                15% Conservative
+              </button>
+              <button 
+                onClick={() => setCagr(0.25)}
+                className={`px-4 py-2 text-sm rounded-lg transition-all ${cagr === 0.25 ? 'font-bold text-blue-700 bg-white shadow-sm border border-blue-100' : 'font-medium text-gray-600 hover:bg-white hover:shadow-sm'}`}
+              >
+                25% Core Target
+              </button>
+              <button 
+                onClick={() => setCagr(0.35)}
+                className={`px-4 py-2 text-sm rounded-lg transition-all ${cagr === 0.35 ? 'font-bold text-blue-700 bg-white shadow-sm border border-blue-100' : 'font-medium text-gray-600 hover:bg-white hover:shadow-sm'}`}
+              >
+                35% High Velocity
+              </button>
             </div>
           </div>
 
@@ -168,7 +215,7 @@ const Financial = () => {
                 <div className="text-right">
                   <p className="text-xs font-medium text-gray-400 mb-1">Trajectory Selected</p>
                   <span className="inline-block bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1 rounded-lg text-sm font-bold">
-                    25% CAGR
+                    {cagr * 100}% CAGR
                   </span>
                 </div>
               </div>
@@ -179,21 +226,22 @@ const Financial = () => {
                   {/* Grid lines */}
                   <line x1="0" y1="180" x2="500" y2="180" stroke="#334155" strokeWidth="1" strokeDasharray="4 4" />
                   
-                  {/* Main curve (simulate exponential growth) */}
+                  {/* Main curve */}
                   <path 
-                    d="M 10,180 Q 150,160 250,110 T 490,20" 
+                    d={pathD} 
                     fill="none" 
                     stroke="url(#blueGradient)" 
                     strokeWidth="6" 
                     strokeLinecap="round"
+                    className="transition-all duration-500 ease-out"
                   />
                   
                   {/* Current point (glow) */}
-                  <ellipse cx="250" cy="110" rx="12" ry="6" fill="#10b981" />
-                  <ellipse cx="250" cy="110" rx="20" ry="10" fill="#10b981" opacity="0.3" />
+                  <ellipse cx={activePoint.x} cy={activePoint.y} rx="12" ry="6" fill="#10b981" className="transition-all duration-500 ease-out" />
+                  <ellipse cx={activePoint.x} cy={activePoint.y} rx="20" ry="10" fill="#10b981" opacity="0.3" className="transition-all duration-500 ease-out" />
 
                   {/* Start point */}
-                  <ellipse cx="10" cy="180" rx="8" ry="4" fill="#3b82f6" />
+                  <ellipse cx={graphPoints[0].x} cy={graphPoints[0].y} rx="8" ry="4" fill="#3b82f6" />
                   
                   <defs>
                     <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -206,12 +254,11 @@ const Financial = () => {
 
               {/* X Axis Labels */}
               <div className="flex justify-between text-[10px] sm:text-xs font-bold text-gray-500 z-10 mb-6">
-                <span>YEAR 0</span>
-                <span>YEAR 1</span>
-                <span>YEAR 2</span>
-                <span className="text-blue-400 text-sm">YEAR 3</span>
-                <span>YEAR 4</span>
-                <span>YEAR 5</span>
+                {[0, 1, 2, 3, 4, 5].map((year) => (
+                  <span key={year} className={year === horizon ? "text-blue-400 text-sm transition-all" : "transition-all"}>
+                    YEAR {year}
+                  </span>
+                ))}
               </div>
 
               <div className="flex justify-between items-center z-10 text-xs text-gray-400 pt-4 border-t border-gray-800">
