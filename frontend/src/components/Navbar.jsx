@@ -56,18 +56,20 @@ const Navbar = () => {
                       Admin Dashboard
                     </Link>
                   )
-                ) : (
+                ) : user.role === 'EMPLOYER' ? (
                   <Link
-                    to={user.role === 'EMPLOYER' ? '/employer/dashboard' : '/dashboard'}
+                    to="/employer/dashboard"
                     className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mr-2 text-sm flex items-center gap-2 shadow-sm"
                   >
                     <Briefcase className="w-4 h-4" />
-                    {user.role === 'EMPLOYER' ? 'Employer Dashboard' : 'Dashboard'}
+                    Employer Dashboard
                   </Link>
-                )}
+                ) : null}
                 <div className="flex items-center gap-3 bg-gray-50 py-1.5 px-2 rounded-full border border-gray-100 shadow-sm">
-                  <img src={user.picture || `https://ui-avatars.com/api/?name=${user.name}&background=random`} alt={user.name} className="w-9 h-9 rounded-full border-2 border-white shadow-sm" />
-                  <span className="font-bold text-slate-700 text-[15px] pr-2">{user.given_name || user.name}</span>
+                  <Link to="/dashboard" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                    <img src={user.picture || `https://ui-avatars.com/api/?name=${user.name}&background=random`} alt={user.name} className="w-9 h-9 rounded-full border-2 border-white shadow-sm" />
+                    <span className="font-bold text-slate-700 text-[15px] pr-2">{user.given_name || user.name}</span>
+                  </Link>
                   <button onClick={logout} className="text-red-500 hover:bg-red-50 p-2 rounded-full transition-colors mr-1">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                   </button>
@@ -119,21 +121,21 @@ const Navbar = () => {
                           Admin Dashboard
                         </Link>
                       )
-                    ) : (
+                    ) : user.role === 'EMPLOYER' ? (
                       <Link
-                        to={user.role === 'EMPLOYER' ? '/employer/dashboard' : '/dashboard'}
+                        to="/employer/dashboard"
                         onClick={() => setIsMobileMenuOpen(false)}
                         className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mb-4 flex items-center justify-center gap-2"
                       >
                         <Briefcase className="w-4 h-4" />
-                        {user.role === 'EMPLOYER' ? 'Employer Dashboard' : 'Dashboard'}
+                        Employer Dashboard
                       </Link>
-                    )}
+                    ) : null}
                     <div className="flex items-center justify-between px-3">
-                      <div className="flex items-center gap-3">
+                      <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3">
                         <img src={user.picture || `https://ui-avatars.com/api/?name=${user.name}&background=random`} alt={user.name} className="w-9 h-9 rounded-full border-2 border-white shadow-sm" />
                         <span className="font-bold text-slate-700">{user.given_name || user.name}</span>
-                      </div>
+                      </Link>
                       <button onClick={() => { logout(); setIsMobileMenuOpen(false); }} className="text-red-500 font-medium">Log out</button>
                     </div>
                   </>
