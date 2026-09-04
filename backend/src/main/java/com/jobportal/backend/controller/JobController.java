@@ -139,7 +139,11 @@ public class JobController {
         }
 
         User employer = userRepository.findByEmail(employerEmail).orElse(null);
-        if (employer == null || !"EMPLOYER".equalsIgnoreCase(employer.getRole())) {
+        if (employer == null) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        String role = employer.getRole() != null ? employer.getRole().toUpperCase() : "";
+        if (!role.equals("EMPLOYER") && !role.equals("ADMIN")) {
             return ResponseEntity.badRequest().body("User is not an employer");
         }
 
