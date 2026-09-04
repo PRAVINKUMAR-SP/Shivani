@@ -7,7 +7,6 @@ import Home from './pages/Home';
 import Companies from './pages/Companies';
 import Services from './pages/Services';
 import Financial from './pages/Financial';
-import About from './pages/About';
 import Contact from './pages/Contact';
 import Dashboard from './pages/Dashboard';
 import JobDetails from './pages/JobDetails';
@@ -39,7 +38,6 @@ function App() {
               <Route path="/companies" element={<Companies />} />
               <Route path="/services" element={<Services />} />
               <Route path="/financial" element={<Financial />} />
-              <Route path="/about" element={<About />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/dashboard/applied" element={<AppliedJobs />} />
