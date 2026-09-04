@@ -211,7 +211,7 @@ const ApplicantCard = ({ application, employerName, onStatusChange }) => {
             {/* Resume Download */}
             {(resumeUrl || profile.resumeUrl) && (
               <a
-                href={resumeUrl || profile.resumeUrl}
+                href={`${API}${resumeUrl || profile.resumeUrl}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 transition-colors"

@@ -105,11 +105,22 @@ const Profile = () => {
       const data = await response.json();
       
       if (response.ok) {
-        setProfile(prev => ({
-          ...prev,
-          resumeFileName: data.fileName || prev.resumeFileName,
-          resumeUrl: data.resumeUrl || prev.resumeUrl
-        }));
+        const newProfile = {
+          ...profile,
+          resumeFileName: data.fileName || profile.resumeFileName,
+          resumeUrl: data.resumeUrl || profile.resumeUrl
+        };
+        setProfile(newProfile);
+
+        // Auto-save the resume URL to the database
+        const API = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081';
+        const skillsArray = newProfile.skills ? newProfile.skills.split(',').map(s => s.trim()).filter(s => s) : [];
+        await fetch(`${API}/api/profile/${user.email}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...newProfile, skills: skillsArray })
+        });
+
         setMessage('Resume uploaded successfully!');
       } else {
         setMessage(data.error || 'Failed to upload resume.');
