@@ -69,51 +69,51 @@ const JobCard = ({ job, applied, saved: initialSaved }) => {
   return (
     <div 
       onClick={() => navigate(`/jobs/${job.id}`)}
-      className="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative group cursor-pointer"
+      className="bg-white dark:bg-slate-800 border border-gray-100 dark:border-slate-700 rounded-2xl p-6 shadow-sm dark:shadow-none hover:shadow-md hover:-translate-y-1 transition-all duration-300 relative group cursor-pointer"
     >
       <div 
         onClick={handleToggleSave}
-        className={`absolute top-6 right-6 transition-colors ${isSaved ? 'text-blue-500' : 'text-gray-300 hover:text-blue-500'}`}
+        className={`absolute top-6 right-6 transition-colors ${isSaved ? 'text-blue-500 dark:text-blue-400' : 'text-gray-300 dark:text-gray-600 hover:text-blue-500 dark:hover:text-blue-400'}`}
       >
         <Bookmark className="w-6 h-6" fill={isSaved ? "currentColor" : "none"} />
       </div>
       
       <div className="flex items-center gap-4 mb-4">
-        <div className="w-12 h-12 rounded-xl bg-gray-50 flex items-center justify-center border border-gray-100 shadow-sm">
-          <span className="text-xl font-bold text-blue-600">{job.company.charAt(0)}</span>
+        <div className="w-12 h-12 rounded-xl bg-gray-50 dark:bg-slate-700 flex items-center justify-center border border-gray-100 dark:border-slate-600 shadow-sm">
+          <span className="text-xl font-bold text-blue-600 dark:text-blue-400">{job.company.charAt(0)}</span>
         </div>
         <div>
-          <h3 className="font-bold text-lg text-gray-900 group-hover:text-blue-600 transition-colors">{job.title}</h3>
-          <p className="text-gray-500 font-medium text-sm">{job.company}</p>
+          <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">{job.title}</h3>
+          <p className="text-gray-500 dark:text-gray-400 font-medium text-sm">{job.company}</p>
         </div>
       </div>
 
       <div className="flex flex-wrap gap-y-2 gap-x-4 mb-5">
-        <div className="flex items-center text-gray-500 text-sm font-medium">
-          <MapPin className="w-4 h-4 mr-1.5 text-gray-400" />
+        <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm font-medium">
+          <MapPin className="w-4 h-4 mr-1.5 text-gray-400 dark:text-gray-500" />
           {job.location}
         </div>
-        <div className="flex items-center text-gray-500 text-sm font-medium">
-          <IndianRupee className="w-4 h-4 mr-1.5 text-gray-400" />
+        <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm font-medium">
+          <IndianRupee className="w-4 h-4 mr-1.5 text-gray-400 dark:text-gray-500" />
           {job.salary?.replace(/\$/g, '₹')}
         </div>
-        <div className="flex items-center text-gray-500 text-sm font-medium">
-          <Clock className="w-4 h-4 mr-1.5 text-gray-400" />
+        <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm font-medium">
+          <Clock className="w-4 h-4 mr-1.5 text-gray-400 dark:text-gray-500" />
           {job.type}
         </div>
       </div>
 
       <div className="flex flex-wrap gap-2 mb-6">
         {(job.tags || []).map((tag, idx) => (
-          <span key={idx} className="bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-xs font-semibold">
+          <span key={idx} className="bg-blue-50 dark:bg-slate-700 text-blue-700 dark:text-blue-400 px-3 py-1 rounded-lg text-xs font-semibold">
             {tag}
           </span>
         ))}
       </div>
 
-      <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
-        <span className="text-xs font-bold text-gray-400">{formatTimeAgo(job.postedAt)}</span>
-        <button className={`font-bold text-sm px-4 py-2 rounded-lg transition-colors ${applied ? 'bg-green-50 text-green-700' : 'text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100'}`}>
+      <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100 dark:border-slate-700">
+        <span className="text-xs font-bold text-gray-400 dark:text-gray-500">{formatTimeAgo(job.postedAt)}</span>
+        <button className={`font-bold text-sm px-4 py-2 rounded-lg transition-colors ${applied ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400' : 'text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 bg-blue-50 dark:bg-slate-700 hover:bg-blue-100 dark:hover:bg-slate-600'}`}>
           {applied ? 'Applied ✓' : 'Apply Now'}
         </button>
       </div>

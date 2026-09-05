@@ -48,10 +48,10 @@ const Contact = () => {
         {/* Left Side: Text and Info */}
         <div className="w-full lg:w-1/2 flex flex-col items-start text-left space-y-6">
           <div>
-            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight mb-4">
+            <h1 className="text-4xl sm:text-5xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight mb-4">
               Get in <span className="text-indigo-600">Touch</span>
             </h1>
-            <p className="text-lg text-gray-600 font-medium leading-relaxed max-w-lg">
+            <p className="text-lg text-gray-600 dark:text-gray-400 font-medium leading-relaxed max-w-lg">
               Have a question about our platform, pricing, or looking to partner with us? Our dedicated support team is here to help you every step of the way. Fill out the form or give us a call.
             </p>
           </div>
@@ -63,8 +63,8 @@ const Contact = () => {
                 <MapPin className="w-6 h-6 text-indigo-600 fill-indigo-600/20" />
               </div>
               <div>
-                <h3 className="font-extrabold text-gray-900 text-[18px] mb-1.5">Our Location</h3>
-                <p className="text-gray-500 font-medium text-[15px] leading-relaxed max-w-[320px]">
+                <h3 className="font-extrabold text-gray-900 dark:text-gray-100 text-[18px] mb-1.5">Our Location</h3>
+                <p className="text-gray-500 dark:text-gray-400 font-medium text-[15px] leading-relaxed max-w-[320px]">
                   Shivani Technologies, old No.36, New No.109, Third Floor, No.3C MTH Road, DL Complex, Villivakkam, Chennai-600 049
                 </p>
               </div>
@@ -75,8 +75,8 @@ const Contact = () => {
                 <Mail className="w-6 h-6 text-indigo-600 fill-indigo-600/20" />
               </div>
               <div>
-                <h3 className="font-extrabold text-gray-900 text-[18px] mb-1">Email Us</h3>
-                <p className="text-gray-500 font-medium text-[15px]">Hr@shivanitech.in</p>
+                <h3 className="font-extrabold text-gray-900 dark:text-gray-100 text-[18px] mb-1">Email Us</h3>
+                <p className="text-gray-500 dark:text-gray-400 font-medium text-[15px]">Hr@shivanitech.in</p>
               </div>
             </div>
 
@@ -85,8 +85,8 @@ const Contact = () => {
                 <Phone className="w-6 h-6 text-indigo-600 fill-indigo-600/20" />
               </div>
               <div>
-                <h3 className="font-extrabold text-gray-900 text-[18px] mb-1">Call Support</h3>
-                <p className="text-gray-500 font-medium text-[15px] tracking-wide">+91 97907 04999</p>
+                <h3 className="font-extrabold text-gray-900 dark:text-gray-100 text-[18px] mb-1">Call Support</h3>
+                <p className="text-gray-500 dark:text-gray-400 font-medium text-[15px] tracking-wide">+91 97907 04999</p>
               </div>
             </div>
 
@@ -95,7 +95,7 @@ const Contact = () => {
 
         {/* Right Side: Form */}
         <div className="w-full lg:w-1/2 flex justify-center lg:justify-end">
-          <div className="max-w-md w-full bg-white rounded-3xl p-6 shadow-sm border border-gray-100">
+          <div className="max-w-md w-full bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-gray-100 dark:border-slate-700">
 
             {status.success && (
               <div className="mb-6 bg-green-50 text-green-700 p-4 rounded-xl text-sm font-medium border border-green-100">
@@ -120,7 +120,7 @@ const Contact = () => {
                   placeholder="John Doe"
                   value={formData.name}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
+                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
                 />
               </div>
 
@@ -133,7 +133,7 @@ const Contact = () => {
                   placeholder="john@example.com"
                   value={formData.email}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
+                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
                 />
               </div>
 
@@ -146,7 +146,7 @@ const Contact = () => {
                   placeholder="9876543210"
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
+                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
                 />
               </div>
 
@@ -158,7 +158,7 @@ const Contact = () => {
                   placeholder="Business Inquiry"
                   value={formData.subject}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
+                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium text-sm"
                 />
               </div>
 
@@ -171,7 +171,7 @@ const Contact = () => {
                   placeholder="Tell us about your project requirements..."
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 bg-gray-50/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium resize-none text-sm"
+                  className="w-full px-4 py-2.5 bg-gray-50 dark:bg-slate-700/50 border border-gray-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-colors text-gray-700 font-medium resize-none text-sm"
                 ></textarea>
               </div>
 

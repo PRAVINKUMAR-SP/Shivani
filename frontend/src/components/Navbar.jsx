@@ -1,44 +1,53 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Briefcase, Menu, X, ShieldCheck } from 'lucide-react';
+import { Briefcase, Menu, X, ShieldCheck, Moon, Sun } from 'lucide-react';
 import LoginModal from './LoginModal';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
   const location = useLocation();
   const { user, logout, isLoginModalOpen, openLoginModal, closeLoginModal } = useAuth();
+  const { isDarkMode, toggleDarkMode } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isActive = (path) => location.pathname === path;
   
   return (
-    <div className="w-full py-4 px-4 sm:px-6 lg:px-8 bg-gray-50 sticky top-0 z-50">
-      <nav className="bg-white shadow-[0_0_20px_rgba(0,0,0,0.1)] border-b-[3px] border-gray-100 w-full relative z-50 rounded-2xl">
+    <div className="w-full py-4 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-slate-900 sticky top-0 z-50 transition-colors duration-200">
+      <nav className="bg-white dark:bg-slate-800 shadow-[0_0_20px_rgba(0,0,0,0.1)] dark:shadow-none border-b-[3px] border-gray-100 dark:border-slate-700 w-full relative z-50 rounded-2xl transition-colors duration-200">
         <div className="w-full mx-auto px-4 sm:px-6 lg:px-12">
         <div className="flex justify-between h-24">
           <div className="flex items-center">
             <Link to="/" className="flex items-center gap-2 sm:gap-4 mr-4">
               <img src="/logo.png" alt="Shivani Technologies Logo" className="h-10 sm:h-16 w-auto object-contain" />
-              <span className="font-bold text-lg sm:text-2xl tracking-tight text-blue-700 whitespace-nowrap">SHIVANI TECHNOLOGIES</span>
+              <span className="font-bold text-lg sm:text-2xl tracking-tight text-blue-700 dark:text-blue-400 whitespace-nowrap">SHIVANI TECHNOLOGIES</span>
             </Link>
             <div className="hidden sm:ml-10 sm:flex sm:space-x-10">
-              <Link to="/" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/') ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>
+              <Link to="/" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/') ? 'border-blue-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white'}`}>
                 Jobs
               </Link>
-              <Link to="/companies" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/companies') ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>
+              <Link to="/companies" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/companies') ? 'border-blue-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white'}`}>
                 Companies
               </Link>
-              <Link to="/services" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/services') ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>
+              <Link to="/services" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/services') ? 'border-blue-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white'}`}>
                 Services
               </Link>
-              <Link to="/financial" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/financial') ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>
+              <Link to="/financial" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/financial') ? 'border-blue-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white'}`}>
                 Financial
               </Link>
-              <Link to="/contact" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/contact') ? 'border-blue-500 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700'}`}>
+              <Link to="/contact" className={`inline-flex items-center px-1 pt-1 border-b-2 text-lg font-medium transition-colors ${isActive('/contact') ? 'border-blue-500 text-gray-900 dark:text-white' : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 hover:text-gray-700 dark:hover:text-white'}`}>
                 Contact Us
               </Link>
             </div>
           </div>
           <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 rounded-xl text-gray-500 hover:bg-gray-100 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
             {user ? (
               <>
                 {user.email === 'pravin007ptk@gmail.com' || user.role === 'ADMIN' ? (
@@ -73,13 +82,20 @@ const Navbar = () => {
                 </Link>
               </>
             ) : (
-              <button onClick={openLoginModal} className="text-blue-600 font-bold text-lg hover:underline px-4 py-2 hover:bg-blue-50 rounded-lg transition-colors">Sign in</button>
+              <button onClick={openLoginModal} className="text-blue-600 dark:text-blue-400 font-bold text-lg hover:underline px-4 py-2 hover:bg-blue-50 dark:hover:bg-slate-700 rounded-lg transition-colors">Sign in</button>
             )}
           </div>
-          <div className="flex items-center sm:hidden">
+          <div className="flex items-center sm:hidden space-x-2">
+            <button
+              onClick={toggleDarkMode}
+              className="p-2 rounded-xl text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-700 transition-colors"
+              aria-label="Toggle dark mode"
+            >
+              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            </button>
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100"
+              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-300 hover:text-gray-500 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-slate-700"
             >
               {isMobileMenuOpen ? <X className="block h-6 w-6" /> : <Menu className="block h-6 w-6" />}
             </button>
@@ -88,15 +104,15 @@ const Navbar = () => {
         
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="sm:hidden border-t border-gray-100 py-4">
+          <div className="sm:hidden border-t border-gray-100 dark:border-slate-700 py-4 transition-colors duration-200">
             <div className="flex flex-col space-y-4 px-2 pt-2 pb-3">
-              <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}>Jobs</Link>
-              <Link to="/companies" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/companies') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}>Companies</Link>
-              <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/services') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}>Services</Link>
-              <Link to="/financial" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/financial') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}>Financial</Link>
-              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/contact') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-50'}`}>Contact Us</Link>
+              <Link to="/" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/') ? 'bg-blue-50 dark:bg-slate-700 text-blue-700 dark:text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'}`}>Jobs</Link>
+              <Link to="/companies" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/companies') ? 'bg-blue-50 dark:bg-slate-700 text-blue-700 dark:text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'}`}>Companies</Link>
+              <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/services') ? 'bg-blue-50 dark:bg-slate-700 text-blue-700 dark:text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'}`}>Services</Link>
+              <Link to="/financial" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/financial') ? 'bg-blue-50 dark:bg-slate-700 text-blue-700 dark:text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'}`}>Financial</Link>
+              <Link to="/contact" onClick={() => setIsMobileMenuOpen(false)} className={`block px-3 py-2 rounded-md text-base font-medium ${isActive('/contact') ? 'bg-blue-50 dark:bg-slate-700 text-blue-700 dark:text-white' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-700'}`}>Contact Us</Link>
               
-              <div className="border-t border-gray-100 pt-4 mt-2">
+              <div className="border-t border-gray-100 dark:border-slate-700 pt-4 mt-2">
                 {user ? (
                   <>
                     {user.email === 'pravin007ptk@gmail.com' || user.role === 'ADMIN' ? (
@@ -132,14 +148,17 @@ const Navbar = () => {
                     <div className="flex items-center justify-between px-3">
                       <Link to="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-3">
                         <img src={user.picture || `https://ui-avatars.com/api/?name=${user.name}&background=random`} alt={user.name} className="w-9 h-9 rounded-full border-2 border-white shadow-sm" />
-                        <span className="font-bold text-slate-700">{user.given_name || user.name}</span>
+                        <span className="font-bold text-slate-700 dark:text-slate-200">{user.given_name || user.name}</span>
                       </Link>
                       <button onClick={() => { logout(); setIsMobileMenuOpen(false); }} className="text-red-500 font-medium">Log out</button>
                     </div>
                   </>
-                ) : (
-                  <button onClick={() => { openLoginModal(); setIsMobileMenuOpen(false); }} className="w-full text-center text-blue-600 font-bold bg-blue-50 px-4 py-2 rounded-lg">Sign in</button>
-                )}
+                  ) : (
+                    <button onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      openLoginModal();
+                    }} className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-slate-700">Sign in</button>
+                  )}
               </div>
             </div>
           </div>

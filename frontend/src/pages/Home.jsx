@@ -50,17 +50,17 @@ const Home = () => {
   if (user) return null;
 
   return (
-    <div className="bg-white min-h-[calc(100vh-96px)] flex flex-col items-center justify-start pt-12 p-4 pb-20">
+    <div className="bg-white dark:bg-slate-900 min-h-[calc(100vh-96px)] flex flex-col items-center justify-start pt-12 p-4 pb-20 transition-colors duration-200">
       <div className="max-w-xl w-full flex flex-col items-center text-center">
 
         
         {/* Main Heading */}
-        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4 tracking-tight">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4 tracking-tight transition-colors">
           Your next job starts here
         </h1>
         
         {/* Subtitle */}
-        <p className="text-lg text-gray-800 mb-8">
+        <p className="text-lg text-gray-800 dark:text-gray-300 mb-8 transition-colors">
           Create an account or sign in to see your personalised job recommendations.
         </p>
         
@@ -77,13 +77,13 @@ const Home = () => {
           {categories.map((cat, idx) => (
             <div 
               key={idx} 
-              className="flex items-center px-4 py-3 bg-white border border-gray-200 rounded-xl shadow-sm hover:shadow-md hover:border-gray-300 cursor-pointer transition-all min-w-[160px]"
+              className="flex items-center px-4 py-3 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl shadow-sm dark:shadow-none hover:shadow-md hover:border-gray-300 dark:hover:border-slate-600 cursor-pointer transition-all min-w-[160px]"
             >
-              <div className={`p-2 rounded-full ${cat.color} mr-3`}>
-                <cat.icon className="h-5 w-5 text-gray-700" strokeWidth={1.5} />
+              <div className={`p-2 rounded-full ${cat.color} dark:bg-slate-700 mr-3 transition-colors`}>
+                <cat.icon className="h-5 w-5 text-gray-700 dark:text-gray-300 transition-colors" strokeWidth={1.5} />
               </div>
-              <span className="font-semibold text-gray-900 text-sm">{cat.name}</span>
-              <ChevronRight className="h-4 w-4 text-gray-400 ml-auto" strokeWidth={2} />
+              <span className="font-semibold text-gray-900 dark:text-gray-100 text-sm transition-colors">{cat.name}</span>
+              <ChevronRight className="h-4 w-4 text-gray-400 dark:text-gray-500 ml-auto transition-colors" strokeWidth={2} />
             </div>
           ))}
         </div>

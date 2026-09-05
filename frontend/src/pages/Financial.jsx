@@ -113,60 +113,60 @@ const Financial = () => {
   const activePoint = graphPoints[horizon];
 
   return (
-    <div className="bg-gray-50 min-h-screen py-16 px-4 sm:px-6 lg:px-8 font-sans">
+    <div className="bg-gray-50 dark:bg-slate-700 dark:bg-slate-900 min-h-screen py-16 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-7xl mx-auto space-y-16">
         
         {/* 1. Hero Section */}
         <div className="text-center max-w-4xl mx-auto space-y-6">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-gray-100 tracking-tight leading-tight">
             Accelerating <span className="text-blue-600">Digital Health Tech</span> & Enterprise Architectures
           </h1>
-          <p className="text-lg text-gray-600 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-3xl mx-auto">
             Shivani Technologies builds scalable cloud infrastructure, custom telehealth products, Traditional Ayurveda networks, and automated hospital record ecosystems targeting an exponential global landscape.
           </p>
           
           <div className="flex flex-wrap justify-center gap-4 pt-6">
-            <div className="bg-white border border-gray-200 rounded-2xl p-4 min-w-[200px] shadow-sm">
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Floor Valuation</p>
-              <p className="text-xl font-extrabold text-gray-900">₹4.5 Billion</p>
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 min-w-[200px] shadow-sm">
+              <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Floor Valuation</p>
+              <p className="text-xl font-extrabold text-gray-900 dark:text-gray-100">₹4.5 Billion</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-2xl p-4 min-w-[200px] shadow-sm">
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Headquarters</p>
-              <p className="text-xl font-extrabold text-gray-900">Chennai / Blr</p>
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 min-w-[200px] shadow-sm">
+              <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Headquarters</p>
+              <p className="text-xl font-extrabold text-gray-900 dark:text-gray-100">Chennai / Blr</p>
             </div>
-            <div className="bg-white border border-gray-200 rounded-2xl p-4 min-w-[200px] shadow-sm">
-              <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Target Cap Pool</p>
-              <p className="text-xl font-extrabold text-gray-900">₹750 Million</p>
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-4 min-w-[200px] shadow-sm">
+              <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Target Cap Pool</p>
+              <p className="text-xl font-extrabold text-gray-900 dark:text-gray-100">₹750 Million</p>
             </div>
           </div>
         </div>
 
         {/* 2. Financial Projection Engine */}
-        <div className="bg-white border border-gray-200 rounded-3xl p-6 lg:p-10 shadow-sm">
+        <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-3xl p-6 lg:p-10 shadow-sm">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-10 gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 flex items-center gap-2">
                 <TrendingUp className="w-7 h-7 text-blue-600" />
                 Financial Projection Engine
               </h2>
-              <p className="text-gray-500 mt-1">Map your strategic capital against our scaled business trajectories.</p>
+              <p className="text-gray-500 dark:text-gray-400 mt-1">Map your strategic capital against our scaled business trajectories.</p>
             </div>
-            <div className="flex flex-wrap gap-2 bg-gray-100 p-1 rounded-xl">
+            <div className="flex flex-wrap gap-2 bg-gray-100 dark:bg-slate-600 p-1 rounded-xl">
               <button 
                 onClick={() => setCagr(0.15)}
-                className={`px-4 py-2 text-sm rounded-lg transition-all ${cagr === 0.15 ? 'font-bold text-blue-700 bg-white shadow-sm border border-blue-100' : 'font-medium text-gray-600 hover:bg-white hover:shadow-sm'}`}
+                className={`px-4 py-2 text-sm rounded-lg transition-all ${cagr === 0.15 ? 'font-bold text-blue-700 bg-white shadow-sm border border-blue-100' : 'font-medium text-gray-600 dark:text-gray-400 hover:bg-white hover:shadow-sm'}`}
               >
                 15% Conservative
               </button>
               <button 
                 onClick={() => setCagr(0.25)}
-                className={`px-4 py-2 text-sm rounded-lg transition-all ${cagr === 0.25 ? 'font-bold text-blue-700 bg-white shadow-sm border border-blue-100' : 'font-medium text-gray-600 hover:bg-white hover:shadow-sm'}`}
+                className={`px-4 py-2 text-sm rounded-lg transition-all ${cagr === 0.25 ? 'font-bold text-blue-700 bg-white shadow-sm border border-blue-100' : 'font-medium text-gray-600 dark:text-gray-400 hover:bg-white hover:shadow-sm'}`}
               >
                 25% Core Target
               </button>
               <button 
                 onClick={() => setCagr(0.35)}
-                className={`px-4 py-2 text-sm rounded-lg transition-all ${cagr === 0.35 ? 'font-bold text-blue-700 bg-white shadow-sm border border-blue-100' : 'font-medium text-gray-600 hover:bg-white hover:shadow-sm'}`}
+                className={`px-4 py-2 text-sm rounded-lg transition-all ${cagr === 0.35 ? 'font-bold text-blue-700 bg-white shadow-sm border border-blue-100' : 'font-medium text-gray-600 dark:text-gray-400 hover:bg-white hover:shadow-sm'}`}
               >
                 35% High Velocity
               </button>
@@ -178,7 +178,7 @@ const Financial = () => {
             <div className="space-y-8">
               <div>
                 <div className="flex justify-between mb-4">
-                  <span className="text-sm font-bold text-gray-500 uppercase tracking-wider">Investment Capital (INR)</span>
+                  <span className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Investment Capital (INR)</span>
                   <span className="text-xl font-bold text-blue-600">₹{capital.toLocaleString('en-IN')}</span>
                 </div>
                 <input
@@ -202,7 +202,7 @@ const Financial = () => {
                       type="number" 
                       value={capital}
                       onChange={(e) => setCapital(Number(e.target.value))}
-                      className="w-full pl-8 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      className="w-full pl-8 pr-4 py-2.5 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-700 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                     />
                   </div>
                   <button className="bg-blue-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-700 transition-colors">Apply</button>
@@ -211,7 +211,7 @@ const Financial = () => {
 
               <div>
                 <div className="flex justify-between mb-4">
-                  <span className="text-sm font-bold text-gray-500 uppercase tracking-wider">Horizon Duration</span>
+                  <span className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Horizon Duration</span>
                   <span className="text-xl font-bold text-blue-600">{horizon} Years</span>
                 </div>
                 <input
@@ -233,24 +233,24 @@ const Financial = () => {
                     type="number" 
                     value={horizon}
                     onChange={(e) => setHorizon(Number(e.target.value))}
-                    className="flex-1 px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="flex-1 px-4 py-2.5 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-700 rounded-xl text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                   />
                   <button className="bg-blue-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:bg-blue-700 transition-colors">Apply</button>
                 </div>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5">
-                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Maturity Value</p>
-                  <p className="text-2xl lg:text-3xl font-extrabold text-gray-900 mb-1">₹{maturity.toLocaleString('en-IN')}</p>
+                <div className="bg-gray-50 dark:bg-slate-700 dark:bg-slate-900 border border-gray-100 dark:border-slate-700 rounded-2xl p-5">
+                  <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Maturity Value</p>
+                  <p className="text-2xl lg:text-3xl font-extrabold text-gray-900 dark:text-gray-100 mb-1">₹{maturity.toLocaleString('en-IN')}</p>
                   <p className="text-sm font-bold text-emerald-600 flex items-center gap-1">
                     <TrendingUp className="w-4 h-4" /> Compounded Return
                   </p>
                 </div>
-                <div className="bg-gray-50 border border-gray-100 rounded-2xl p-5">
-                  <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Estimated Yield (ROI)</p>
-                  <p className="text-2xl lg:text-3xl font-extrabold text-gray-900 mb-1">{roi}%</p>
-                  <p className="text-sm font-medium text-gray-500">Total Growth</p>
+                <div className="bg-gray-50 dark:bg-slate-700 dark:bg-slate-900 border border-gray-100 dark:border-slate-700 rounded-2xl p-5">
+                  <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">Estimated Yield (ROI)</p>
+                  <p className="text-2xl lg:text-3xl font-extrabold text-gray-900 dark:text-gray-100 mb-1">{roi}%</p>
+                  <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Growth</p>
                 </div>
               </div>
             </div>
@@ -303,7 +303,7 @@ const Financial = () => {
               </div>
 
               {/* X Axis Labels */}
-              <div className="flex justify-between text-[10px] sm:text-xs font-bold text-gray-500 z-10 mb-6">
+              <div className="flex justify-between text-[10px] sm:text-xs font-bold text-gray-500 dark:text-gray-400 z-10 mb-6">
                 {[0, 1, 2, 3, 4, 5].map((year) => (
                   <span key={year} className={year === horizon ? "text-blue-400 text-sm transition-all" : "transition-all"}>
                     YEAR {year}
@@ -327,16 +327,16 @@ const Financial = () => {
         </div>
 
         {/* 3. AI Liaison */}
-        <div className="bg-white border border-gray-200 rounded-3xl p-6 lg:p-10 shadow-sm">
-          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 pb-6 border-b border-gray-100 gap-4">
+        <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-3xl p-6 lg:p-10 shadow-sm">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 pb-6 border-b border-gray-100 dark:border-slate-700 gap-4">
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 bg-blue-600 rounded-full animate-pulse"></div>
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Shivani AI™ Liaison</h2>
-                <p className="text-gray-500 text-sm mt-1">Ask the co-pilot about our telemetry pipelines, data encryption standards, or query live market intelligence.</p>
+                <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">Shivani AI™ Liaison</h2>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Ask the co-pilot about our telemetry pipelines, data encryption standards, or query live market intelligence.</p>
               </div>
             </div>
-            <div className="flex items-center gap-3 bg-gray-50 px-4 py-2 rounded-xl border border-gray-200 w-full lg:w-auto justify-between lg:justify-start">
+            <div className="flex items-center gap-3 bg-gray-50 dark:bg-slate-700 px-4 py-2 rounded-xl border border-gray-200 dark:border-slate-700 w-full lg:w-auto justify-between lg:justify-start">
               <span className="text-sm font-semibold text-gray-700">Live Google Search Grounding</span>
               <div 
                 onClick={() => setIsSearchGrounded(!isSearchGrounded)}
@@ -353,12 +353,12 @@ const Financial = () => {
               <div className="space-y-6 mb-8 max-h-[300px] overflow-y-auto pr-4 scrollbar-thin scrollbar-thumb-gray-200">
                 {chatHistory.map((msg, idx) => (
                   <div key={idx} className={`flex items-start gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}>
-                    <div className={`w-10 h-10 font-bold rounded-xl flex items-center justify-center flex-shrink-0 ${msg.role === 'ai' ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 text-gray-600'}`}>
+                    <div className={`w-10 h-10 font-bold rounded-xl flex items-center justify-center flex-shrink-0 ${msg.role === 'ai' ? 'bg-indigo-100 text-indigo-700' : 'bg-gray-100 dark:bg-slate-600 text-gray-600 dark:text-gray-400'}`}>
                       {msg.role === 'ai' ? 'AI' : 'You'}
                     </div>
                     <div className={`border p-5 rounded-2xl max-w-xl text-sm leading-relaxed font-medium ${
                       msg.role === 'ai' 
-                        ? 'bg-gray-50 border-gray-200 text-gray-800 rounded-tl-none' 
+                        ? 'bg-gray-50 dark:bg-slate-700 border-gray-200 dark:border-slate-700 text-gray-800 dark:text-gray-200 rounded-tl-none' 
                         : 'bg-blue-50 border-blue-100 text-blue-900 rounded-tr-none'
                     }`}>
                       {msg.text}
@@ -370,7 +370,7 @@ const Financial = () => {
                     <div className="w-10 h-10 bg-indigo-100 text-indigo-700 font-bold rounded-xl flex items-center justify-center flex-shrink-0">
                       AI
                     </div>
-                    <div className="bg-gray-50 border border-gray-200 p-5 rounded-2xl rounded-tl-none flex items-center gap-2">
+                    <div className="bg-gray-50 dark:bg-slate-700 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 p-5 rounded-2xl rounded-tl-none flex items-center gap-2">
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                       <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.4s' }}></div>
@@ -385,7 +385,7 @@ const Financial = () => {
                   value={chatInput}
                   onChange={(e) => setChatInput(e.target.value)}
                   placeholder="Query our scaling models or regional digital transformation timelines..."
-                  className="w-full bg-gray-50 border border-gray-200 text-gray-900 px-6 py-4 rounded-2xl pr-16 focus:outline-none focus:ring-2 focus:ring-blue-500/20 font-medium"
+                  className="w-full bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-700 text-gray-900 dark:text-gray-100 px-6 py-4 rounded-2xl pr-16 focus:outline-none focus:ring-2 focus:ring-blue-500/20 font-medium"
                 />
                 <button 
                   type="submit"
@@ -399,26 +399,26 @@ const Financial = () => {
 
             <div className="space-y-6">
               <div>
-                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Suggested Intelligence Queries</h3>
+                <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-4">Suggested Intelligence Queries</h3>
                 <div className="space-y-3">
-                  <button onClick={() => handleSuggestedQuery("Product Roadmap & Scaling Model")} className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                  <button onClick={() => handleSuggestedQuery("Product Roadmap & Scaling Model")} className="w-full text-left bg-gray-50 dark:bg-slate-700 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 dark:border-slate-700 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
                     <Rocket className="w-4 h-4 text-red-500 flex-shrink-0" /> Product Roadmap & Scaling Model
                   </button>
-                  <button onClick={() => handleSuggestedQuery("Telehealth Security & Encrypted EHRs")} className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                  <button onClick={() => handleSuggestedQuery("Telehealth Security & Encrypted EHRs")} className="w-full text-left bg-gray-50 dark:bg-slate-700 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 dark:border-slate-700 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
                     <Lock className="w-4 h-4 text-amber-500 flex-shrink-0" /> Telehealth Security & Encrypted EHRs
                   </button>
-                  <button onClick={() => handleSuggestedQuery("Traditional Wellness Logistics Network")} className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                  <button onClick={() => handleSuggestedQuery("Traditional Wellness Logistics Network")} className="w-full text-left bg-gray-50 dark:bg-slate-700 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 dark:border-slate-700 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
                     <Activity className="w-4 h-4 text-emerald-500 flex-shrink-0" /> Traditional Wellness Logistics Network
                   </button>
-                  <button onClick={() => handleSuggestedQuery("Live Indian Health-Tech Forecasts")} className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                  <button onClick={() => handleSuggestedQuery("Live Indian Health-Tech Forecasts")} className="w-full text-left bg-gray-50 dark:bg-slate-700 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 dark:border-slate-700 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
                     <Share2 className="w-4 h-4 text-blue-500 flex-shrink-0" /> Live Indian Health-Tech Forecasts
                   </button>
                 </div>
               </div>
 
-              <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5">
-                <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Real-Time API Specifications</h3>
-                <p className="text-sm text-gray-600 leading-relaxed font-medium">
+              <div className="bg-gray-50 dark:bg-slate-700 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-2xl p-5">
+                <h3 className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-3">Real-Time API Specifications</h3>
+                <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed font-medium">
                   Our platform handles asynchronous communication loops with the Gemini API to retrieve context-optimized answers without client blockades.
                 </p>
               </div>
@@ -429,45 +429,45 @@ const Financial = () => {
         {/* 4. Strategic Capital Deployment */}
         <div className="space-y-8">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">How We Deploy Your Strategic Capital</h2>
-            <p className="text-gray-600 mt-2 max-w-3xl">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">How We Deploy Your Strategic Capital</h2>
+            <p className="text-gray-600 dark:text-gray-400 mt-2 max-w-3xl">
               Every rupee secured is directly routed into high-impact pipelines designed to maximize ecosystem value and tech architecture scalability.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 shadow-sm">
               <div className="text-3xl font-extrabold text-blue-600 mb-3">45%</div>
-              <h3 className="font-bold text-gray-900 mb-2">Healthcare AI & Core R&D</h3>
-              <p className="text-sm text-gray-500 leading-relaxed mb-6">Scaling HIPAA-compliant telehealth portals, secure EHR vaults, and machine-learning diagnostics frameworks.</p>
-              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mt-auto">
+              <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Healthcare AI & Core R&D</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">Scaling HIPAA-compliant telehealth portals, secure EHR vaults, and machine-learning diagnostics frameworks.</p>
+              <div className="w-full h-1.5 bg-gray-100 dark:bg-slate-600 rounded-full overflow-hidden mt-auto">
                 <div className="w-[45%] h-full bg-blue-600 rounded-full"></div>
               </div>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 shadow-sm">
               <div className="text-3xl font-extrabold text-emerald-600 mb-3">30%</div>
-              <h3 className="font-bold text-gray-900 mb-2">Ayurvedic Store Logistics</h3>
-              <p className="text-sm text-gray-500 leading-relaxed mb-6">Modernizing wellness logistics chains, traditional organic inventories, and holistic consultation dashboards.</p>
-              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mt-auto">
+              <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Ayurvedic Store Logistics</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">Modernizing wellness logistics chains, traditional organic inventories, and holistic consultation dashboards.</p>
+              <div className="w-full h-1.5 bg-gray-100 dark:bg-slate-600 rounded-full overflow-hidden mt-auto">
                 <div className="w-[30%] h-full bg-emerald-600 rounded-full"></div>
               </div>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 shadow-sm">
               <div className="text-3xl font-extrabold text-indigo-600 mb-3">15%</div>
-              <h3 className="font-bold text-gray-900 mb-2">Global Operations (APAC)</h3>
-              <p className="text-sm text-gray-500 leading-relaxed mb-6">Broadening operational reach, expanding engineering teams in major hubs, and solidifying legal structures.</p>
-              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mt-auto">
+              <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Global Operations (APAC)</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">Broadening operational reach, expanding engineering teams in major hubs, and solidifying legal structures.</p>
+              <div className="w-full h-1.5 bg-gray-100 dark:bg-slate-600 rounded-full overflow-hidden mt-auto">
                 <div className="w-[15%] h-full bg-indigo-600 rounded-full"></div>
               </div>
             </div>
 
-            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+            <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl p-6 shadow-sm">
               <div className="text-3xl font-extrabold text-teal-600 mb-3">10%</div>
-              <h3 className="font-bold text-gray-900 mb-2">Security Auditing & Scale</h3>
-              <p className="text-sm text-gray-500 leading-relaxed mb-6">Third-party infrastructure penetration tests, absolute end-to-end medical databank encryption checks, and robust DB compliance.</p>
-              <div className="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden mt-auto">
+              <h3 className="font-bold text-gray-900 dark:text-gray-100 mb-2">Security Auditing & Scale</h3>
+              <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed mb-6">Third-party infrastructure penetration tests, absolute end-to-end medical databank encryption checks, and robust DB compliance.</p>
+              <div className="w-full h-1.5 bg-gray-100 dark:bg-slate-600 rounded-full overflow-hidden mt-auto">
                 <div className="w-[10%] h-full bg-teal-600 rounded-full"></div>
               </div>
             </div>
@@ -475,11 +475,11 @@ const Financial = () => {
         </div>
 
         {/* 5. Advanced Systems Architecture */}
-        <div className="bg-white border border-gray-200 rounded-3xl p-6 lg:p-10 shadow-sm flex flex-col lg:flex-row gap-12">
+        <div className="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-3xl p-6 lg:p-10 shadow-sm flex flex-col lg:flex-row gap-12">
           <div className="w-full lg:w-1/2 space-y-6">
             <p className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-2">Engineered For Scale</p>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Advanced Systems Built on Cutting-Edge Technology</h2>
-            <p className="text-gray-600 mb-8 leading-relaxed">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">Advanced Systems Built on Cutting-Edge Technology</h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-8 leading-relaxed">
               At Shivani Technologies, we focus on highly scalable, non-bloated codebases to ensure high performance and seamless digital health ecosystem migrations.
             </p>
 
@@ -489,8 +489,8 @@ const Financial = () => {
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900">Full-Stack Cloud Architectures</h4>
-                  <p className="text-sm text-gray-500 mt-1">AWS/GCP microservices using Node.js, Go, and high-performance WebRTC modules for secure virtual care video.</p>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">Full-Stack Cloud Architectures</h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">AWS/GCP microservices using Node.js, Go, and high-performance WebRTC modules for secure virtual care video.</p>
                 </div>
               </div>
 
@@ -499,8 +499,8 @@ const Financial = () => {
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900">Encrypted EHR Databases</h4>
-                  <p className="text-sm text-gray-500 mt-1">Robust clinical data systems running secure schema structures, automated e-prescribing queues, and compliance logs.</p>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">Encrypted EHR Databases</h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Robust clinical data systems running secure schema structures, automated e-prescribing queues, and compliance logs.</p>
                 </div>
               </div>
 
@@ -509,44 +509,44 @@ const Financial = () => {
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h4 className="font-bold text-gray-900">Traditional Wellness Warehouses</h4>
-                  <p className="text-sm text-gray-500 mt-1">Proprietary logistics routing traditional Ayurveda and Siddha wellness inventory dynamically linked to patient profiles.</p>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">Traditional Wellness Warehouses</h4>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Proprietary logistics routing traditional Ayurveda and Siddha wellness inventory dynamically linked to patient profiles.</p>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="w-full lg:w-1/2">
-            <div className="bg-gray-50 border border-gray-200 rounded-3xl p-6 lg:p-8 h-full">
-              <div className="flex justify-between items-center mb-8 pb-4 border-b border-gray-200">
-                <h3 className="font-bold text-gray-500 text-sm uppercase tracking-wider">System Architecture Status</h3>
+            <div className="bg-gray-50 dark:bg-slate-700 dark:bg-slate-900 border border-gray-200 dark:border-slate-700 rounded-3xl p-6 lg:p-8 h-full">
+              <div className="flex justify-between items-center mb-8 pb-4 border-b border-gray-200 dark:border-slate-700">
+                <h3 className="font-bold text-gray-500 dark:text-gray-400 text-sm uppercase tracking-wider">System Architecture Status</h3>
                 <span className="bg-emerald-100 text-emerald-700 px-3 py-1 rounded-lg text-xs font-bold">Operational</span>
               </div>
 
               <div className="space-y-6">
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-600 font-medium">Service Gateway</span>
-                  <span className="font-bold text-gray-900">Nginx / Cloudflare WAF</span>
+                  <span className="text-gray-600 dark:text-gray-400 font-medium">Service Gateway</span>
+                  <span className="font-bold text-gray-900 dark:text-gray-100">Nginx / Cloudflare WAF</span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-600 font-medium">Core Telehealth API</span>
-                  <span className="font-bold text-gray-900">Go / WebRTC Signalling</span>
+                  <span className="text-gray-600 dark:text-gray-400 font-medium">Core Telehealth API</span>
+                  <span className="font-bold text-gray-900 dark:text-gray-100">Go / WebRTC Signalling</span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-600 font-medium">Record Data Vaults</span>
-                  <span className="font-bold text-gray-900">Postgres / AES-256 Encrypted</span>
+                  <span className="text-gray-600 dark:text-gray-400 font-medium">Record Data Vaults</span>
+                  <span className="font-bold text-gray-900 dark:text-gray-100">Postgres / AES-256 Encrypted</span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-gray-600 font-medium">Ayurveda E-Store</span>
-                  <span className="font-bold text-gray-900">GraphQL / Redis Caching</span>
+                  <span className="text-gray-600 dark:text-gray-400 font-medium">Ayurveda E-Store</span>
+                  <span className="font-bold text-gray-900 dark:text-gray-100">GraphQL / Redis Caching</span>
                 </div>
-                <div className="flex justify-between items-center text-sm pb-8 border-b border-gray-200">
-                  <span className="text-gray-600 font-medium">Compliance Audit logs</span>
-                  <span className="font-bold text-gray-900">Write-Once Ledger</span>
+                <div className="flex justify-between items-center text-sm pb-8 border-b border-gray-200 dark:border-slate-700">
+                  <span className="text-gray-600 dark:text-gray-400 font-medium">Compliance Audit logs</span>
+                  <span className="font-bold text-gray-900 dark:text-gray-100">Write-Once Ledger</span>
                 </div>
 
                 <div className="pt-2">
-                  <div className="flex justify-between text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
+                  <div className="flex justify-between text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">
                     <span>Database Efficiency</span>
                     <span className="text-blue-600">94% Core Rating</span>
                   </div>
@@ -560,8 +560,8 @@ const Financial = () => {
         </div>
 
         <div className="text-center pt-8 pb-4">
-          <h3 className="text-xl font-bold text-gray-900 mb-2">Investment FAQ Desk</h3>
-          <p className="text-gray-500">Providing precise operational and systemic transparency to prospective partners.</p>
+          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Investment FAQ Desk</h3>
+          <p className="text-gray-500 dark:text-gray-400">Providing precise operational and systemic transparency to prospective partners.</p>
         </div>
 
       </div>
@@ -569,10 +569,10 @@ const Financial = () => {
       {/* Unlock Investor Deck Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm overflow-y-auto">
-          <div className="bg-white rounded-3xl w-full max-w-2xl border border-gray-200 shadow-2xl relative my-8">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl w-full max-w-2xl border border-gray-200 dark:border-slate-700 shadow-2xl relative my-8">
             <button 
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-6 right-6 p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-full transition-colors"
+              className="absolute top-6 right-6 p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:bg-slate-600 rounded-full transition-colors"
             >
               <X className="w-6 h-6" />
             </button>
@@ -582,52 +582,52 @@ const Financial = () => {
                 <div className="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-lg text-xs font-bold tracking-wider mb-4 border border-blue-100">
                   CONFIDENTIAL ACCESS
                 </div>
-                <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Unlock Investor Deck</h2>
-                <p className="text-gray-500 leading-relaxed max-w-lg mx-auto">
+                <h2 className="text-3xl font-extrabold text-gray-900 dark:text-gray-100 mb-4">Unlock Investor Deck</h2>
+                <p className="text-gray-500 dark:text-gray-400 leading-relaxed max-w-lg mx-auto">
                   Submit your credentials below to gain direct access to our audited sheets, compliance logs, and the complete Series B pitch slide-deck.
                 </p>
               </div>
 
               <form className="space-y-5" onSubmit={(e) => { e.preventDefault(); setIsModalOpen(false); }}>
                 <div>
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Investor Name</label>
-                  <input type="text" placeholder="eg., Dr. Anand Rajan" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
+                  <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Investor Name</label>
+                  <input type="text" placeholder="eg., Dr. Anand Rajan" className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
                 </div>
                 
                 <div>
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Business Email Address</label>
-                  <input type="email" placeholder="eg., anand@ventures.in" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
+                  <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Business Email Address</label>
+                  <input type="email" placeholder="eg., anand@ventures.in" className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
                 </div>
                 
                 <div>
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Mobile / Contact Number</label>
-                  <input type="tel" placeholder="eg., +91 98765 43210" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
+                  <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Mobile / Contact Number</label>
+                  <input type="tel" placeholder="eg., +91 98765 43210" className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Investment Fund / Firm</label>
-                  <input type="text" placeholder="eg., Apex Capital India (Optional)" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
+                  <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Investment Fund / Firm</label>
+                  <input type="text" placeholder="eg., Apex Capital India (Optional)" className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Planned Ticket (INR)</label>
+                    <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Planned Ticket (INR)</label>
                     <input 
                       type="text" 
                       value={`₹${capital.toLocaleString('en-IN')}`}
                       readOnly
-                      className="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-xl text-gray-900 font-semibold cursor-not-allowed" 
+                      className="w-full px-4 py-3 bg-gray-100 dark:bg-slate-600 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-gray-100 font-semibold cursor-not-allowed" 
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">Your Location</label>
-                    <input type="text" placeholder="e.g., Chennai, India" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
+                    <label className="block text-xs font-bold text-gray-600 dark:text-gray-400 uppercase tracking-wider mb-2">Your Location</label>
+                    <input type="text" placeholder="e.g., Chennai, India" className="w-full px-4 py-3 bg-gray-50 dark:bg-slate-700 border border-gray-200 dark:border-slate-700 rounded-xl text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all" required />
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3 mt-6">
                   <input type="checkbox" id="terms" className="mt-1 w-4 h-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500" required />
-                  <label htmlFor="terms" className="text-sm text-gray-500 leading-relaxed">
+                  <label htmlFor="terms" className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
                     I agree to standard digital confidentiality terms and confirm this credential request constitutes a professional inquiry.
                   </label>
                 </div>
