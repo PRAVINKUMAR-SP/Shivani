@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
+import SEO from '../components/SEO';
   TrendingUp, Activity, Rocket, Lock, Shield, 
   ChevronRight, CheckCircle2, Bot, SlidersHorizontal, Share2, ArrowRight, X
 } from 'lucide-react';
@@ -113,7 +114,9 @@ const Financial = () => {
   const activePoint = graphPoints[horizon];
 
   return (
-    <div className="bg-gray-50 dark:bg-slate-700 dark:bg-slate-900 min-h-screen py-16 px-4 sm:px-6 lg:px-8 font-sans">
+    <>
+      <SEO title="Strategic Capital & Financials" description="Map your strategic capital against our scaled business trajectories. Shivani Tech builds scalable cloud infrastructure and telehealth products." />
+      <div className="bg-gray-50 dark:bg-slate-700 dark:bg-slate-900 min-h-screen py-16 px-4 sm:px-6 lg:px-8 font-sans">
       <div className="max-w-7xl mx-auto space-y-16">
         
         {/* 1. Hero Section */}
@@ -642,7 +645,7 @@ const Financial = () => {
       )}
 
     </div>
-  );
-};
+    </>
+  );};
 
 export default Financial;

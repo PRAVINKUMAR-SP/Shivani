@@ -1,6 +1,7 @@
 import React from 'react';
 import { FileText, Users, Award, BookOpen, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
 
 const servicesData = [
   {
@@ -43,7 +44,9 @@ const servicesData = [
 
 const Services = () => {
   return (
-    <div className="bg-gray-50 dark:bg-slate-900 min-h-[calc(100vh-96px)] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+    <>
+      <SEO title="Career Services & Coaching" description="Accelerate your career with our premium suite of tools and services including interview prep, skill certifications, and career counseling." />
+      <div className="bg-gray-50 dark:bg-slate-900 min-h-[calc(100vh-96px)] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4 transition-colors">Accelerate Your Career</h1>
@@ -83,7 +86,7 @@ const Services = () => {
 
       </div>
     </div>
-  );
-};
+    </>
+  );};
 
 export default Services;

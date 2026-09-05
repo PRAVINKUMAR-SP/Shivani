@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
+import SEO from '../components/SEO';
   ArrowRight, 
   Home as HomeIcon, 
   Building2, 
@@ -50,7 +51,9 @@ const Home = () => {
   if (user) return null;
 
   return (
-    <div className="bg-white dark:bg-slate-900 min-h-[calc(100vh-96px)] flex flex-col items-center justify-start pt-12 p-4 pb-20 transition-colors duration-200">
+    <>
+      <SEO title="Find Your Next Dream Job" description="Shivani Tech is the leading platform for finding software engineering, telehealth, and enterprise architecture jobs." />
+      <div className="bg-white dark:bg-slate-900 min-h-[calc(100vh-96px)] flex flex-col items-center justify-start pt-12 p-4 pb-20 transition-colors duration-200">
       <div className="max-w-xl w-full flex flex-col items-center text-center">
 
         
@@ -91,7 +94,7 @@ const Home = () => {
 
 
     </div>
-  );
-};
+    </>
+  );};
 
 export default Home;

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Star } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const companiesData = [
   { name: 'Google', domain: 'google.com', rating: 4.8, reviews: '12K+', activeJobs: 154, industry: 'Internet', location: 'Mountain View, CA' },
@@ -15,7 +16,9 @@ const companiesData = [
 
 const Companies = () => {
   return (
-    <div className="bg-gray-50 dark:bg-slate-900 min-h-[calc(100vh-96px)] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
+    <>
+      <SEO title="Top Companies Hiring Now" description="Discover great places to work. Get access to millions of company reviews and find your perfect fit at Shivani Tech." />
+      <div className="bg-gray-50 dark:bg-slate-900 min-h-[calc(100vh-96px)] py-12 px-4 sm:px-6 lg:px-8 transition-colors duration-200">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-6">
           <div>
@@ -69,7 +72,7 @@ const Companies = () => {
         </div>
       </div>
     </div>
-  );
-};
+    </>
+  );};
 
 export default Companies;

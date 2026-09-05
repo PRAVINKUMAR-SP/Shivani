@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Phone, Send, MapPin, Mail } from 'lucide-react';
+import SEO from '../components/SEO';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -42,7 +43,9 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-100px)] bg-[#f8f9fc] py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+    <>
+      <SEO title="Contact Us" description="Get in touch with Shivani Technologies. Send us a message about career coaching, job postings, or enterprise solutions." />
+      <div className="min-h-[calc(100vh-100px)] bg-[#f8f9fc] py-8 px-4 sm:px-6 lg:px-8 flex items-center justify-center">
       <div className="max-w-7xl w-full flex flex-col lg:flex-row gap-12 lg:gap-24 items-center">
 
         {/* Left Side: Text and Info */}
@@ -188,7 +191,7 @@ const Contact = () => {
         </div>
       </div>
     </div>
-  );
-};
+    </>
+  );};
 
 export default Contact;
