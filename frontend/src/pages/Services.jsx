@@ -80,15 +80,7 @@ const Services = () => {
           ))}
         </div>
 
-        <div className="mt-20 bg-blue-700 rounded-3xl p-8 md:p-12 text-center text-white">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Not sure where to start?</h2>
-          <p className="text-blue-100 mb-8 max-w-2xl mx-auto text-lg">
-            Take our free career assessment quiz to find out which of our services will benefit you the most right now.
-          </p>
-          <button className="bg-white text-blue-700 px-8 py-3 rounded-lg font-bold text-lg hover:bg-gray-50 transition-colors shadow-md">
-            Take Free Assessment
-          </button>
-        </div>
+
       </div>
     </div>
   );

@@ -76,12 +76,12 @@ const Dashboard = () => {
     setSearchParams(prev => ({ ...prev, keyword, location, ...filters }));
   };
   return (
-    <div className="bg-gray-50/50 h-[calc(100vh-128px)] flex relative overflow-hidden">
+    <div className="bg-gray-50/50 h-[calc(100vh-128px)] flex flex-col lg:flex-row relative overflow-hidden">
       {/* Background decoration */}
       <div className="bg-blue-50/50 h-24 absolute top-0 right-0 -z-10 w-full lg:w-[calc(100%-16rem)] lg:rounded-bl-[3rem] rounded-b-[3rem] lg:rounded-br-none"></div>
       
       {/* Sidebar */}
-      <div className="hidden lg:block w-64 flex-shrink-0 relative z-10">
+      <div className="lg:w-64 flex-shrink-0 relative z-30">
         <Sidebar />
       </div>
 

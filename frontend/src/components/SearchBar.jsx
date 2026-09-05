@@ -33,7 +33,7 @@ const SearchBar = ({ onSearch }) => {
 
   return (
     <div className="w-full max-w-4xl mx-auto -mt-6 mb-10 z-10 relative px-4">
-      <div className="flex items-center gap-3">
+      <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 w-full">
         {/* Search pill */}
         <div className="flex-1 bg-white rounded-[2rem] shadow-[0_8px_30px_rgba(0,0,0,0.08)] border border-gray-200 flex flex-col md:flex-row items-center p-2">
         
@@ -80,11 +80,11 @@ const SearchBar = ({ onSearch }) => {
         {/* Filter Button — outside the pill, right of Find jobs */}
         <button 
           onClick={() => setIsFilterModalOpen(true)}
-          className="flex-shrink-0 flex items-center gap-2 px-4 py-3.5 rounded-full border border-gray-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)] text-gray-600 hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50 transition-all font-semibold text-[15px] whitespace-nowrap"
+          className="flex-shrink-0 flex items-center justify-center w-full md:w-auto gap-2 px-4 py-3.5 rounded-full border border-gray-200 bg-white shadow-[0_8px_30px_rgba(0,0,0,0.06)] text-gray-600 hover:text-blue-600 hover:border-blue-400 hover:bg-blue-50 transition-all font-semibold text-[15px] whitespace-nowrap"
           title="Advanced Filters"
         >
           <SlidersHorizontal className="w-5 h-5 stroke-[2]" />
-          <span className="hidden sm:inline">Filters</span>
+          <span>Filters</span>
         </button>
       </div>
 
