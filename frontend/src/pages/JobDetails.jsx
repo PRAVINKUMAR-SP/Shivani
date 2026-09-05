@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { 
-  MapPin, DollarSign, Clock, Building, Calendar, 
+  MapPin, IndianRupee, Clock, Building, Calendar, 
   Briefcase, Users, GraduationCap, ArrowLeft, 
   Share2, Heart, ExternalLink, Star, ShieldCheck, ChevronRight
 } from 'lucide-react';
@@ -188,9 +188,9 @@ const JobDetails = () => {
                 </div>
                 <div>
                   <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-1 flex items-center">
-                    <DollarSign className="w-3.5 h-3.5 mr-1.5" /> Salary
+                    <IndianRupee className="w-3.5 h-3.5 mr-1.5" /> Salary
                   </div>
-                  <div className="font-semibold text-gray-900">{job.salary}</div>
+                  <div className="font-semibold text-gray-900">{job.salary?.replace(/\$/g, '₹')}</div>
                 </div>
                 <div>
                   <div className="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-1 flex items-center">
@@ -329,7 +329,7 @@ const JobDetails = () => {
                 </div>
                 <div className="flex gap-3">
                   <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-400">
-                    <DollarSign className="w-5 h-5" />
+                    <IndianRupee className="w-5 h-5" />
                   </div>
                   <div>
                     <h4 className="text-sm font-semibold text-gray-900">Salary & Benefits</h4>

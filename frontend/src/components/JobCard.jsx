@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, DollarSign, Clock, Bookmark } from 'lucide-react';
+import { MapPin, IndianRupee, Clock, Bookmark } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -94,8 +94,8 @@ const JobCard = ({ job, applied, saved: initialSaved }) => {
           {job.location}
         </div>
         <div className="flex items-center text-gray-500 text-sm font-medium">
-          <DollarSign className="w-4 h-4 mr-1.5 text-gray-400" />
-          {job.salary}
+          <IndianRupee className="w-4 h-4 mr-1.5 text-gray-400" />
+          {job.salary?.replace(/\$/g, '₹')}
         </div>
         <div className="flex items-center text-gray-500 text-sm font-medium">
           <Clock className="w-4 h-4 mr-1.5 text-gray-400" />

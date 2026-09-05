@@ -52,7 +52,7 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 mb-8">
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
               <div className="bg-blue-50 p-4 rounded-xl text-blue-600">
                 <Users className="w-8 h-8" />
@@ -62,10 +62,20 @@ const AdminDashboard = () => {
                 {loading ? <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div> : <p className="text-2xl font-bold text-gray-900">{stats?.totalUsers || 0}</p>}
               </div>
             </div>
+
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
+              <div className="bg-yellow-50 p-4 rounded-xl text-yellow-600">
+                <UserCheck className="w-8 h-8" />
+              </div>
+              <div>
+                <p className="text-sm font-semibold text-gray-500 mb-1">Job Seekers</p>
+                {loading ? <div className="h-8 w-16 bg-gray-200 rounded animate-pulse"></div> : <p className="text-2xl font-bold text-gray-900">{stats?.totalJobSeekers || (stats?.totalUsers - stats?.totalEmployers) || 0}</p>}
+              </div>
+            </div>
             
             <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex items-center gap-4">
               <div className="bg-green-50 p-4 rounded-xl text-green-600">
-                <UserCheck className="w-8 h-8" />
+                <UserPlus className="w-8 h-8" />
               </div>
               <div>
                 <p className="text-sm font-semibold text-gray-500 mb-1">Employers</p>

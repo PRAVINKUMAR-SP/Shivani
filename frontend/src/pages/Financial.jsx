@@ -23,7 +23,7 @@ const Financial = () => {
   const [chatHistory, setChatHistory] = useState([
     {
       role: 'ai',
-      text: 'Welcome! I am your AI Investment Advisor. Ask me anything about our software engineering pipelines, global operations hubs, or security compliance logs. Toggle on "Live Google Search Grounding" to fetch modern market reports.'
+      text: 'Welcome! I am your AI Advisor. Ask me anything about our software engineering pipelines, global operations hubs, or security compliance logs. Toggle on "Live Google Search Grounding" to fetch modern intelligence reports.'
     }
   ]);
   const [isTyping, setIsTyping] = useState(false);
@@ -118,9 +118,6 @@ const Financial = () => {
         
         {/* 1. Hero Section */}
         <div className="text-center max-w-4xl mx-auto space-y-6">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-white rounded-2xl shadow-sm mb-4 border border-gray-100">
-            <img src="/logo.png" alt="Shivani Technologies" className="h-10 w-auto object-contain" />
-          </div>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
             Accelerating <span className="text-blue-600">Digital Health Tech</span> & Enterprise Architectures
           </h1>
@@ -329,13 +326,13 @@ const Financial = () => {
           </div>
         </div>
 
-        {/* 3. AI Investment Liaison */}
+        {/* 3. AI Liaison */}
         <div className="bg-white border border-gray-200 rounded-3xl p-6 lg:p-10 shadow-sm">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 pb-6 border-b border-gray-100 gap-4">
             <div className="flex items-center gap-3">
               <div className="w-3 h-3 bg-blue-600 rounded-full animate-pulse"></div>
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Shivani AI™ Investment Liaison</h2>
+                <h2 className="text-xl font-bold text-gray-900">Shivani AI™ Liaison</h2>
                 <p className="text-gray-500 text-sm mt-1">Ask the co-pilot about our telemetry pipelines, data encryption standards, or query live market intelligence.</p>
               </div>
             </div>
@@ -404,8 +401,8 @@ const Financial = () => {
               <div>
                 <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4">Suggested Intelligence Queries</h3>
                 <div className="space-y-3">
-                  <button onClick={() => handleSuggestedQuery("Series B Roadmap & Scaling Model")} className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
-                    <Rocket className="w-4 h-4 text-red-500 flex-shrink-0" /> Series B Roadmap & Scaling Model
+                  <button onClick={() => handleSuggestedQuery("Product Roadmap & Scaling Model")} className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
+                    <Rocket className="w-4 h-4 text-red-500 flex-shrink-0" /> Product Roadmap & Scaling Model
                   </button>
                   <button onClick={() => handleSuggestedQuery("Telehealth Security & Encrypted EHRs")} className="w-full text-left bg-gray-50 hover:bg-blue-50 hover:border-blue-200 border border-gray-200 p-3 rounded-xl text-sm font-semibold text-gray-700 transition-colors flex items-center gap-2">
                     <Lock className="w-4 h-4 text-amber-500 flex-shrink-0" /> Telehealth Security & Encrypted EHRs

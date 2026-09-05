@@ -42,13 +42,13 @@ const Navbar = () => {
             {user ? (
               <>
                 {user.email === 'pravin007ptk@gmail.com' || user.role === 'ADMIN' ? (
-                  location.pathname === '/admin/dashboard' ? (
+                  location.pathname.startsWith('/admin') ? (
                     <Link
-                      to="/dashboard"
+                      to="/employer/dashboard"
                       className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mr-4 text-sm flex items-center gap-2 shadow-sm"
                     >
                       <Briefcase className="w-4 h-4" />
-                      Job Seeker
+                      Employer
                     </Link>
                   ) : (
                     <Link
@@ -100,14 +100,14 @@ const Navbar = () => {
                 {user ? (
                   <>
                     {user.email === 'pravin007ptk@gmail.com' || user.role === 'ADMIN' ? (
-                      location.pathname === '/admin/dashboard' ? (
+                      location.pathname.startsWith('/admin') ? (
                         <Link
-                          to="/dashboard"
+                          to="/employer/dashboard"
                           onClick={() => setIsMobileMenuOpen(false)}
                           className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl transition-colors mb-4 flex items-center justify-center gap-2"
                         >
                           <Briefcase className="w-4 h-4" />
-                          Job Seeker
+                          Employer
                         </Link>
                       ) : (
                         <Link

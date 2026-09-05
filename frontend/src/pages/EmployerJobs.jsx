@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import EmployerSidebar from '../components/EmployerSidebar';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
-import { PlusCircle, Search, MapPin, DollarSign, Users, Trash2, Eye, Calendar } from 'lucide-react';
+import { PlusCircle, Search, MapPin, IndianRupee, Users, Trash2, Eye, Calendar } from 'lucide-react';
 
 const formatTimeAgo = (dateString) => {
   if (!dateString) return 'New';
@@ -61,7 +61,7 @@ const EmployerJobCard = ({ job, onDelete }) => {
       {/* Meta */}
       <div className="flex flex-wrap gap-3 text-sm text-gray-500">
         <span className="flex items-center gap-1.5"><MapPin className="w-4 h-4 text-gray-400" />{job.location}</span>
-        {job.salary && <span className="flex items-center gap-1.5"><DollarSign className="w-4 h-4 text-gray-400" />{job.salary}</span>}
+        {job.salary && <span className="flex items-center gap-1.5"><IndianRupee className="w-4 h-4 text-gray-400" />{job.salary?.replace(/\$/g, '₹')}</span>}
         <span className="flex items-center gap-1.5"><Calendar className="w-4 h-4 text-gray-400" />{postedDate}</span>
       </div>
 

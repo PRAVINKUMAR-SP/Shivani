@@ -22,7 +22,7 @@ public class DataSeeder {
             job1.setCompany("TechCorp");
             job1.setDescription("Looking for an experienced React developer with strong Tailwind skills.");
             job1.setLocation("Remote");
-            job1.setSalary("$120,000 - $150,000");
+            job1.setSalary("₹120,000 - ₹150,000");
             job1.setType("Full-time");
             job1.setExperience("5+ Years");
             job1.setApplicantCount(42);
@@ -33,7 +33,7 @@ public class DataSeeder {
             job2.setCompany("FinanceHub");
             job2.setDescription("Join our finance team to build robust microservices.");
             job2.setLocation("New York, NY");
-            job2.setSalary("$130,000 - $160,000");
+            job2.setSalary("₹130,000 - ₹160,000");
             job2.setType("Full-time");
             job2.setExperience("3+ Years");
             job2.setApplicantCount(18);
@@ -44,7 +44,7 @@ public class DataSeeder {
             job3.setCompany("Startup Inc.");
             job3.setDescription("Great opportunity to learn React and build user interfaces.");
             job3.setLocation("San Francisco, CA");
-            job3.setSalary("$40,000");
+            job3.setSalary("₹40,000");
             job3.setType("Part-time");
             job3.setExperience("Entry Level");
             job3.setApplicantCount(156);
@@ -55,7 +55,7 @@ public class DataSeeder {
             job4.setCompany("WebSolutions");
             job4.setDescription("We need a versatile developer proficient in React and Java.");
             job4.setLocation("Austin, TX");
-            job4.setSalary("$110,000 - $140,000");
+            job4.setSalary("₹110,000 - ₹140,000");
             job4.setType("Full-time");
             job4.setExperience("4+ Years");
             job4.setApplicantCount(8);

@@ -1,38 +1,43 @@
 import React from 'react';
 import { FileText, Users, Award, BookOpen, ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const servicesData = [
-  {
-    title: 'Resume Builder',
-    description: 'Create a professional, ATS-friendly resume in minutes with our templates.',
-    icon: FileText,
-    color: 'bg-blue-100 text-blue-700',
-    price: 'Free',
-    buttonText: 'Build Resume'
-  },
   {
     title: 'Interview Preparation',
     description: 'Practice with AI and expert coaches to nail your next interview.',
     icon: Users,
     color: 'bg-green-100 text-green-700',
-    price: '$49/session',
-    buttonText: 'Book a Coach'
+    price: '₹49/session',
+    buttonText: 'Book a Coach',
+    link: '/contact'
   },
   {
     title: 'Skill Certifications',
     description: 'Earn certificates to prove your skills and stand out to top employers.',
     icon: Award,
     color: 'bg-purple-100 text-purple-700',
-    price: 'From $19',
-    buttonText: 'Explore Courses'
+    price: 'From ₹19',
+    buttonText: 'Explore Courses',
+    link: '/contact'
   },
   {
     title: 'Career Counseling',
     description: 'Get personalized 1-on-1 advice from industry veterans and recruiters.',
     icon: BookOpen,
     color: 'bg-orange-100 text-orange-700',
-    price: '$79/session',
-    buttonText: 'Find a Mentor'
+    price: '₹79/session',
+    buttonText: 'Find a Mentor',
+    link: '/contact'
+  },
+  {
+    title: 'Skill Assessments',
+    description: 'Take 20-question skill tests in HTML, CSS, and JS to prove your expertise.',
+    icon: FileText,
+    color: 'bg-indigo-100 text-indigo-700',
+    price: 'Free',
+    buttonText: 'Take a Test',
+    link: '/tests'
   }
 ];
 
@@ -57,12 +62,19 @@ const Services = () => {
               <h3 className="text-xl font-bold text-gray-900 mb-2">{service.title}</h3>
               <p className="text-gray-600 mb-6 flex-grow">{service.description}</p>
               
-              <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-100">
+              <div className="flex flex-col gap-4 mt-auto pt-4 border-t border-gray-100">
                 <span className="font-semibold text-gray-900">{service.price}</span>
-                <button className="flex items-center gap-1 text-blue-600 font-bold group-hover:text-blue-700 transition-colors">
-                  {service.buttonText}
-                  <ArrowRight className="w-4 h-4" />
-                </button>
+                {service.link ? (
+                  <Link to={service.link} className="flex items-center justify-center gap-1 text-blue-600 font-bold group-hover:text-blue-700 transition-colors">
+                    {service.buttonText}
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                ) : (
+                  <button className="flex items-center gap-1 text-blue-600 font-bold group-hover:text-blue-700 transition-colors">
+                    {service.buttonText}
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                )}
               </div>
             </div>
           ))}

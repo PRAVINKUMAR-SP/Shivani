@@ -94,7 +94,7 @@ const PostJob = () => {
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Salary</label>
-                  <input type="text" name="salary" value={formData.salary} onChange={handleChange} required className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors" placeholder="e.g. $120k - $150k" />
+                  <input type="text" name="salary" value={formData.salary} onChange={handleChange} required className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-colors" placeholder="e.g. ₹120k - ₹150k" />
                 </div>
               </div>
 

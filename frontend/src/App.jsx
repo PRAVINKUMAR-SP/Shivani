@@ -20,10 +20,14 @@ import EmployerDashboard from './pages/EmployerDashboard';
 import PostJob from './pages/PostJob';
 import EmployerJobs from './pages/EmployerJobs';
 import EmployerApplicants from './pages/EmployerApplicants';
+import EmployerSettings from './pages/EmployerSettings';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminUsers from './pages/AdminUsers';
 import AdminJobs from './pages/AdminJobs';
 import AdminSettings from './pages/AdminSettings';
+import AdminTestResults from './pages/AdminTestResults';
+import TestHub from './pages/TestHub';
+import TakeTest from './pages/TakeTest';
 import { AuthProvider } from './context/AuthContext';
 import { Toaster } from 'react-hot-toast';
 
@@ -49,15 +53,19 @@ function App() {
               <Route path="/dashboard/notifications" element={<Notifications />} />
               <Route path="/dashboard/invites" element={<Invites />} />
               <Route path="/jobs/:id" element={<JobDetails />} />
+              <Route path="/tests" element={<TestHub />} />
+              <Route path="/test/:subject" element={<TakeTest />} />
               
               {/* Employer Routes */}
               <Route path="/employer/dashboard" element={<EmployerDashboard />} />
               <Route path="/employer/post-job" element={<PostJob />} />
               <Route path="/employer/jobs" element={<EmployerJobs />} />
               <Route path="/employer/applicants" element={<EmployerApplicants />} />
+              <Route path="/employer/settings" element={<EmployerSettings />} />
               <Route path="/admin/dashboard" element={<AdminDashboard />} />
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/jobs" element={<AdminJobs />} />
+              <Route path="/admin/tests" element={<AdminTestResults />} />
               <Route path="/admin/settings" element={<AdminSettings />} />
             </Routes>
             <Footer />

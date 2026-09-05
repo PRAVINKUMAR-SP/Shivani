@@ -39,6 +39,7 @@ public class ContactController {
             mailMessage.setReplyTo(email);
             
             mailSender.send(mailMessage);
+
             return ResponseEntity.ok(Map.of("message", "Email sent successfully"));
         } catch (Exception e) {
             e.printStackTrace();

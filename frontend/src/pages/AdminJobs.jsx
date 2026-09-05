@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../components/AdminSidebar';
 import { useAuth } from '../context/AuthContext';
-import { Briefcase, MapPin, DollarSign, Calendar, Users } from 'lucide-react';
+import { Briefcase, MapPin, IndianRupee, Calendar, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AdminJobs = () => {
@@ -97,8 +97,8 @@ const AdminJobs = () => {
                               {job.type || 'Full-time'}
                             </span>
                             <div className="flex items-center gap-1 text-gray-600 text-sm mt-1">
-                              <DollarSign className="w-4 h-4 text-gray-400" />
-                              {job.salary || 'Not specified'}
+                              <IndianRupee className="w-4 h-4 text-gray-400" />
+                              <span className="text-sm font-medium text-gray-700">{job.salary?.replace(/\$/g, '₹') || 'Not specified'}</span>
                             </div>
                           </div>
                         </td>
