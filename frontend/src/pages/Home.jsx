@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { 
 import SEO from '../components/SEO';
+import { 
   ArrowRight, 
   Home as HomeIcon, 
   Building2, 

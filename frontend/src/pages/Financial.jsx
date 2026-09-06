@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { 
 import SEO from '../components/SEO';
+import { 
   TrendingUp, Activity, Rocket, Lock, Shield, 
   ChevronRight, CheckCircle2, Bot, SlidersHorizontal, Share2, ArrowRight, X
 } from 'lucide-react';
