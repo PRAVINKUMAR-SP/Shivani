@@ -14,4 +14,7 @@ public interface SavedJobRepository extends JpaRepository<SavedJob, Long> {
     List<SavedJob> findByUserEmail(String email);
     boolean existsByUserEmailAndJobId(String email, Long jobId);
     void deleteByUserEmailAndJobId(String email, Long jobId);
+    
+    @org.springframework.transaction.annotation.Transactional
+    void deleteByJobId(Long jobId);
 }

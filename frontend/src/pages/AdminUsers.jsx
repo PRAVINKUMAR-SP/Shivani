@@ -1,30 +1,95 @@
 import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../components/AdminSidebar';
 import { useAuth } from '../context/AuthContext';
-import { Users, Mail, ShieldCheck, Briefcase } from 'lucide-react';
+import { Users, Mail, ShieldCheck, Briefcase, Download, Trash2, Edit2 } from 'lucide-react';
 
 const AdminUsers = () => {
   const { user } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(null);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/admin/users`);
+      if (response.ok) {
+        const data = await response.json();
+        setUsers(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch users", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/admin/users`);
-        if (response.ok) {
-          const data = await response.json();
-          setUsers(data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch users", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUsers();
   }, []);
+
+  const handleExport = () => {
+    window.location.href = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/admin/export/users`;
+  };
+
+  const handleDelete = async (id, email) => {
+    if (email === 'pravin007ptk@gmail.com') {
+      alert("Cannot delete the main admin account.");
+      return;
+    }
+    if (!window.confirm("Are you sure you want to delete this user? This will also delete all their applications, jobs, and saved jobs.")) return;
+    
+    setActionLoading(id);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/admin/users/${id}`, {
+        method: 'DELETE'
+      });
+      if (response.ok) {
+        setUsers(users.filter(u => u.id !== id));
+      } else {
+        const text = await response.text();
+        alert(text || "Failed to delete user");
+      }
+    } catch (error) {
+      console.error("Error deleting user", error);
+    } finally {
+      setActionLoading(null);
+    }
+  };
+
+  const handleRoleChange = async (id, currentRole, email) => {
+    if (email === 'pravin007ptk@gmail.com') {
+      alert("Cannot change the main admin's role.");
+      return;
+    }
+    
+    const newRole = window.prompt("Enter new role (ADMIN, EMPLOYER, SEEKER):", currentRole);
+    if (!newRole) return;
+    
+    const formattedRole = newRole.toUpperCase().trim();
+    if (!['ADMIN', 'EMPLOYER', 'SEEKER'].includes(formattedRole)) {
+      alert("Invalid role. Must be ADMIN, EMPLOYER, or SEEKER.");
+      return;
+    }
+
+    setActionLoading(id);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/admin/users/${id}/role`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ role: formattedRole })
+      });
+      if (response.ok) {
+        fetchUsers();
+      } else {
+        const text = await response.text();
+        alert(text || "Failed to update role");
+      }
+    } catch (error) {
+      console.error("Error updating role", error);
+    } finally {
+      setActionLoading(null);
+    }
+  };
 
   return (
     <div className="bg-gray-50/50 dark:bg-slate-900 h-[calc(100vh-128px)] flex flex-col lg:flex-row relative overflow-hidden transition-colors duration-200">
@@ -45,6 +110,13 @@ const AdminUsers = () => {
               </h1>
               <p className="text-gray-500 mt-2 font-medium">View and manage all registered users.</p>
             </div>
+            <button 
+              onClick={handleExport}
+              className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors shadow-sm"
+            >
+              <Download className="w-4 h-4" />
+              Export to Excel
+            </button>
           </div>
 
           <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
@@ -56,12 +128,13 @@ const AdminUsers = () => {
                     <th className="py-4 px-6">Email</th>
                     <th className="py-4 px-6">Role</th>
                     <th className="py-4 px-6">Provider</th>
+                    <th className="py-4 px-6 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {loading ? (
                     <tr>
-                      <td colSpan="4" className="py-12 text-center text-gray-500">
+                      <td colSpan="5" className="py-12 text-center text-gray-500">
                         <div className="flex justify-center mb-4">
                            <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
                         </div>
@@ -70,7 +143,7 @@ const AdminUsers = () => {
                     </tr>
                   ) : users.length === 0 ? (
                     <tr>
-                      <td colSpan="4" className="py-12 text-center text-gray-500">
+                      <td colSpan="5" className="py-12 text-center text-gray-500">
                         No users found.
                       </td>
                     </tr>
@@ -103,6 +176,26 @@ const AdminUsers = () => {
                         </td>
                         <td className="py-4 px-6 text-gray-500 text-sm capitalize">
                           {u.provider || 'local'}
+                        </td>
+                        <td className="py-4 px-6 text-right">
+                          <div className="flex items-center justify-end gap-2">
+                            <button
+                              onClick={() => handleRoleChange(u.id, u.role, u.email)}
+                              disabled={actionLoading === u.id || u.email === 'pravin007ptk@gmail.com'}
+                              className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
+                              title="Change Role"
+                            >
+                              <Edit2 className="w-4 h-4" />
+                            </button>
+                            <button
+                              onClick={() => handleDelete(u.id, u.email)}
+                              disabled={actionLoading === u.id || u.email === 'pravin007ptk@gmail.com'}
+                              className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                              title="Delete User"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))

@@ -1,31 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import AdminSidebar from '../components/AdminSidebar';
 import { useAuth } from '../context/AuthContext';
-import { Briefcase, MapPin, IndianRupee, Calendar, Users } from 'lucide-react';
+import { Briefcase, MapPin, IndianRupee, Calendar, Users, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const AdminJobs = () => {
   const { user } = useAuth();
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [actionLoading, setActionLoading] = useState(null);
+
+  const fetchJobs = async () => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/admin/jobs`);
+      if (response.ok) {
+        const data = await response.json();
+        setJobs(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch jobs", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/admin/jobs`);
-        if (response.ok) {
-          const data = await response.json();
-          setJobs(data);
-        }
-      } catch (error) {
-        console.error("Failed to fetch jobs", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchJobs();
   }, []);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this job? This will also delete all applications and saved jobs associated with it.")) return;
+    
+    setActionLoading(id);
+    try {
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/admin/jobs/${id}`, {
+        method: 'DELETE'
+      });
+      if (response.ok) {
+        setJobs(jobs.filter(j => j.id !== id));
+      } else {
+        const text = await response.text();
+        alert(text || "Failed to delete job");
+      }
+    } catch (error) {
+      console.error("Error deleting job", error);
+    } finally {
+      setActionLoading(null);
+    }
+  };
 
   return (
     <div className="bg-gray-50/50 dark:bg-slate-900 h-[calc(100vh-128px)] flex flex-col lg:flex-row relative overflow-hidden transition-colors duration-200">
@@ -57,12 +79,13 @@ const AdminJobs = () => {
                     <th className="py-4 px-6">Location</th>
                     <th className="py-4 px-6">Type & Salary</th>
                     <th className="py-4 px-6 text-center">Applicants</th>
+                    <th className="py-4 px-6 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {loading ? (
                     <tr>
-                      <td colSpan="4" className="py-12 text-center text-gray-500">
+                      <td colSpan="5" className="py-12 text-center text-gray-500">
                         <div className="flex justify-center mb-4">
                            <div className="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
                         </div>
@@ -71,7 +94,7 @@ const AdminJobs = () => {
                     </tr>
                   ) : jobs.length === 0 ? (
                     <tr>
-                      <td colSpan="4" className="py-12 text-center text-gray-500">
+                      <td colSpan="5" className="py-12 text-center text-gray-500">
                         No jobs found.
                       </td>
                     </tr>
@@ -107,6 +130,16 @@ const AdminJobs = () => {
                             <Users className="w-4 h-4" />
                             {job.applicantCount || 0}
                           </span>
+                        </td>
+                        <td className="py-4 px-6 text-right">
+                          <button
+                            onClick={() => handleDelete(job.id)}
+                            disabled={actionLoading === job.id}
+                            className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-50"
+                            title="Delete Job"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
                         </td>
                       </tr>
                     ))
