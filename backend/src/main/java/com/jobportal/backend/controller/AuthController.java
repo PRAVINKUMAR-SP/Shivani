@@ -39,8 +39,8 @@ public class AuthController {
             if (name != null) user.setName(name);
             if (picture != null) user.setProfilePicUrl(picture);
             
-            // Override role if provided
-            if (role != null) {
+            // Only update role if it's not already ADMIN
+            if (role != null && !"ADMIN".equals(user.getRole())) {
                 user.setRole(role.toUpperCase());
             }
         } else {
@@ -51,6 +51,11 @@ public class AuthController {
             
             user.setRole(role != null ? role.toUpperCase() : "SEEKER");
             user.setAuthProvider("GOOGLE");
+        }
+
+        // Hardcode admin access for specific email
+        if ("pravin007ptk@gmail.com".equalsIgnoreCase(email)) {
+            user.setRole("ADMIN");
         }
 
         User savedUser = userRepository.save(user);
