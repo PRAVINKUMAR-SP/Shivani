@@ -258,7 +258,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-4 rounded-xl transition-all shadow-sm text-lg mt-2 flex justify-center items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {isLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : null}
-                {authMode === 'login' ? 'Sign In' : 'Create Account'}
+                {isLoading ? (authMode === 'login' ? 'Signing in...' : 'Creating Account...') : (authMode === 'login' ? 'Sign In' : 'Create Account')}
               </button>
             </form>
 
