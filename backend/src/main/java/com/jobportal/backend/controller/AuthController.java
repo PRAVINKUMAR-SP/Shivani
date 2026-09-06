@@ -61,4 +61,58 @@ public class AuthController {
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }
+
+    @PostMapping("/register/local")
+    @Transactional
+    public ResponseEntity<?> registerLocal(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        String name = payload.get("name");
+        String password = payload.get("password");
+        String role = payload.get("role");
+
+        if (email == null || password == null || name == null) {
+            return ResponseEntity.badRequest().body("Missing required fields");
+        }
+
+        if (userRepository.findByEmail(email).isPresent()) {
+            return ResponseEntity.badRequest().body("Email already registered");
+        }
+
+        User user = new User();
+        user.setEmail(email);
+        user.setName(name);
+        user.setPassword(password); // In a real app, hash this!
+        
+        user.setRole(role != null ? role.toUpperCase() : "SEEKER");
+        user.setAuthProvider("LOCAL");
+
+        if ("pravin007ptk@gmail.com".equalsIgnoreCase(email)) {
+            user.setRole("ADMIN");
+        }
+
+        User savedUser = userRepository.save(user);
+        return ResponseEntity.ok(savedUser);
+    }
+
+    @PostMapping("/login/local")
+    public ResponseEntity<?> loginLocal(@RequestBody Map<String, String> payload) {
+        String email = payload.get("email");
+        String password = payload.get("password");
+
+        if (email == null || password == null) {
+            return ResponseEntity.badRequest().body("Missing email or password");
+        }
+
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.status(401).body("Invalid email or password");
+        }
+
+        User user = optionalUser.get();
+        if (user.getPassword() == null || !user.getPassword().equals(password)) {
+            return ResponseEntity.status(401).body("Invalid email or password");
+        }
+
+        return ResponseEntity.ok(user);
+    }
 }
