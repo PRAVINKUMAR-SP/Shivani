@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Phone, Send, MapPin, Mail } from 'lucide-react';
 import SEO from '../components/SEO';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -21,6 +22,28 @@ const Contact = () => {
     setStatus({ loading: true, success: false, error: null });
 
     try {
+      // 1. Send via EmailJS
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        phone: formData.phone,
+        subject: formData.subject,
+        message: formData.message,
+        to_name: 'Admin'
+      };
+
+      // Ensure these environment variables are set in your Vercel/Vite project
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      if (serviceId && templateId && publicKey) {
+         await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      } else {
+         console.warn("EmailJS credentials missing. Email not sent, but message will still be saved to the database.");
+      }
+
+      // 2. Still save to backend DB (for Admin Dashboard)
       const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:8081'}/api/contact/send`, {
         method: 'POST',
         headers: {
@@ -38,7 +61,7 @@ const Contact = () => {
       }
     } catch (error) {
       console.error('Failed to send contact message:', error);
-      setStatus({ loading: false, success: false, error: 'Network error. Please try again.' });
+      setStatus({ loading: false, success: false, error: 'Network error or email failed. Please try again.' });
     }
   };
 
