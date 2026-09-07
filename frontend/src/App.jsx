@@ -26,6 +26,7 @@ import AdminUsers from './pages/AdminUsers';
 import AdminJobs from './pages/AdminJobs';
 import AdminSettings from './pages/AdminSettings';
 import AdminTestResults from './pages/AdminTestResults';
+import AdminMessages from './pages/AdminMessages';
 import TestHub from './pages/TestHub';
 import TakeTest from './pages/TakeTest';
 import { AuthProvider } from './context/AuthContext';
@@ -66,6 +67,7 @@ function App() {
               <Route path="/admin/users" element={<AdminUsers />} />
               <Route path="/admin/jobs" element={<AdminJobs />} />
               <Route path="/admin/tests" element={<AdminTestResults />} />
+              <Route path="/admin/messages" element={<AdminMessages />} />
               <Route path="/admin/settings" element={<AdminSettings />} />
             </Routes>
             <Footer />

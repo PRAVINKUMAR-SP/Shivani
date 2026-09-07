@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Users, Briefcase, Settings, LogOut, FileText } from 'lucide-react';
+import { Home, Users, Briefcase, Settings, LogOut, FileText, MessageSquare } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const AdminSidebar = () => {
@@ -12,6 +12,7 @@ const AdminSidebar = () => {
     { name: 'Users', icon: Users, path: '/admin/users' },
     { name: 'Jobs', icon: Briefcase, path: '/admin/jobs' },
     { name: 'Test Results', icon: FileText, path: '/admin/tests' },
+    { name: 'Messages', icon: MessageSquare, path: '/admin/messages' },
     { name: 'Settings', icon: Settings, path: '/admin/settings' },
   ];
 
