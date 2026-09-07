@@ -150,17 +150,15 @@ public class ResumeParserService {
                     content = content.substring(startIndex, endIndex + 1);
                     return objectMapper.readValue(content, new TypeReference<Map<String, Object>>() {});
                 } else {
-                    System.err.println("Could not find JSON object in AI response: " + content);
-                    return null;
+                    return Map.of("error", "AI format error. Content: " + content);
                 }
             } else {
-                System.err.println("Groq API error: " + response.statusCode() + " " + response.body());
+                return Map.of("error", "Groq API error " + response.statusCode() + ": " + response.body());
             }
 
         } catch (Exception e) {
-            System.err.println("Exception calling Groq API: " + e.getMessage());
             e.printStackTrace();
+            return Map.of("error", "Exception calling Groq API: " + e.getMessage());
         }
-        return null;
     }
 }
