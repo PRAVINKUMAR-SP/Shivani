@@ -110,6 +110,7 @@ const Profile = () => {
       
       if (response.ok) {
         const parsed = data.parsedData || {};
+        console.log("Parsed AI Data:", parsed); // Debugging line
         
         const newProfile = {
           ...profile,
