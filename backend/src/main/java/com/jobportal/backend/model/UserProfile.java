@@ -26,6 +26,11 @@ public class UserProfile {
     private String phoneNumber;
     private String resumeUrl;
     private String resumeFileName;
+    
+    private Integer atsScore;
+    
+    @Column(length = 2000)
+    private String atsFeedback;
 
     @ElementCollection
     @CollectionTable(name = "user_skills", joinColumns = @JoinColumn(name = "profile_id"))

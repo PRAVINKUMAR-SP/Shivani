@@ -12,7 +12,9 @@ const Profile = () => {
     skills: '',
     experience: '',
     education: '',
-    resumeFileName: ''
+    resumeFileName: '',
+    atsScore: null,
+    atsFeedback: ''
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -36,7 +38,9 @@ const Profile = () => {
             skills: data.skills ? data.skills.join(', ') : '',
             experience: data.experience || '',
             education: data.education || '',
-            resumeFileName: data.resumeFileName || ''
+            resumeFileName: data.resumeFileName || '',
+            atsScore: data.atsScore || null,
+            atsFeedback: data.atsFeedback || ''
           });
         }
       } catch (error) {
@@ -105,10 +109,14 @@ const Profile = () => {
       const data = await response.json();
       
       if (response.ok) {
+        const parsed = data.parsedData || {};
+        
         const newProfile = {
           ...profile,
           resumeFileName: data.fileName || profile.resumeFileName,
-          resumeUrl: data.resumeUrl || profile.resumeUrl
+          resumeUrl: data.resumeUrl || profile.resumeUrl,
+          atsScore: parsed.atsScore !== undefined ? parsed.atsScore : profile.atsScore,
+          atsFeedback: parsed.atsFeedback || profile.atsFeedback
         };
         setProfile(newProfile);
 
@@ -196,13 +204,43 @@ const Profile = () => {
                     </button>
                   </div>
                   {profile.resumeFileName && (
-                    <div className="flex items-center gap-1.5 text-sm font-medium text-blue-800 bg-blue-100 px-3 py-1 rounded-full">
+                    <div className="flex items-center gap-1.5 text-sm font-medium text-blue-800 bg-blue-100 px-3 py-1 rounded-full mt-2 lg:mt-0">
                       <FileText className="w-4 h-4" />
                       <span className="truncate max-w-[150px]">{profile.resumeFileName}</span>
                     </div>
                   )}
                 </div>
               </div>
+
+              {/* ATS Score Display */}
+              {profile.atsScore !== null && (
+                <div className="border-b border-gray-100 p-6 flex items-start gap-6 bg-white">
+                  <div className={`relative flex items-center justify-center w-20 h-20 rounded-full border-4 flex-shrink-0 shadow-sm
+                    ${profile.atsScore >= 80 ? 'border-green-500 bg-green-50 text-green-700' : 
+                      profile.atsScore >= 50 ? 'border-yellow-500 bg-yellow-50 text-yellow-700' : 
+                      'border-red-500 bg-red-50 text-red-700'}`}
+                  >
+                    <span className="text-2xl font-extrabold">{profile.atsScore}</span>
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-bold text-gray-900 mb-1">ATS Resume Score</h4>
+                    <p className={`text-sm font-medium mb-2
+                      ${profile.atsScore >= 80 ? 'text-green-600' : 
+                        profile.atsScore >= 50 ? 'text-yellow-600' : 
+                        'text-red-600'}`}
+                    >
+                      {profile.atsScore >= 80 ? 'Excellent! Your resume is highly optimized.' : 
+                       profile.atsScore >= 50 ? 'Good, but there is room for improvement.' : 
+                       'Needs Work. Consider optimizing your resume format and keywords.'}
+                    </p>
+                    {profile.atsFeedback && (
+                      <div className="bg-gray-50 rounded-lg p-3 text-sm text-gray-700 italic border border-gray-100">
+                        "{profile.atsFeedback}"
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
               <form onSubmit={handleSubmit} className="p-8 space-y-6">
                 {message && (

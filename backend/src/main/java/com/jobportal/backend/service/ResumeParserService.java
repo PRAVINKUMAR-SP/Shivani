@@ -71,8 +71,11 @@ public class ResumeParserService {
                 resumeText = resumeText.substring(0, 15000);
             }
 
-            String prompt = "You are an expert resume parser. Extract the following information from the provided resume text and return it strictly as a JSON object (no markdown formatting, no code blocks, just raw JSON). " +
-                            "Fields required: 'email' (string), 'phoneNumber' (string), 'skills' (array of strings), 'education' (string summary of education), 'experience' (string summary of work experience), 'bio' (string summary of professional summary or objective). " +
+            String prompt = "You are an expert ATS (Applicant Tracking System) and resume parser. Extract information from the provided resume text and return it strictly as a JSON object (no markdown, no code blocks). " +
+                            "Fields required: " +
+                            "'email' (string), 'phoneNumber' (string), 'skills' (array of strings), 'education' (string summary), 'experience' (string summary), 'bio' (string professional summary), " +
+                            "'atsScore' (integer 0-100 evaluating the resume's overall strength, formatting, and keyword optimization), " +
+                            "'atsFeedback' (string, a brief 1-2 sentence constructive feedback on how to improve the resume for ATS). " +
                             "If a field is not found, leave it as an empty string or empty array.\n\n" +
                             "Resume Text:\n" + resumeText;
 

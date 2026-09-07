@@ -21,6 +21,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Map;
 import java.util.UUID;
+import com.jobportal.backend.service.ResumeParserService;
 
 @RestController
 @RequestMapping("/api/profile")
@@ -34,6 +35,9 @@ public class UserProfileController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ResumeParserService resumeParserService;
 
     // Initialize upload directory
     @jakarta.annotation.PostConstruct
@@ -66,9 +70,14 @@ public class UserProfileController {
             // Build the download URL
             String resumeUrl = "/uploads/" + safeName;
 
+            // Parse resume with AI to get ATS score and data
+            Map<String, Object> parsedData = resumeParserService.parseResume(file);
+
             Map<String, Object> data = new java.util.HashMap<>();
             data.put("fileName", originalName);
             data.put("resumeUrl", resumeUrl);
+            data.put("parsedData", parsedData); // Return ATS score and feedback to frontend
+
             return ResponseEntity.ok(data);
 
         } catch (IOException e) {
@@ -139,6 +148,14 @@ public class UserProfileController {
         existingProfile.setSkills(updatedProfile.getSkills());
         existingProfile.setExperience(updatedProfile.getExperience());
         existingProfile.setEducation(updatedProfile.getEducation());
+        
+        // Save new ATS fields
+        if (updatedProfile.getAtsScore() != null) {
+            existingProfile.setAtsScore(updatedProfile.getAtsScore());
+        }
+        if (updatedProfile.getAtsFeedback() != null) {
+            existingProfile.setAtsFeedback(updatedProfile.getAtsFeedback());
+        }
 
         userProfileRepository.save(existingProfile);
 
