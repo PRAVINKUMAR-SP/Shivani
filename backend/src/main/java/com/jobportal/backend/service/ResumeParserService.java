@@ -126,13 +126,14 @@ public class ResumeParserService {
             String requestBody = objectMapper.writeValueAsString(requestBodyMap);
 
             HttpClient client = HttpClient.newBuilder()
-                    .connectTimeout(Duration.ofSeconds(10))
+                    .connectTimeout(Duration.ofSeconds(30))
                     .build();
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create("https://api.groq.com/openai/v1/chat/completions"))
                     .header("Authorization", "Bearer " + groqApiKey)
                     .header("Content-Type", "application/json")
+                    .timeout(Duration.ofSeconds(60))
                     .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                     .build();
 
@@ -141,11 +142,17 @@ public class ResumeParserService {
             if (response.statusCode() == 200) {
                 JsonNode rootNode = objectMapper.readTree(response.body());
                 String content = rootNode.path("choices").get(0).path("message").path("content").asText();
+                // Robustly extract the JSON object by finding the first '{' and last '}'
+                int startIndex = content.indexOf('{');
+                int endIndex = content.lastIndexOf('}');
                 
-                // Sometimes LLM returns JSON enclosed in ```json ... ``` despite instructions. Strip it if necessary.
-                content = content.replaceAll("^```json\\s*", "").replaceAll("^```\\s*", "").replaceAll("\\s*```$", "").trim();
-                
-                return objectMapper.readValue(content, new TypeReference<Map<String, Object>>() {});
+                if (startIndex != -1 && endIndex != -1 && endIndex >= startIndex) {
+                    content = content.substring(startIndex, endIndex + 1);
+                    return objectMapper.readValue(content, new TypeReference<Map<String, Object>>() {});
+                } else {
+                    System.err.println("Could not find JSON object in AI response: " + content);
+                    return null;
+                }
             } else {
                 System.err.println("Groq API error: " + response.statusCode() + " " + response.body());
             }
