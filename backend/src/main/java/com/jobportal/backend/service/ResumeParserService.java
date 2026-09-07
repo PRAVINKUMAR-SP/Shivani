@@ -64,6 +64,41 @@ public class ResumeParserService {
         return extractedData;
     }
 
+    public Map<String, Object> parseResumeFromBytes(byte[] fileBytes, String fileName) {
+        Map<String, Object> extractedData = new HashMap<>();
+
+        if (fileBytes == null || fileBytes.length == 0 || !fileName.toLowerCase().endsWith(".pdf")) {
+            extractedData.put("error", "Invalid file. Only PDF is supported.");
+            return extractedData;
+        }
+
+        extractedData.put("fileName", fileName);
+
+        try (PDDocument document = Loader.loadPDF(fileBytes)) {
+            PDFTextStripper stripper = new PDFTextStripper();
+            String text = stripper.getText(document);
+
+            if (text == null || text.trim().isEmpty()) {
+                extractedData.put("error", "Could not extract text from PDF.");
+                return extractedData;
+            }
+
+            // Call Groq API
+            Map<String, Object> aiParsedData = callGroqApi(text);
+            if (aiParsedData != null) {
+                extractedData.putAll(aiParsedData);
+            } else {
+                extractedData.put("error", "AI parsing failed. Please try again.");
+            }
+
+        } catch (IOException e) {
+            extractedData.put("error", "Failed to parse PDF file.");
+            e.printStackTrace();
+        }
+
+        return extractedData;
+    }
+
     private Map<String, Object> callGroqApi(String resumeText) {
         try {
             // Trim text to avoid token limits just in case

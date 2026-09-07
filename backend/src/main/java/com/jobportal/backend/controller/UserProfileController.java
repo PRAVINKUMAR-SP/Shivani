@@ -63,15 +63,18 @@ public class UserProfileController {
             // Sanitize filename: replace spaces with underscores
             String safeName = originalName.replaceAll("\\s+", "_");
 
-            // Save file to disk with original name
+            // Read file bytes ONCE (stream can only be consumed once)
+            byte[] fileBytes = file.getBytes();
+
+            // Save file to disk
             Path targetPath = UPLOAD_DIR.resolve(safeName);
-            Files.copy(file.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+            Files.write(targetPath, fileBytes);
 
             // Build the download URL
             String resumeUrl = "/uploads/" + safeName;
 
-            // Parse resume with AI to get ATS score and data
-            Map<String, Object> parsedData = resumeParserService.parseResume(file);
+            // Parse resume with AI to get ATS score and data (use saved bytes)
+            Map<String, Object> parsedData = resumeParserService.parseResumeFromBytes(fileBytes, originalName);
 
             Map<String, Object> data = new java.util.HashMap<>();
             data.put("fileName", originalName);
