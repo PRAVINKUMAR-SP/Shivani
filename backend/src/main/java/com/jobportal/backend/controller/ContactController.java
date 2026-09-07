@@ -47,7 +47,8 @@ public class ContactController {
             if (mailSender != null) {
                 try {
                     SimpleMailMessage mailMessage = new SimpleMailMessage();
-                    mailMessage.setFrom(email);
+                    // Gmail requires the 'from' address to be the authenticated user
+                    mailMessage.setFrom("pravin007ptk@gmail.com");
                     mailMessage.setTo("pravin007ptk@gmail.com");
                     mailMessage.setSubject("Contact Form: " + (subject != null ? subject : "No Subject"));
                     mailMessage.setText(
