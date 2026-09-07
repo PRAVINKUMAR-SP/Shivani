@@ -4,6 +4,8 @@ import com.jobportal.backend.model.ContactMessage;
 import com.jobportal.backend.repository.ContactMessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -18,6 +20,9 @@ public class ContactController {
     @Autowired
     private ContactMessageRepository contactMessageRepository;
 
+    @Autowired(required = false)
+    private JavaMailSender mailSender;
+
     @PostMapping("/send")
     public ResponseEntity<?> sendContactMessage(@RequestBody Map<String, String> request) {
         String name = request.get("name");
@@ -27,6 +32,7 @@ public class ContactController {
         String messageBody = request.get("message");
 
         try {
+            // Always save to database first
             ContactMessage msg = new ContactMessage();
             msg.setName(name);
             msg.setEmail(email);
@@ -35,8 +41,29 @@ public class ContactController {
             msg.setMessage(messageBody);
             msg.setIsRead(false);
             msg.setCreatedAt(LocalDateTime.now());
-
             contactMessageRepository.save(msg);
+
+            // Try sending email as well (best effort)
+            if (mailSender != null) {
+                try {
+                    SimpleMailMessage mailMessage = new SimpleMailMessage();
+                    mailMessage.setFrom(email);
+                    mailMessage.setTo("pravin007ptk@gmail.com");
+                    mailMessage.setSubject("Contact Form: " + (subject != null ? subject : "No Subject"));
+                    mailMessage.setText(
+                        "New message from contact form:\n\n" +
+                        "Name: " + name + "\n" +
+                        "Email: " + email + "\n" +
+                        "Phone: " + phone + "\n\n" +
+                        "Message:\n" + messageBody
+                    );
+                    mailMessage.setReplyTo(email);
+                    mailSender.send(mailMessage);
+                } catch (Exception emailEx) {
+                    // Email failed but message is saved in DB - that's fine
+                    System.out.println("Email notification failed (message saved to DB): " + emailEx.getMessage());
+                }
+            }
 
             return ResponseEntity.ok(Map.of("message", "Message sent successfully"));
         } catch (Exception e) {
